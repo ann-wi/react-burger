@@ -1,0 +1,16 @@
+.elements {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.element {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 568px;
+}
+
+.elementBun {
+  align-self: baseline;
+}

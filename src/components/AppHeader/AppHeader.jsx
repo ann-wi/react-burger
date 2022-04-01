@@ -8,8 +8,10 @@ function AppHeader() {
       <nav className="pt-4 pb-4">
         <ul className={headerStyles.navigation}>
           <li>
-            <BurgerIcon type="primary" />
-            Конструктор
+            <button className={`${headerStyles.button} p-5`}>
+              <BurgerIcon type="primary" />
+              Конструктор
+            </button>
           </li>
           <li>
             <ListIcon type="secondary" />

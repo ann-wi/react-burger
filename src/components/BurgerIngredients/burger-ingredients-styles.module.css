@@ -1,6 +1,7 @@
 .ingredients {
   display: flex;
   flex-direction: column;
+  max-width: 600px;
 }
 
 .title {
@@ -10,4 +11,51 @@
 
 .tabs {
   display: flex;
+}
+
+.products {
+  display: grid;
+  max-width: 600px;
+  grid-template-columns: 600px;
+  grid-template-rows: min-content;
+  grid-template-areas:
+    "section section"
+    "cards cards";
+  align-content: center;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.cards {
+  grid-area: cards;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.section-name {
+  grid-area: section;
+}
+
+.card {
+  grid-area: card;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  width: 272px;
+}
+
+.image {
+  width: 240px;
+  height: 120px;
+}
+
+.name {
+  font-size: 16px;
+  line-height: 24px;
 }
