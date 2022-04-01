@@ -1,0 +1,13 @@
+.ingredients {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 36px;
+  line-height: 40px;
+}
+
+.tabs {
+  display: flex;
+}
