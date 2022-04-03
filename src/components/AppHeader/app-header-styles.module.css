@@ -7,29 +7,23 @@
 }
 
 .navigation {
-  display: flex;
+  composes: header;
   flex-direction: row;
   list-style: none;
-  margin: 0;
-  padding: 0;
   align-items: center;
-  min-width: 1920px;
-  justify-content: center;
 }
 
 .button {
-  margin: 0;
+  composes: header;
   background-color: transparent;
   border: none;
   width: 178px;
   height: 56px;
   color: #fff;
   cursor: pointer;
-  padding: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
 }
 
 .buttonText {
@@ -39,7 +33,7 @@
 }
 
 .buttonTextConstr {
-  compose: buttonText;
+  composes: buttonText;
   color: #fff;
 }
 

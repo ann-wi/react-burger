@@ -15,6 +15,12 @@
 }
 
 .products {
+  height: 690px;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
   display: grid;
   max-width: 600px;
   grid-template-columns: 600px;

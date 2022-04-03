@@ -1,7 +1,14 @@
-.elements {
+.constr {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+}
+
+.elements {
+  height: 464px;
+  width: 568px;
+  display: flex;
+  flex-direction: column;
 }
 
 .element {
@@ -10,6 +17,10 @@
   align-items: center;
   max-width: 568px;
   gap: 8px;
+}
+
+.element:last-child {
+  margin-bottom: 0;
 }
 
 .elementBun {
