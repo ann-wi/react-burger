@@ -19,8 +19,8 @@ function AppHeader() {
               <h3 className={`${headerStyles.buttonText} ml-2 text text_type_main-default`}>Лента заказов</h3>
             </button>
           </li>
-          <li>
-            <Logo className={headerStyles.logo} />
+          <li className={headerStyles.logo}>
+            <Logo />
           </li>
           <li className={headerStyles.navProfile}>
             <button className={`${headerStyles.button} p-5`}>

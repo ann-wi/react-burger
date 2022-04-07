@@ -1,3 +1,7 @@
+* {
+  outline: 1px solid hotpink;
+}
+
 body {
   background-color: #131316;
   margin: 0;
