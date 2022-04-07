@@ -2,10 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import PopupOverlay from "../PopupOverlay/PopupOverlay";
+import PopupStyles from "./popup-styles.module.css";
+import PropTypes from "prop-types";
 
 const popupContainer = document.querySelector("#popups");
 
-const Popup = ({ onCloseClick, onEscKeydown, children }) => {
+const PopupIngredients = ({ onCloseClick, onEscKeydown, children }) => {
   React.useEffect(() => {
     document.addEventListener("keydown", onEscKeydown);
 
@@ -16,16 +18,23 @@ const Popup = ({ onCloseClick, onEscKeydown, children }) => {
 
   return ReactDOM.createPortal(
     <>
-      <div>
-        <button type="button">
-          <CloseIcon type="primary" onClick={onCloseClick} />
-        </button>
-        {children}
+      <div className={PopupStyles.background}>
+        <div className={PopupStyles.container}>
+          <button className={PopupStyles.closeButton} type="button">
+            <CloseIcon type="primary" onClick={onCloseClick} />
+          </button>
+          {children}
+        </div>
+        <PopupOverlay onClick={onCloseClick} />
       </div>
-      <PopupOverlay onClick={onCloseClick} />
     </>,
     popupContainer
   );
 };
 
-export default Popup;
+PopupIngredients.propTypes = {
+  onCloseClick: PropTypes.func,
+  onEscKeydown: PropTypes.func,
+};
+
+export default PopupIngredients;

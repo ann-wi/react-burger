@@ -2,8 +2,9 @@ import React from "react";
 import { ConstructorElement, DragIcon, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import { Scrollbar } from "smooth-scrollbar-react";
+import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ ingredients }) => {
+const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   return (
     <>
       <section className={`${constructorStyles.constr} pt-25`}>
@@ -38,13 +39,18 @@ const BurgerConstructor = ({ ingredients }) => {
             <p className={`${constructorStyles.digit} text text_type_digits-medium`}>610</p>
             <CurrencyIcon type="primary"></CurrencyIcon>
           </div>
-          <button className={`${constructorStyles.button} ml-10`}>
+          <button onClick={() => onClickPopup()} className={`${constructorStyles.button} ml-10`}>
             <p className={`${constructorStyles.buttonText} text text_type_main-default`}>Оформить заказ</p>
           </button>
         </div>
       </section>
     </>
   );
+};
+
+BurgerConstructor.propTypes = {
+  ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClickPopup: PropTypes.func,
 };
 
 export default BurgerConstructor;

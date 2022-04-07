@@ -4,16 +4,19 @@ import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstuctor/BurgerConstructor";
 import Popup from "../Popup/Popup";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
+import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
 
 function App() {
   const apiBurger = "https://norma.nomoreparties.space/api/ingredients";
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
+  const [isOrderOpened, setIsOrderOpened] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([]);
   const [currentIngredient, setCurrentIngredient] = React.useState({});
 
   const closePopups = () => {
     setIsIngredientDetailsOpened(false);
+    setIsOrderOpened(false);
   };
 
   const handleEscKeydown = (event) => {
@@ -36,16 +39,25 @@ function App() {
     setIsIngredientDetailsOpened(true);
   };
 
+  const handleOrderClick = () => {
+    setIsOrderOpened(true);
+  };
+
   return (
     <>
       <AppHeader />
       <main className={appStyles.app}>
         <BurgerIngredients ingredients={ingredients} onClickPopup={handleIngredientClick} />
-        <BurgerConstructor ingredients={ingredients} />
+        <BurgerConstructor ingredients={ingredients} onClickPopup={handleOrderClick} />
       </main>
       {isIngredientDetailsOpened && (
         <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
           <IngredientDetails ingredient={currentIngredient} />
+        </Popup>
+      )}
+      {isOrderOpened && (
+        <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
+          <Order />
         </Popup>
       )}
     </>

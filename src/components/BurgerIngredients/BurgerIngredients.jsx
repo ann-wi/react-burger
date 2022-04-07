@@ -1,8 +1,7 @@
 import React from "react";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Scrollbar } from "smooth-scrollbar-react";
-import Card from "../Card/Card";
 import PropTypes from "prop-types";
 
 const BurgerIngredients = ({ ingredients, onClickPopup }) => {
@@ -30,7 +29,14 @@ const BurgerIngredients = ({ ingredients, onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
                   .map((ingredient) => (
-                    <Card onClick={() => onClickPopup(ingredient)} data={ingredient} key={ingredient._id} />
+                    <div key={ingredient._id} className={ingredientsStyles.card}>
+                      <img onClick={() => onClickPopup(ingredient)} src={ingredient.image} className={`${ingredientsStyles.image} mr-4 ml-4`} />
+                      <div className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}>
+                        <p className={ingredientsStyles.priceNum}>{ingredient.price}</p>
+                        <CurrencyIcon type="primary" />
+                      </div>
+                      <p className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
+                    </div>
                   ))}
               </div>
             </div>
@@ -40,7 +46,14 @@ const BurgerIngredients = ({ ingredients, onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "sauce")
                   .map((ingredient) => (
-                    <Card data={ingredient} key={ingredient._id} />
+                    <div key={ingredient._id} className={ingredientsStyles.card}>
+                      <img onClick={() => onClickPopup(ingredient)} src={ingredient.image} className={`${ingredientsStyles.image} mr-4 ml-4`} />
+                      <div className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}>
+                        <p className={ingredientsStyles.priceNum}>{ingredient.price}</p>
+                        <CurrencyIcon type="primary" />
+                      </div>
+                      <p className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
+                    </div>
                   ))}
               </div>
             </div>
@@ -50,7 +63,14 @@ const BurgerIngredients = ({ ingredients, onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "main")
                   .map((ingredient) => (
-                    <Card data={ingredient} key={ingredient._id} />
+                    <div key={ingredient._id} className={ingredientsStyles.card}>
+                      <img onClick={() => onClickPopup(ingredient)} src={ingredient.image} className={`${ingredientsStyles.image} mr-4 ml-4`} />
+                      <div className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}>
+                        <p className={ingredientsStyles.priceNum}>{ingredient.price}</p>
+                        <CurrencyIcon type="primary" />
+                      </div>
+                      <p className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}>{ingredient.name}</p>
+                    </div>
                   ))}
               </div>
             </div>
@@ -59,6 +79,11 @@ const BurgerIngredients = ({ ingredients, onClickPopup }) => {
       </section>
     </>
   );
+};
+
+BurgerIngredients.propTypes = {
+  ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClick: PropTypes.func,
 };
 
 export default BurgerIngredients;
