@@ -29,7 +29,12 @@ function App() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(res.status);
+      })
       .then((res) => setIngredients(res.data))
       .catch((err) => console.log(err));
   }, []);
