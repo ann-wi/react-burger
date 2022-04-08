@@ -5,3 +5,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.scrollbar-track {
+  background-color: rgba(133, 133, 173, 0.5) !important;
+}
+
+.scrollbar-thumb {
+  background-color: #8585ad !important;
+  border-radius: 0 !important;
+}

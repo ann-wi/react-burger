@@ -1,0 +1,41 @@
+.background {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.closeButton {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  z-index: 1;
+  top: 60px;
+  right: 40px;
+  background-color: transparent;
+  background-size: cover;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+}
