@@ -6,6 +6,7 @@ import Popup from "../Popup/Popup";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
 function App() {
   const apiBurger = "https://norma.nomoreparties.space/api/ingredients";
