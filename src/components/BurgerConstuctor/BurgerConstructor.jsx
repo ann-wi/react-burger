@@ -1,10 +1,46 @@
-import React from "react";
+import React, { useContext } from "react";
+import BurgerConstructorContext from "../../context/burger-constructor-context";
+import OrderPriceContext from "../../context/order-price-context";
 import { ConstructorElement, DragIcon, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
+import OrderPrice from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ ingredients, onClickPopup }) => {
+const BurgerConstructor = ({ onClickPopup, orderDetails, setOrderDetalis }) => {
+  const ingredients = useContext(BurgerConstructorContext);
+  const { setOrderPrice } = useContext(OrderPriceContext);
+
+  React.useEffect(() => {
+    let total = 0;
+    ingredients.map((item) => (total += item.price));
+    setOrderPrice(total);
+  }, [ingredients, setOrderPrice]);
+
+  const ingredientsIds = ingredients.map((ingredient) => ingredient._id);
+
+  const handleMakeOrderClick = () => {
+    return fetch(`https://norma.nomoreparties.space/api/orders`, {
+      method: "POST",
+      body: JSON.stringify({
+        ingredients: ingredientsIds,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(res.status);
+      })
+      .then((res) => {
+        setOrderDetalis(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <section className={`${constructorStyles.constr} pt-25`}>
@@ -36,10 +72,16 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
         </div>
         <div className={`${constructorStyles.order} mt-10`}>
           <div className={constructorStyles.orderNum}>
-            <p className={`${constructorStyles.digit} text text_type_digits-medium`}>610</p>
+            <OrderPrice />
             <CurrencyIcon type="primary"></CurrencyIcon>
           </div>
-          <button onClick={() => onClickPopup()} className={`${constructorStyles.button} ml-10`}>
+          <button
+            onClick={() => {
+              handleMakeOrderClick();
+              onClickPopup();
+            }}
+            className={`${constructorStyles.button} ml-10`}
+          >
             <p className={`${constructorStyles.buttonText} text text_type_main-default`}>Оформить заказ</p>
           </button>
         </div>
@@ -49,7 +91,6 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
 };
 
 BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClickPopup: PropTypes.func,
 };
 

@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useReducer } from "react";
+import BurgerIngredientsContext from "../../context/burger-ingredients-context";
+import BurgerConstructorContext from "../../context/burger-constructor-context";
+import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstuctor/BurgerConstructor";
@@ -6,26 +9,28 @@ import Popup from "../Popup/Popup";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 
-function App() {
-  const apiBurger = "https://norma.nomoreparties.space/api/ingredients";
+const App = () => {
+  const apiBurger = "https://norma.nomoreparties.space/api/";
+
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
   const [isOrderOpened, setIsOrderOpened] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([]);
   const [currentIngredient, setCurrentIngredient] = React.useState({});
+  const [orderPrice, setOrderPrice] = React.useState(0);
+  const [orderDetails, setOrderDetalis] = React.useState(0);
 
-  const closePopups = () => {
+  function closePopups() {
     setIsIngredientDetailsOpened(false);
     setIsOrderOpened(false);
-  };
+  }
 
   const handleEscKeydown = (event) => {
     event.key === "Escape" && closePopups();
   };
 
   React.useEffect(() => {
-    fetch(`${apiBurger}`, {
+    fetch(`${apiBurger}ingredients`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -36,7 +41,9 @@ function App() {
         }
         return Promise.reject(res.status);
       })
-      .then((res) => setIngredients(res.data))
+      .then((res) => {
+        setIngredients(res.data);
+      })
       .catch((err) => console.log(err));
   }, []);
 
@@ -53,8 +60,14 @@ function App() {
     <>
       <AppHeader />
       <main className={appStyles.app}>
-        <BurgerIngredients ingredients={ingredients} onClickPopup={handleIngredientClick} />
-        <BurgerConstructor ingredients={ingredients} onClickPopup={handleOrderClick} />
+        <BurgerIngredientsContext.Provider value={ingredients}>
+          <BurgerIngredients onClickPopup={handleIngredientClick} />
+        </BurgerIngredientsContext.Provider>
+        <BurgerConstructorContext.Provider value={ingredients}>
+          <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
+            <BurgerConstructor onClickPopup={handleOrderClick} orderDetails={orderDetails} setOrderDetalis={setOrderDetalis} />
+          </OrderPriceContext.Provider>
+        </BurgerConstructorContext.Provider>
       </main>
       {isIngredientDetailsOpened && (
         <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
@@ -63,11 +76,11 @@ function App() {
       )}
       {isOrderOpened && (
         <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
-          <Order />
+          <Order orderNumber={orderDetails} />
         </Popup>
       )}
     </>
   );
-}
+};
 
 export default App;

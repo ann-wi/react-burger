@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import { Tab, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-const BurgerIngredients = ({ ingredients, onClickPopup }) => {
+const BurgerIngredients = ({ onClickPopup }) => {
+  const ingredients = useContext(BurgerIngredientsContext);
+
   const [current, setCurrent] = React.useState("one");
   return (
     <>
@@ -82,7 +85,6 @@ const BurgerIngredients = ({ ingredients, onClickPopup }) => {
 };
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
   onClick: PropTypes.func,
 };
 
