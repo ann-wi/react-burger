@@ -19,12 +19,12 @@ export function checkResponse(res) {
 }
 
 const App = () => {
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
-  const [isOrderOpened, setIsOrderOpened] = React.useState(false);
-  const [ingredients, setIngredients] = React.useState([]);
-  const [currentIngredient, setCurrentIngredient] = React.useState({});
-  const [orderPrice, setOrderPrice] = React.useState(0);
-  const [orderDetails, setOrderDetalis] = React.useState(0);
+  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = useState(false);
+  const [isOrderOpened, setIsOrderOpened] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [currentIngredient, setCurrentIngredient] = useState({});
+  const [orderPrice, setOrderPrice] = useState(0);
+  const [orderDetails, setOrderDetalis] = useState(0);
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);
@@ -35,7 +35,7 @@ const App = () => {
     event.key === "Escape" && closePopups();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch(`${apiBurger}ingredients`, {
       headers: {
         "Content-Type": "application/json",
@@ -58,15 +58,13 @@ const App = () => {
   };
 
   return (
-    <>
+      <BurgerContext.Provider value={ingredients}>
       <AppHeader />
       <main className={appStyles.app}>
-        <BurgerContext.Provider value={ingredients}>
           <BurgerIngredients ingredients={ingredients} onClickPopup={handleIngredientClick} />
           <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
-            <BurgerConstructor ingredients={ingredients} onClickPopup={handleOrderClick} orderDetails={orderDetails} setOrderDetalis={setOrderDetalis} />
+            <BurgerConstructor ingredients={ingredients} onClickPopup={handleOrderClick} setOrderDetalis={setOrderDetalis} />
           </OrderPriceContext.Provider>
-        </BurgerContext.Provider>
       </main>
       {isIngredientDetailsOpened && (
         <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
@@ -78,7 +76,7 @@ const App = () => {
           <Order orderNumber={orderDetails} />
         </Popup>
       )}
-    </>
+      </BurgerContext.Provider>
   );
 };
 

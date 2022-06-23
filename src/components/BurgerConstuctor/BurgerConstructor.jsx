@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-//import BurgerContext from "../../context/burger-context";
+import React, { useContext, useEffect, useState } from "react";
 import OrderPriceContext from "../../context/order-price-context";
 import { ConstructorElement, DragIcon, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
@@ -8,8 +7,7 @@ import { apiBurger, checkResponse } from "../App/App";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ ingredients, onClickPopup, orderDetails, setOrderDetalis }) => {
-  //const ingredients = useContext(BurgerContext);
+const BurgerConstructor = ({ ingredients, onClickPopup, setOrderDetalis }) => {
   const { setOrderPrice } = useContext(OrderPriceContext);
 
   React.useEffect(() => {
@@ -20,19 +18,20 @@ const BurgerConstructor = ({ ingredients, onClickPopup, orderDetails, setOrderDe
 
   const ingredientsIds = ingredients.map((ingredient) => ingredient._id);
   
+
   const handleMakeOrderClick = () => {
     return fetch(`${apiBurger}orders`, {
       method: "POST",
-      body: JSON.stringify({
-        ingredients: ingredientsIds,
-      }),
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        ingredients: ingredientsIds,
+      }),
     })
       .then(checkResponse)
-      .then((res) => {
-        setOrderDetalis(res.data);
+      .then((data) => {
+        setOrderDetalis(data.order.number);
       })
       .catch((err) => console.log(err));
   };

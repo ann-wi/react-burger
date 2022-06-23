@@ -3,6 +3,7 @@ import OrderStyles from "./order-styles.module.css";
 import doneLogo from "../../images/done.png";
 
 const Order = ({ orderNumber }) => {
+
   return (
     <>
       <div className={OrderStyles.container}>
