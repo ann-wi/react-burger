@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
-import BurgerIngredientsContext from "../../context/burger-ingredients-context";
+//import BurgerIngredientsContext from "../../context/burger-ingredients-context";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import { Tab, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-const BurgerIngredients = ({ onClickPopup }) => {
-  const ingredients = useContext(BurgerIngredientsContext);
+const BurgerIngredients = ({ onClickPopup, ingredients }) => {
+  //const ingredients = useContext(BurgerIngredientsContext);
 
   const [current, setCurrent] = React.useState("one");
+
   return (
     <>
       <section className={`${ingredientsStyles.elements} pt-10 mr-10`}>

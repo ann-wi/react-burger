@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
-import BurgerIngredientsContext from "../../context/burger-ingredients-context";
-import BurgerConstructorContext from "../../context/burger-constructor-context";
+import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -10,9 +9,16 @@ import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
 
-const App = () => {
-  const apiBurger = "https://norma.nomoreparties.space/api/";
+export const apiBurger = "https://norma.nomoreparties.space/api/";
 
+export function checkResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(res.status);
+}
+
+const App = () => {
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
   const [isOrderOpened, setIsOrderOpened] = React.useState(false);
   const [ingredients, setIngredients] = React.useState([]);
@@ -35,12 +41,7 @@ const App = () => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((res) => {
         setIngredients(res.data);
       })
@@ -60,14 +61,12 @@ const App = () => {
     <>
       <AppHeader />
       <main className={appStyles.app}>
-        <BurgerIngredientsContext.Provider value={ingredients}>
-          <BurgerIngredients onClickPopup={handleIngredientClick} />
-        </BurgerIngredientsContext.Provider>
-        <BurgerConstructorContext.Provider value={ingredients}>
+        <BurgerContext.Provider value={ingredients}>
+          <BurgerIngredients ingredients={ingredients} onClickPopup={handleIngredientClick} />
           <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
-            <BurgerConstructor onClickPopup={handleOrderClick} orderDetails={orderDetails} setOrderDetalis={setOrderDetalis} />
+            <BurgerConstructor ingredients={ingredients} onClickPopup={handleOrderClick} orderDetails={orderDetails} setOrderDetalis={setOrderDetalis} />
           </OrderPriceContext.Provider>
-        </BurgerConstructorContext.Provider>
+        </BurgerContext.Provider>
       </main>
       {isIngredientDetailsOpened && (
         <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>

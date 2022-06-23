@@ -1,14 +1,15 @@
 import React, { useContext } from "react";
-import BurgerConstructorContext from "../../context/burger-constructor-context";
+//import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
 import { ConstructorElement, DragIcon, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import OrderPrice from "../OrderPrice/OrderPrice";
+import { apiBurger, checkResponse } from "../App/App";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ onClickPopup, orderDetails, setOrderDetalis }) => {
-  const ingredients = useContext(BurgerConstructorContext);
+const BurgerConstructor = ({ ingredients, onClickPopup, orderDetails, setOrderDetalis }) => {
+  //const ingredients = useContext(BurgerContext);
   const { setOrderPrice } = useContext(OrderPriceContext);
 
   React.useEffect(() => {
@@ -18,9 +19,9 @@ const BurgerConstructor = ({ onClickPopup, orderDetails, setOrderDetalis }) => {
   }, [ingredients, setOrderPrice]);
 
   const ingredientsIds = ingredients.map((ingredient) => ingredient._id);
-
+  
   const handleMakeOrderClick = () => {
-    return fetch(`https://norma.nomoreparties.space/api/orders`, {
+    return fetch(`${apiBurger}orders`, {
       method: "POST",
       body: JSON.stringify({
         ingredients: ingredientsIds,
@@ -29,12 +30,7 @@ const BurgerConstructor = ({ onClickPopup, orderDetails, setOrderDetalis }) => {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(res.status);
-      })
+      .then(checkResponse)
       .then((res) => {
         setOrderDetalis(res.data);
       })
