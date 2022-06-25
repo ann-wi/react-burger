@@ -83,7 +83,7 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
 };
 
 BurgerIngredients.propTypes = {
-  onClick: PropTypes.func,
+  onClickPopup: PropTypes.func,
 };
 
 export default BurgerIngredients;

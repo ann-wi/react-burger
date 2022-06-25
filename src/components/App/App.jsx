@@ -4,7 +4,7 @@ import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstuctor/BurgerConstructor";
-import Popup from "../Popup/Popup";
+import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
@@ -67,14 +67,14 @@ const App = () => {
           </OrderPriceContext.Provider>
       </main>
       {isIngredientDetailsOpened && (
-        <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
+        <Modal onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
           <IngredientDetails ingredient={currentIngredient} />
-        </Popup>
+        </Modal>
       )}
       {isOrderOpened && (
-        <Popup onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
+        <Modal onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
           <Order orderNumber={orderDetails} />
-        </Popup>
+        </Modal>
       )}
       </BurgerContext.Provider>
   );

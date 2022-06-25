@@ -17,4 +17,8 @@ const Order = ({ orderNumber }) => {
   );
 };
 
+Order.propTypes = {
+  orderNumber: PropTypes.number
+};
+
 export default Order;

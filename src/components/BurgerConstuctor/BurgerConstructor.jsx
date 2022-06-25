@@ -87,6 +87,7 @@ const BurgerConstructor = ({ ingredients, onClickPopup, setOrderDetalis }) => {
 
 BurgerConstructor.propTypes = {
   onClickPopup: PropTypes.func,
+  setOrderDetalis: PropTypes.func
 };
 
 export default BurgerConstructor;
