@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
+import { useSelector } from "react-redux";
 import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
@@ -19,7 +20,8 @@ export function checkResponse(res) {
 }
 
 const App = () => {
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = useState(false);
+  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
+    useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [currentIngredient, setCurrentIngredient] = useState({});
@@ -58,13 +60,20 @@ const App = () => {
   };
 
   return (
-      <BurgerContext.Provider value={ingredients}>
+    <BurgerContext.Provider value={ingredients}>
       <AppHeader />
       <main className={appStyles.app}>
-          <BurgerIngredients ingredients={ingredients} onClickPopup={handleIngredientClick} />
-          <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
-            <BurgerConstructor ingredients={ingredients} onClickPopup={handleOrderClick} setOrderDetalis={setOrderDetalis} />
-          </OrderPriceContext.Provider>
+        <BurgerIngredients
+          ingredients={ingredients}
+          onClickPopup={handleIngredientClick}
+        />
+        <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
+          <BurgerConstructor
+            ingredients={ingredients}
+            onClickPopup={handleOrderClick}
+            setOrderDetalis={setOrderDetalis}
+          />
+        </OrderPriceContext.Provider>
       </main>
       {isIngredientDetailsOpened && (
         <Modal onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
@@ -76,7 +85,7 @@ const App = () => {
           <Order orderNumber={orderDetails} />
         </Modal>
       )}
-      </BurgerContext.Provider>
+    </BurgerContext.Provider>
   );
 };
 
