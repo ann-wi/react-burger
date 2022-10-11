@@ -1,3 +1,6 @@
-import { createAction } from "@reduxjs/toolkit";
-
-export const getIngredientDetails = createAction("GET_INGREDIENT_DETAILS");
+export function getIngredientDetails(ingredient) {
+  return {
+    type: "GET_INGREDIENT_DETAILS",
+    payload: { ingredient },
+  };
+}

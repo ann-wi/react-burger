@@ -1,18 +1,27 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { getBurgerConstructor } from "../actions/burgerConstructor";
 import { getIngredientsList } from "../actions/burgerIngredients";
+import { getIngredientDetails } from "../actions/ingredietDetails";
 
 const initialState = {
-  data: [],
-  isOpened: false,
+  ingredients: [],
+  currentConstructor: [],
+  currentIngredient: {},
+  orderDetails: 0,
 };
 
-export const reactBurgerReducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(getBurgerConstructor, (state, action) => {
-      state.data = action.payload.data;
-    })
-    .addCase(getIngredientsList, (state, action) => {
-      state.data = action.payload.data;
-    });
-});
+export const reactBurgerReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "GET_INGREDIENTS_LIST":
+      console.log(action);
+      return {
+        ...state,
+        ingredients: action.payload.ingredients,
+      };
+    case "GET_INGREDIENT_DETAILS":
+      return {
+        ...state,
+        currentIngredient: action.payload.ingredient,
+      };
+    default:
+      return state;
+  }
+};

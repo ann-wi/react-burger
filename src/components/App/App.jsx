@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useReducer } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
@@ -9,6 +9,9 @@ import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
+
+import { getIngredientDetails } from "../../services/actions/ingredietDetails";
+import { getIngredientsList } from "../../services/actions/burgerIngredients";
 
 export const apiBurger = "https://norma.nomoreparties.space/api/";
 
@@ -20,13 +23,20 @@ export function checkResponse(res) {
 }
 
 const App = () => {
+  const dispatch = useDispatch();
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
-  const [ingredients, setIngredients] = useState([]);
-  const [currentIngredient, setCurrentIngredient] = useState({});
+  //const [ingredients, setIngredients] = useState([]); // in store
+  const ingredients = useSelector(
+    (state) => state.reactBurgerReducer.ingredients
+  );
+  //const [currentIngredient, setCurrentIngredient] = useState({}); // in store
+  const currentIngredient = useSelector(
+    (state) => state.reactBurgerReducer.currentIngredient
+  );
   const [orderPrice, setOrderPrice] = useState(0);
-  const [orderDetails, setOrderDetalis] = useState(0);
+  const [orderDetails, setOrderDetalis] = useState(0); // in store
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);
@@ -45,13 +55,15 @@ const App = () => {
     })
       .then(checkResponse)
       .then((res) => {
-        setIngredients(res.data);
+        dispatch(getIngredientsList(res.data));
+        //setIngredients(res.data);
       })
       .catch((err) => console.log(err));
   }, []);
 
   const handleIngredientClick = (ingredient) => {
-    setCurrentIngredient(ingredient);
+    //setCurrentIngredient(ingredient);
+    dispatch(getIngredientDetails(ingredient));
     setIsIngredientDetailsOpened(true);
   };
 
