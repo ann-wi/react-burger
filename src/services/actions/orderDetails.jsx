@@ -1,3 +1,6 @@
-import { createAction } from "@reduxjs/toolkit";
-
-export const getOrderNumber = createAction("GET_ORDER_NUMBER");
+export function getOrderNumber(number) {
+  return {
+    type: "GET_ORDER_NUMBER",
+    payload: { number },
+  };
+}

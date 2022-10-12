@@ -12,6 +12,7 @@ import appStyles from "./app-styles.module.css";
 
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
 import { getIngredientsList } from "../../services/actions/burgerIngredients";
+//import { getOrderNumber } from "../../services/actions/orderDetails";
 
 export const apiBurger = "https://norma.nomoreparties.space/api/";
 
@@ -36,7 +37,10 @@ const App = () => {
     (state) => state.reactBurgerReducer.currentIngredient
   );
   const [orderPrice, setOrderPrice] = useState(0);
-  const [orderDetails, setOrderDetalis] = useState(0); // in store
+  //const [orderDetails, setOrderDetalis] = useState(0); // in store
+  const orderDetails = useSelector(
+    (state) => state.reactBurgerReducer.orderNumber
+  );
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);
@@ -83,7 +87,7 @@ const App = () => {
           <BurgerConstructor
             ingredients={ingredients}
             onClickPopup={handleOrderClick}
-            setOrderDetalis={setOrderDetalis}
+            //setOrderDetalis={setOrderDetalis}
           />
         </OrderPriceContext.Provider>
       </main>

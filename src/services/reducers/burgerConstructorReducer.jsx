@@ -5,13 +5,13 @@ const initialState = {
   ingredients: [],
   currentConstructor: [],
   currentIngredient: {},
-  orderDetails: 0,
+  orderNumber: 0,
 };
 
 export const reactBurgerReducer = (state = initialState, action) => {
   switch (action.type) {
     case "GET_INGREDIENTS_LIST":
-      console.log(action);
+      //console.log(action);
       return {
         ...state,
         ingredients: action.payload.ingredients,
@@ -20,6 +20,11 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return {
         ...state,
         currentIngredient: action.payload.ingredient,
+      };
+    case "GET_ORDER_NUMBER":
+      return {
+        ...state,
+        orderNumber: action.payload.number,
       };
     default:
       return state;
