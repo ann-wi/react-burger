@@ -8,7 +8,8 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import OrderPrice from "../OrderPrice/OrderPrice";
-import { apiBurger, checkResponse } from "../App/App";
+import { checkResponse } from "../App/App";
+import { apiBurger } from "../../services/actions/server";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 

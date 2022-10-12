@@ -12,9 +12,7 @@ import appStyles from "./app-styles.module.css";
 
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
 import { getIngredientsList } from "../../services/actions/burgerIngredients";
-//import { getOrderNumber } from "../../services/actions/orderDetails";
-
-export const apiBurger = "https://norma.nomoreparties.space/api/";
+import { getIngredients } from "../../services/actions/server";
 
 export function checkResponse(res) {
   if (res.ok) {
@@ -42,6 +40,10 @@ const App = () => {
     (state) => state.reactBurgerReducer.orderNumber
   );
 
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, []);
+
   function closePopups() {
     setIsIngredientDetailsOpened(false);
     setIsOrderOpened(false);
@@ -50,20 +52,6 @@ const App = () => {
   const handleEscKeydown = (event) => {
     event.key === "Escape" && closePopups();
   };
-
-  useEffect(() => {
-    fetch(`${apiBurger}ingredients`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(checkResponse)
-      .then((res) => {
-        dispatch(getIngredientsList(res.data));
-        //setIngredients(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   const handleIngredientClick = (ingredient) => {
     //setCurrentIngredient(ingredient);
