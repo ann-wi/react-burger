@@ -37,3 +37,24 @@ export function getIngredients() {
       });
   };
 }
+
+export function getOrder(ids) {
+  return (dispatch) => {
+    fetch(`${apiBurger}orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: ids,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(getSuccess(data));
+      })
+      .catch((err) => {
+        dispatch(getError(err));
+      });
+  };
+}

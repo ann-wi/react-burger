@@ -27,9 +27,6 @@ const App = () => {
     useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
   //const [ingredients, setIngredients] = useState([]); // in store
-  const ingredients = useSelector(
-    (state) => state.reactBurgerReducer.ingredients
-  );
   //const [currentIngredient, setCurrentIngredient] = useState({}); // in store
   const currentIngredient = useSelector(
     (state) => state.reactBurgerReducer.currentIngredient
@@ -43,6 +40,10 @@ const App = () => {
   useEffect(() => {
     dispatch(getIngredients());
   }, []);
+
+  const ingredients = useSelector(
+    (state) => state.reactBurgerReducer.ingredients
+  );
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);
@@ -73,8 +74,8 @@ const App = () => {
         />
         <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
           <BurgerConstructor
-            ingredients={ingredients}
             onClickPopup={handleOrderClick}
+            ingredients={ingredients}
             //setOrderDetalis={setOrderDetalis}
           />
         </OrderPriceContext.Provider>

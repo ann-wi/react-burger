@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OrderPriceContext from "../../context/order-price-context";
 import {
   ConstructorElement,
@@ -13,13 +13,21 @@ import { apiBurger } from "../../services/actions/server";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
+import { getOrder } from "../../services/actions/server";
 import { getOrderNumber } from "../../services/actions/orderDetails";
 
-const BurgerConstructor = ({ ingredients, onClickPopup }) => {
+const BurgerConstructor = ({ onClickPopup }) => {
   const dispatch = useDispatch();
   const setOrderDetalis = (number) => {
     dispatch(getOrderNumber(number));
   };
+
+  const ingredients = useSelector(
+    (state) => state.reactBurgerReducer.ingredients
+  );
+
+  console.log(ingredients);
+
   const { setOrderPrice } = useContext(OrderPriceContext);
 
   React.useEffect(() => {
@@ -29,6 +37,10 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   }, [ingredients, setOrderPrice]);
 
   const ingredientsIds = ingredients.map((ingredient) => ingredient._id);
+
+  useEffect(() => {
+    dispatch(getOrder(ingredientsIds));
+  }, []);
 
   const handleMakeOrderClick = () => {
     return fetch(`${apiBurger}orders`, {
