@@ -1,5 +1,4 @@
 import { getIngredientsList } from "./burgerIngredients";
-
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
 export function sendRequest(sendRequest) {
@@ -9,9 +8,10 @@ export function sendRequest(sendRequest) {
   };
 }
 
-export function respondSuccess() {
+export function respondSuccess(ingredients) {
   return {
     type: "RESPOND_SUCCESS",
+    payload: { ingredients },
   };
 }
 
@@ -22,7 +22,7 @@ export function respondError(respondError) {
   };
 }
 
-export function getIngredinets() {
+export function getIngredients() {
   return function (dispatch) {
     dispatch(sendRequest(true));
 
@@ -31,13 +31,9 @@ export function getIngredinets() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => {
-        if (res && res.ok) {
-          dispatch(respondSuccess());
-          dispatch(getIngredientsList(res.json()));
-        } else {
-          dispatch(respondError(true));
-        }
+      .then((res) => res.json())
+      .then((data) => {
+        dispatch(respondSuccess(data.data));
       })
       .catch((err) => {
         dispatch(respondError(true));
@@ -45,4 +41,25 @@ export function getIngredinets() {
   };
 }
 
-// res.success -> res.ok
+export function getOrderNumber() {
+  return function (dispatch) {
+    dispatch(sendRequest(true));
+
+    fetch(`${apiBurger}orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: ingredientsIds,
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        setOrderDetalis(data.order.number);
+      })
+      .catch((err) => {
+        dispatch(respondError(true));
+      });
+  };
+}

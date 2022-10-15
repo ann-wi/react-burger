@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
@@ -13,7 +13,7 @@ import appStyles from "./app-styles.module.css";
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
 import { getIngredientsList } from "../../services/actions/burgerIngredients";
 //import { getOrderNumber } from "../../services/actions/orderDetails";
-import { getIngredinets } from "../../services/actions/server-actions";
+import { getIngredients } from "../../services/actions/server-actions";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,6 +40,10 @@ const App = () => {
     (state) => state.reactBurgerReducer.respondError
   );
 
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
   function closePopups() {
     setIsIngredientDetailsOpened(false);
     setIsOrderOpened(false);
@@ -48,11 +52,6 @@ const App = () => {
   const handleEscKeydown = (event) => {
     event.key === "Escape" && closePopups();
   };
-
-  useEffect(() => {
-    console.log(ingredients);
-    dispatch(getIngredinets());
-  }, []);
 
   const handleIngredientClick = (ingredient) => {
     //setCurrentIngredient(ingredient);
