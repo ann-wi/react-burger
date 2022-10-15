@@ -3,8 +3,10 @@ const initialState = {
   currentConstructor: [],
   currentIngredient: {},
   orderNumber: 0,
-  sendRequest: false,
-  respondError: false,
+  sendRequestOrder: false,
+  respondErrorOrder: false,
+  sendRequestIngredients: false,
+  respondErrorIngredients: false,
 };
 
 export const reactBurgerReducer = (state = initialState, action) => {
@@ -14,28 +16,41 @@ export const reactBurgerReducer = (state = initialState, action) => {
         ...state,
         currentIngredient: action.payload.ingredient,
       };
-    case "GET_ORDER_NUMBER":
+    case "SEND_REQUEST_INGREDIENTS":
       return {
         ...state,
-        orderNumber: action.payload.number,
+        sendRequestIngredients: true,
       };
-    case "SEND_REQUEST":
-      return {
-        ...state,
-        sendRequest: true,
-      };
-    case "RESPOND_SUCCESS":
+    case "RESPOND_SUCCESS_INGREDIENTS":
       return {
         ...state,
         ingredients: action.payload.ingredients,
-        sendRequest: false,
-        respondError: false,
+        sendRequestIngredients: false,
+        respondErrorIngredients: false,
       };
-    case "RESPOND_ERROR":
+    case "RESPOND_ERROR_INGREDIENTS":
       return {
         ...state,
-        sendRequest: false,
-        respondError: true,
+        sendRequestIngredients: false,
+        respondErrorIngredients: true,
+      };
+    case "SEND_REQUEST_ORDER":
+      return {
+        ...state,
+        sendRequestOrder: true,
+      };
+    case "RESPOND_SUCCESS_ORDER":
+      return {
+        ...state,
+        orderNumber: action.payload.number,
+        sendRequestOrder: false,
+        respondErrorOrder: false,
+      };
+    case "RESPOND_ERROR_ORDER":
+      return {
+        ...state,
+        sendRequestOrder: false,
+        respondErrorOrder: true,
       };
     default:
       return state;

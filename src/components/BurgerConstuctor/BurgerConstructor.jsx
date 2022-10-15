@@ -8,17 +8,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import OrderPrice from "../OrderPrice/OrderPrice";
-//import { apiBurger, checkResponse } from "../App/App";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-import { getOrderNumber } from "../../services/actions/orderDetails";
+import { getOrderNumber } from "../../services/actions/server-actions";
 
 const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   const dispatch = useDispatch();
-  const setOrderDetalis = (number) => {
-    dispatch(getOrderNumber(number));
-  };
+
   const { setOrderPrice } = useContext(OrderPriceContext);
 
   React.useEffect(() => {
@@ -29,22 +26,9 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
 
   const ingredientsIds = ingredients.map((ingredient) => ingredient._id);
 
-  //const handleMakeOrderClick = () => {
-  //  return fetch(`${apiBurger}orders`, {
-  //    method: "POST",
-  //    headers: {
-  //      "Content-Type": "application/json",
-  //    },
-  //    body: JSON.stringify({
-  //      ingredients: ingredientsIds,
-  //    }),
-  //  })
-  //    .then(checkResponse)
-  //    .then((data) => {
-  //      setOrderDetalis(data.order.number);
-  //    })
-  //    .catch((err) => console.log(err));
-  //};
+  const handleMakeOrderClick = () => {
+    dispatch(getOrderNumber(ingredientsIds));
+  };
 
   return (
     <>
@@ -107,7 +91,7 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
           </div>
           <button
             onClick={() => {
-              //handleMakeOrderClick();
+              handleMakeOrderClick();
               onClickPopup();
             }}
             className={`${constructorStyles.button} ml-10`}

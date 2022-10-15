@@ -1,30 +1,50 @@
-import { getIngredientsList } from "./burgerIngredients";
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
-export function sendRequest(sendRequest) {
+export function sendRequestIngredients(sendRequest) {
   return {
-    type: "SEND_REQUEST",
+    type: "SEND_REQUEST_INGREDIENTS",
     payload: { sendRequest },
   };
 }
 
-export function respondSuccess(ingredients) {
+export function respondSuccessIngredients(ingredients) {
   return {
-    type: "RESPOND_SUCCESS",
+    type: "RESPOND_SUCCESS_INGREDIENTS",
     payload: { ingredients },
   };
 }
 
-export function respondError(respondError) {
+export function respondErrorIngredients(respondError) {
   return {
-    type: "RESPOND_ERROR",
+    type: "RESPOND_ERROR_INGREDIENTS",
+    payload: { respondError },
+  };
+}
+
+export function sendRequestOrder(sendRequest) {
+  return {
+    type: "SEND_REQUEST_ORDER",
+    payload: { sendRequest },
+  };
+}
+
+export function respondSuccessOrder(number) {
+  return {
+    type: "RESPOND_SUCCESS_ORDER",
+    payload: { number },
+  };
+}
+
+export function respondErrorOrder(respondError) {
+  return {
+    type: "RESPOND_ERROR_ORDER",
     payload: { respondError },
   };
 }
 
 export function getIngredients() {
   return function (dispatch) {
-    dispatch(sendRequest(true));
+    dispatch(sendRequestIngredients(true));
 
     fetch(`${apiBurger}ingredients`, {
       headers: {
@@ -33,17 +53,17 @@ export function getIngredients() {
     })
       .then((res) => res.json())
       .then((data) => {
-        dispatch(respondSuccess(data.data));
+        dispatch(respondSuccessIngredients(data.data));
       })
       .catch((err) => {
-        dispatch(respondError(true));
+        dispatch(respondErrorIngredients(true));
       });
   };
 }
 
-export function getOrderNumber() {
+export function getOrderNumber(ingredientsIds) {
   return function (dispatch) {
-    dispatch(sendRequest(true));
+    dispatch(sendRequestOrder(true));
 
     fetch(`${apiBurger}orders`, {
       method: "POST",
@@ -54,12 +74,12 @@ export function getOrderNumber() {
         ingredients: ingredientsIds,
       }),
     })
-      .then(checkResponse)
+      .then((res) => res.json())
       .then((data) => {
-        setOrderDetalis(data.order.number);
+        dispatch(respondSuccessOrder(data.order.number));
       })
       .catch((err) => {
-        dispatch(respondError(true));
+        dispatch(respondErrorOrder(true));
       });
   };
 }

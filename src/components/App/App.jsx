@@ -33,12 +33,6 @@ const App = () => {
   const orderDetails = useSelector(
     (state) => state.reactBurgerReducer.orderNumber
   );
-  const sendRequest = useSelector(
-    (state) => state.reactBurgerReducer.sendRequest
-  );
-  const respondError = useSelector(
-    (state) => state.reactBurgerReducer.respondError
-  );
 
   useEffect(() => {
     dispatch(getIngredients());
