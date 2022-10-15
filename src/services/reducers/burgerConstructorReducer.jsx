@@ -6,6 +6,8 @@ const initialState = {
   currentConstructor: [],
   currentIngredient: {},
   orderNumber: 0,
+  sendRequest: false,
+  respondError: false,
 };
 
 export const reactBurgerReducer = (state = initialState, action) => {
@@ -25,6 +27,24 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return {
         ...state,
         orderNumber: action.payload.number,
+      };
+    case "SEND_REQUEST":
+      return {
+        ...state,
+        sendRequest: true,
+      };
+    case "RESPOND_SUCCESS":
+      return {
+        ...state,
+        sendRequest: false,
+        respondError: false,
+        ingredients: action.payload.ingredients,
+      };
+    case "RESPOND_ERROR":
+      return {
+        ...state,
+        sendRequest: false,
+        respondError: true,
       };
     default:
       return state;

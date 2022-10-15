@@ -13,15 +13,7 @@ import appStyles from "./app-styles.module.css";
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
 import { getIngredientsList } from "../../services/actions/burgerIngredients";
 //import { getOrderNumber } from "../../services/actions/orderDetails";
-
-export const apiBurger = "https://norma.nomoreparties.space/api/";
-
-export function checkResponse(res) {
-  if (res.ok) {
-    return res.json();
-  }
-  return Promise.reject(res.status);
-}
+import { getIngredinets } from "../../services/actions/server-actions";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,6 +33,12 @@ const App = () => {
   const orderDetails = useSelector(
     (state) => state.reactBurgerReducer.orderNumber
   );
+  const sendRequest = useSelector(
+    (state) => state.reactBurgerReducer.sendRequest
+  );
+  const respondError = useSelector(
+    (state) => state.reactBurgerReducer.respondError
+  );
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);
@@ -52,17 +50,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    fetch(`${apiBurger}ingredients`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(checkResponse)
-      .then((res) => {
-        dispatch(getIngredientsList(res.data));
-        //setIngredients(res.data);
-      })
-      .catch((err) => console.log(err));
+    console.log(ingredients);
+    dispatch(getIngredinets());
   }, []);
 
   const handleIngredientClick = (ingredient) => {
