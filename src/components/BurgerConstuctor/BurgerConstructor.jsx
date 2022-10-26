@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 
 import { getOrderNumber } from "../../services/actions/server-actions";
 
+// Drag Target
 const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   const dispatch = useDispatch();
 
