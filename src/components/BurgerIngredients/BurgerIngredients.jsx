@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useDrag } from "react-dnd";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import {
   Tab,
@@ -15,12 +16,37 @@ import PropTypes from "prop-types";
 
 // Drag List
 const BurgerIngredients = ({ onClickPopup, ingredients }) => {
-  const tab1 = useRef(null);
-  const tab2 = useRef(null);
-  const tab3 = useRef(null);
-  const [currentTab1, setCurrentTab1] = useState(false);
-  const [currentTab2, setCurrentTab2] = useState(false);
-  const [currentTab3, setCurrentTab3] = useState(false);
+  const { _id } = ingredients;
+  const [{ isDrag }, dragRef] = useDrag({
+    type: "ingredient",
+    item: { _id },
+    collect: (monitor) => ({
+      isDrag: monitor.isDragging(),
+    }),
+  });
+
+  const tabBuns = useRef(null);
+  const tabSauces = useRef(null);
+  const tabMain = useRef(null);
+  const [currentTabBuns, setCurrentTabBuns] = useState(false);
+  const [currentTabSauces, setCurrentTabSauces] = useState(false);
+  const [currentTabMain, setCurrentTabMain] = useState(false);
+
+  const handleScrollTabs = () => {
+    if (tabBuns.current.getBoundingClientRect().top >= 284) {
+      setCurrentTabBuns(true);
+      setCurrentTabSauces(false);
+      setCurrentTabMain(false);
+    } else if (tabSauces.current.getBoundingClientRect().top >= 284) {
+      setCurrentTabSauces(true);
+      setCurrentTabBuns(false);
+      setCurrentTabMain(false);
+    } else if (tabMain.current.getBoundingClientRect().top >= 284) {
+      setCurrentTabMain(true);
+      setCurrentTabBuns(false);
+      setCurrentTabSauces(false);
+    }
+  };
 
   return (
     <>
@@ -29,37 +55,19 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
           Соберите бургер
         </h1>
         <div className={`${ingredientsStyles.tabs} mt-5 mb-10`}>
-          <Tab value="one" active={currentTab1}>
+          <Tab value="one" active={currentTabBuns}>
             Булки
           </Tab>
-          <Tab value="two" active={currentTab2}>
+          <Tab value="two" active={currentTabSauces}>
             Соусы
           </Tab>
-          <Tab value="three" active={currentTab3}>
+          <Tab value="three" active={currentTabMain}>
             Начинки
           </Tab>
         </div>
         <div className={`${ingredientsStyles.products}`}>
-          <Scrollbar
-            damping={0.07}
-            onScroll={() => {
-              if (tab1.current.getBoundingClientRect().top == 284) {
-                setCurrentTab1(true);
-                setCurrentTab2(false);
-                setCurrentTab3(false);
-              } else if (tab2.current.getBoundingClientRect().top == 284) {
-                setCurrentTab2(true);
-                setCurrentTab1(false);
-                setCurrentTab3(false);
-              } else if (tab3.current.getBoundingClientRect().top == 284) {
-                setCurrentTab3(true);
-                setCurrentTab1(false);
-                setCurrentTab2(false);
-              }
-              //console.log(tab1.current.getBoundingClientRect().top);
-            }}
-          >
-            <div className={ingredientsStyles.list} ref={tab1}>
+          <Scrollbar damping={0.07} onScroll={handleScrollTabs}>
+            <div className={ingredientsStyles.list} ref={tabBuns}>
               <h3
                 className={`${ingredientsStyles.sectionTitle} mb-6 text text_type_main-medium`}
               >
@@ -68,34 +76,38 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
-                  .map((ingredient) => (
-                    <div
-                      key={ingredient._id}
-                      className={ingredientsStyles.card}
-                    >
-                      <img
-                        onClick={() => onClickPopup(ingredient)}
-                        src={ingredient.image}
-                        className={`${ingredientsStyles.image} mr-4 ml-4`}
-                      />
-                      <div
-                        className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}
-                      >
-                        <p className={ingredientsStyles.priceNum}>
-                          {ingredient.price}
-                        </p>
-                        <CurrencyIcon type="primary" />
-                      </div>
-                      <p
-                        className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}
-                      >
-                        {ingredient.name}
-                      </p>
-                    </div>
-                  ))}
+                  .map(
+                    (ingredient) =>
+                      !isDrag && (
+                        <div
+                          key={ingredient._id}
+                          className={ingredientsStyles.card}
+                          ref={dragRef}
+                        >
+                          <img
+                            onClick={() => onClickPopup(ingredient)}
+                            src={ingredient.image}
+                            className={`${ingredientsStyles.image} mr-4 ml-4`}
+                          />
+                          <div
+                            className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}
+                          >
+                            <p className={ingredientsStyles.priceNum}>
+                              {ingredient.price}
+                            </p>
+                            <CurrencyIcon type="primary" />
+                          </div>
+                          <p
+                            className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}
+                          >
+                            {ingredient.name}
+                          </p>
+                        </div>
+                      )
+                  )}
               </div>
             </div>
-            <div className={ingredientsStyles.list} ref={tab2}>
+            <div className={ingredientsStyles.list} ref={tabSauces}>
               <h3
                 className={`${ingredientsStyles.sectionTitle} mt-10 mb-6 text text_type_main-medium`}
               >
@@ -131,7 +143,7 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
                   ))}
               </div>
             </div>
-            <div className={ingredientsStyles.list} ref={tab3}>
+            <div className={ingredientsStyles.list} ref={tabMain}>
               <h3
                 className={`${ingredientsStyles.sectionTitle} mt-10 mb-6 text text_type_main-medium`}
               >

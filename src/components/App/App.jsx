@@ -9,9 +9,12 @@ import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
 import { getIngredientsList } from "../../services/actions/burgerIngredients";
+import { addIngredient } from "../../services/actions/addIngredient";
 //import { getOrderNumber } from "../../services/actions/orderDetails";
 import { getIngredients } from "../../services/actions/server-actions";
 
@@ -23,6 +26,10 @@ const App = () => {
   //const [ingredients, setIngredients] = useState([]); // in store
   const ingredients = useSelector(
     (state) => state.reactBurgerReducer.ingredients
+  );
+
+  const addedIngredients = useSelector(
+    (state) => state.reactBurgerReducer.addedIngredients
   );
   //const [currentIngredient, setCurrentIngredient] = useState({}); // in store
   const currentIngredient = useSelector(
@@ -57,14 +64,20 @@ const App = () => {
     setIsOrderOpened(true);
   };
 
+  const handleIngredientAddition = (ingredient) => {
+    dispatch(addIngredient(ingredient));
+  };
+
   return (
     <BurgerContext.Provider value={ingredients}>
       <AppHeader />
       <main className={appStyles.app}>
-        <BurgerIngredients
-          ingredients={ingredients}
-          onClickPopup={handleIngredientClick}
-        />
+        <DndProvider backend={HTML5Backend}>
+          <BurgerIngredients
+            ingredients={ingredients}
+            onClickPopup={handleIngredientClick}
+          />
+        </DndProvider>
         <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
           <BurgerConstructor
             ingredients={ingredients}
