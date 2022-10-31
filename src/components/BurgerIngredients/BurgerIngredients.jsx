@@ -11,6 +11,7 @@ import {
   Tab,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import Ingredient from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
@@ -19,7 +20,7 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
   const { _id } = ingredients;
   const [{ isDrag }, dragRef] = useDrag({
     type: "ingredient",
-    item: { _id },
+    ingredient: { _id },
     collect: (monitor) => ({
       isDrag: monitor.isDragging(),
     }),
@@ -76,35 +77,15 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
-                  .map(
-                    (ingredient) =>
-                      !isDrag && (
-                        <div
-                          key={ingredient._id}
-                          className={ingredientsStyles.card}
-                          ref={dragRef}
-                        >
-                          <img
-                            onClick={() => onClickPopup(ingredient)}
-                            src={ingredient.image}
-                            className={`${ingredientsStyles.image} mr-4 ml-4`}
-                          />
-                          <div
-                            className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}
-                          >
-                            <p className={ingredientsStyles.priceNum}>
-                              {ingredient.price}
-                            </p>
-                            <CurrencyIcon type="primary" />
-                          </div>
-                          <p
-                            className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}
-                          >
-                            {ingredient.name}
-                          </p>
-                        </div>
-                      )
-                  )}
+                  .map((ingredient) => (
+                    <Ingredient
+                      key={ingredient._id}
+                      onClickPopup={onClickPopup}
+                      ingredient={ingredient}
+                      dragRef={dragRef}
+                      draggable
+                    />
+                  ))}
               </div>
             </div>
             <div className={ingredientsStyles.list} ref={tabSauces}>
@@ -117,29 +98,13 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "sauce")
                   .map((ingredient) => (
-                    <div
+                    <Ingredient
                       key={ingredient._id}
-                      className={ingredientsStyles.card}
-                    >
-                      <img
-                        onClick={() => onClickPopup(ingredient)}
-                        src={ingredient.image}
-                        className={`${ingredientsStyles.image} mr-4 ml-4`}
-                      />
-                      <div
-                        className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}
-                      >
-                        <p className={ingredientsStyles.priceNum}>
-                          {ingredient.price}
-                        </p>
-                        <CurrencyIcon type="primary" />
-                      </div>
-                      <p
-                        className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}
-                      >
-                        {ingredient.name}
-                      </p>
-                    </div>
+                      onClickPopup={onClickPopup}
+                      ingredient={ingredient}
+                      dragRef={dragRef}
+                      draggable
+                    />
                   ))}
               </div>
             </div>
@@ -153,29 +118,13 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "main")
                   .map((ingredient) => (
-                    <div
+                    <Ingredient
                       key={ingredient._id}
-                      className={ingredientsStyles.card}
-                    >
-                      <img
-                        onClick={() => onClickPopup(ingredient)}
-                        src={ingredient.image}
-                        className={`${ingredientsStyles.image} mr-4 ml-4`}
-                      />
-                      <div
-                        className={`${ingredientsStyles.price} pt-1 pb-1 text text_type_digits-default`}
-                      >
-                        <p className={ingredientsStyles.priceNum}>
-                          {ingredient.price}
-                        </p>
-                        <CurrencyIcon type="primary" />
-                      </div>
-                      <p
-                        className={`${ingredientsStyles.name} mt-1 text text_type_main-default`}
-                      >
-                        {ingredient.name}
-                      </p>
-                    </div>
+                      onClickPopup={onClickPopup}
+                      ingredient={ingredient}
+                      dragRef={dragRef}
+                      draggable
+                    />
                   ))}
               </div>
             </div>

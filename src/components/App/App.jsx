@@ -9,7 +9,7 @@ import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
-import { DndProvider } from "react-dnd";
+import { DndProvider, useDrag } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
@@ -28,9 +28,6 @@ const App = () => {
     (state) => state.reactBurgerReducer.ingredients
   );
 
-  const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
-  );
   //const [currentIngredient, setCurrentIngredient] = useState({}); // in store
   const currentIngredient = useSelector(
     (state) => state.reactBurgerReducer.currentIngredient
@@ -64,9 +61,9 @@ const App = () => {
     setIsOrderOpened(true);
   };
 
-  const handleIngredientAddition = (ingredient) => {
-    dispatch(addIngredient(ingredient));
-  };
+  //const handleIngredientAddition = (ingredient) => {
+  //  dispatch(addIngredient(ingredient));
+  //};
 
   return (
     <BurgerContext.Provider value={ingredients}>
@@ -77,14 +74,14 @@ const App = () => {
             ingredients={ingredients}
             onClickPopup={handleIngredientClick}
           />
+          <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
+            <BurgerConstructor
+              ingredients={ingredients}
+              onClickPopup={handleOrderClick}
+              //setOrderDetalis={setOrderDetalis}
+            />
+          </OrderPriceContext.Provider>
         </DndProvider>
-        <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
-          <BurgerConstructor
-            ingredients={ingredients}
-            onClickPopup={handleOrderClick}
-            //setOrderDetalis={setOrderDetalis}
-          />
-        </OrderPriceContext.Provider>
       </main>
       {isIngredientDetailsOpened && (
         <Modal onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
