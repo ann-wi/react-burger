@@ -15,10 +15,7 @@ export const reactBurgerReducer = (state = initialState, action) => {
     case "ADD_INGREDIENT":
       return {
         ...state,
-        addedIngredients: [
-          ...state.addedIngredients,
-          action.payload.ingredient,
-        ],
+        addedIngredients: [...state.addedIngredients, action.payload._id],
       };
     case "GET_INGREDIENT_DETAILS":
       return {
@@ -65,3 +62,9 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+//case "ADD_INGREDIENT":
+//      return {
+//        ...state,
+//        addedIngredients: state.addedIngredients.concat(action.payload.id),
+//      };

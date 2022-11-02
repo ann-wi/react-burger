@@ -1,6 +1,6 @@
-export function addIngredient(ingredientId) {
+export function addIngredient(_id) {
   return {
     type: "ADD_INGREDIENT",
-    payload: { ingredientId },
+    payload: { _id },
   };
 }

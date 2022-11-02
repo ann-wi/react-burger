@@ -17,15 +17,6 @@ import PropTypes from "prop-types";
 
 // Drag List
 const BurgerIngredients = ({ onClickPopup, ingredients }) => {
-  const { _id } = ingredients;
-  const [{ isDrag }, dragRef] = useDrag({
-    type: "ingredient",
-    ingredient: { _id },
-    collect: (monitor) => ({
-      isDrag: monitor.isDragging(),
-    }),
-  });
-
   const tabBuns = useRef(null);
   const tabSauces = useRef(null);
   const tabMain = useRef(null);
@@ -77,13 +68,12 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
-                  .map((ingredient) => (
+                  .map((ingredient, index) => (
                     <Ingredient
-                      key={ingredient._id}
+                      key={index}
+                      id={ingredient._id}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
-                      dragRef={dragRef}
-                      draggable
                     />
                   ))}
               </div>
@@ -97,13 +87,12 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "sauce")
-                  .map((ingredient) => (
+                  .map((ingredient, index) => (
                     <Ingredient
-                      key={ingredient._id}
+                      key={index}
+                      id={ingredient._id}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
-                      dragRef={dragRef}
-                      draggable
                     />
                   ))}
               </div>
@@ -117,13 +106,12 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "main")
-                  .map((ingredient) => (
+                  .map((ingredient, index) => (
                     <Ingredient
-                      key={ingredient._id}
+                      key={index}
+                      id={ingredient._id}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
-                      dragRef={dragRef}
-                      draggable
                     />
                   ))}
               </div>

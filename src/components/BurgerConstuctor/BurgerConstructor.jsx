@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
+import ConstructorContainer from "../App/ConstructorContainer/ConstructorContainer";
 import OrderPriceContext from "../../context/order-price-context";
 import {
   ConstructorElement,
@@ -18,7 +19,9 @@ import { addIngredient } from "../../services/actions/addIngredient";
 // Drag Target
 const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   const dispatch = useDispatch();
-
+  //const addedIngredients = useSelector(
+  //  (state) => state.reactBurgerReducer.addedIngredients
+  //);
   //const { setOrderPrice } = useContext(OrderPriceContext);
 
   //React.useEffect(() => {
@@ -33,18 +36,6 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   //  dispatch(getOrderNumber(ingredientsIds));
   //};
 
-  const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
-  );
-
-  const [{ isOver }, dropTarget] = useDrop({
-    accept: "sauce",
-    drop: (itemId) => dispatch(addIngredient(itemId)),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
-  });
-
   return (
     <>
       <section className={`${constructorStyles.constr} pt-25`}>
@@ -53,9 +44,9 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
             .filter(
               (ingredient) => ingredient.name === "Краторная булка N-200i"
             )
-            .map((ingredient) => (
+            .map((ingredient, index) => (
               <ConstructorElement
-                key={ingredient.id}
+                key={index}
                 type="top"
                 isLocked={true}
                 text={`${ingredient.name} (верх)`}
@@ -64,19 +55,15 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
               />
             ))}
         </div>
-        <div className={constructorStyles.elements} ref={dropTarget}>
-          <Scrollbar damping={0.07}>
-            {addedIngredients.map((ingredient) => console.log(ingredient))}
-          </Scrollbar>
-        </div>
+        <ConstructorContainer containerType={"sauce"} />
         <div className={`${constructorStyles.elementBun} mt-4 mr-4`}>
           {ingredients
             .filter(
               (ingredient) => ingredient.name === "Краторная булка N-200i"
             )
-            .map((ingredient) => (
+            .map((ingredient, index) => (
               <ConstructorElement
-                key={ingredient._id}
+                key={index}
                 type="bottom"
                 isLocked={true}
                 text={`${ingredient.name} (низ)`}
