@@ -4,20 +4,17 @@ import ingredientStyles from "./ingredient-styles.module.css";
 
 const Ingredient = ({ ingredient, onClickPopup }) => {
   // Draggable element
-  const { _id } = ingredient;
+  const { _id, name, price, image } = ingredient;
 
-  const [{ isDrag }, dragRef] = useDrag({
+  const [, dragRef] = useDrag({
     type: "sauce",
-    item: { _id },
-    collect: (monitor) => ({
-      isDrag: monitor.isDragging(),
-    }),
+    item: { id: _id, name: name, price: price, image: image },
   });
 
   return (
     <div className={ingredientStyles.card} ref={dragRef} draggable>
       <img
-        onClick={() => console.log(ingredient)}
+        onClick={() => onClickPopup(ingredient)}
         src={ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
         alt={`ingredient_image`}

@@ -14,27 +14,26 @@ import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
 import { getOrderNumber } from "../../services/actions/server-actions";
-import { addIngredient } from "../../services/actions/addIngredient";
 
 // Drag Target
 const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   const dispatch = useDispatch();
-  //const addedIngredients = useSelector(
-  //  (state) => state.reactBurgerReducer.addedIngredients
-  //);
-  //const { setOrderPrice } = useContext(OrderPriceContext);
+  const addedIngredients = useSelector(
+    (state) => state.reactBurgerReducer.addedIngredients
+  );
+  const { setOrderPrice } = useContext(OrderPriceContext);
 
-  //React.useEffect(() => {
-  //  let total = 0;
-  //  ingredients.map((item) => (total += item.price));
-  //  setOrderPrice(total);
-  //}, [ingredients, setOrderPrice]);
+  React.useEffect(() => {
+    let total = 0;
+    addedIngredients.map((item) => (total += item.price));
+    setOrderPrice(total);
+  }, [addedIngredients, setOrderPrice]);
 
-  //const ingredientsIds = ingredients.map((ingredient) => ingredient._id);
+  const ingredientsIds = addedIngredients.map((ingredient) => ingredient.id);
 
-  //const handleMakeOrderClick = () => {
-  //  dispatch(getOrderNumber(ingredientsIds));
-  //};
+  const handleMakeOrderClick = () => {
+    dispatch(getOrderNumber(ingredientsIds));
+  };
 
   return (
     <>
@@ -55,7 +54,11 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
               />
             ))}
         </div>
-        <ConstructorContainer containerType={"sauce"} />
+        <Scrollbar damping={0.07}>
+          <a>
+            <ConstructorContainer containerType={"sauce"} />
+          </a>
+        </Scrollbar>
         <div className={`${constructorStyles.elementBun} mt-4 mr-4`}>
           {ingredients
             .filter(
@@ -79,7 +82,7 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
           </div>
           <button
             onClick={() => {
-              //handleMakeOrderClick();
+              handleMakeOrderClick();
               onClickPopup();
             }}
             className={`${constructorStyles.button} ml-10`}
@@ -102,19 +105,3 @@ BurgerConstructor.propTypes = {
 };
 
 export default BurgerConstructor;
-
-//{addedIngredients
-//  .filter((ingredient) => ingredient.type !== "bun")
-//  .map((ingredient) => (
-//    <div
-//      key={ingredient._id}
-//      className={`${constructorStyles.element} mb-4`}
-//    >
-//      <DragIcon type="primary" />
-//      <ConstructorElement
-//        text={ingredient.name}
-//        price={ingredient.price}
-//        thumbnail={ingredient.image}
-//      />
-//    </div>
-//  ))}

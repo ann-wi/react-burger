@@ -7,25 +7,23 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorContainerStyles from "./constructor-container-styles.module.css";
-import { Scrollbar } from "smooth-scrollbar-react";
 
 import { addIngredient } from "../../../services/actions/addIngredient";
 
-const ConstructorContainer = ({ containerType, content }) => {
+const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
-  // Drop container
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
 
-  const [{ isOver }, dropTarget] = useDrop({
-    drop(_id) {
+  const [{ canDrop }, dropTarget] = useDrop({
+    drop(item, monitor) {
+      dispatch(addIngredient(item));
       console.log(addedIngredients);
-      dispatch(addIngredient(_id));
     },
     accept: "sauce",
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
     }),
   });
 
@@ -49,5 +47,3 @@ const ConstructorContainer = ({ containerType, content }) => {
 };
 
 export default ConstructorContainer;
-
-// <Scrollbar damping={0.07}>{content}</Scrollbar>
