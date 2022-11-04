@@ -8,7 +8,7 @@ const Ingredient = ({ ingredient, onClickPopup }) => {
 
   const [, dragRef] = useDrag({
     type: type,
-    item: { id: _id, name: name, price: price, image: image },
+    item: { id: _id, name: name, price: price, image: image, type: type },
   });
 
   return (

@@ -21,8 +21,6 @@ const ConstructorContainer = ({ containerType }) => {
 
   const dragId = useSelector((state) => state.reactBurgerReducer.draggedItemId);
 
-  const acceptType = ["sauce", "main"];
-
   const [{ canDrop }, dropMainSauce] = useDrop({
     drop(item, monitor) {
       dispatch(addIngredient(item));
@@ -67,25 +65,27 @@ const ConstructorContainer = ({ containerType }) => {
     if (type === "bun-top") {
       return (
         <div className={constructorContainerStyles.elements} ref={dropBun}>
-          {addedIngredients.map((ingredient, index) => (
-            <div
-              key={index}
-              className={`${constructorContainerStyles.elementBun} mb-4 mr-4`}
-              onDragStart={() => {
-                handleDrag(addedIngredients.indexOf(ingredient));
-              }}
-              onDrop={() => handleDrop(addedIngredients.indexOf(ingredient))}
-            >
-              <ConstructorElement
+          {addedIngredients
+            .filter((ingredient) => ingredient.type === "bun")
+            .map((ingredient, index) => (
+              <div
                 key={index}
-                type="top"
-                isLocked={true}
-                text={`${ingredient.name} (верх)`}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            </div>
-          ))}
+                className={`${constructorContainerStyles.elementBun} mb-4 mr-4`}
+                onDragStart={() => {
+                  handleDrag(addedIngredients.indexOf(ingredient));
+                }}
+                onDrop={() => handleDrop(addedIngredients.indexOf(ingredient))}
+              >
+                <ConstructorElement
+                  key={index}
+                  type="top"
+                  isLocked={true}
+                  text={`${ingredient.name} (верх)`}
+                  price={ingredient.price}
+                  thumbnail={ingredient.image}
+                />
+              </div>
+            ))}
         </div>
       );
     } else if (type === "main-sauce") {
@@ -107,6 +107,7 @@ const ConstructorContainer = ({ containerType }) => {
               >
                 <DragIcon type="primary" draggable={true} />
                 <ConstructorElement
+                  key={index}
                   text={ingredient.name}
                   price={ingredient.price}
                   thumbnail={ingredient.image}
@@ -118,25 +119,27 @@ const ConstructorContainer = ({ containerType }) => {
     } else if (type === "bun-bottom") {
       return (
         <div className={constructorContainerStyles.elements} ref={dropBun}>
-          {addedIngredients.map((ingredient, index) => (
-            <div
-              key={index}
-              className={`${constructorContainerStyles.elementBun} mb-4 mr-4`}
-              onDragStart={() => {
-                handleDrag(addedIngredients.indexOf(ingredient));
-              }}
-              onDrop={() => handleDrop(addedIngredients.indexOf(ingredient))}
-            >
-              <ConstructorElement
+          {addedIngredients
+            .filter((ingredient) => ingredient.type === "bun")
+            .map((ingredient, index) => (
+              <div
                 key={index}
-                type="bottom"
-                isLocked={true}
-                text={`${ingredient.name} (низ)`}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            </div>
-          ))}
+                className={`${constructorContainerStyles.elementBun} mb-4 mr-4`}
+                onDragStart={() => {
+                  handleDrag(addedIngredients.indexOf(ingredient));
+                }}
+                onDrop={() => handleDrop(addedIngredients.indexOf(ingredient))}
+              >
+                <ConstructorElement
+                  key={index}
+                  type="bottom"
+                  isLocked={true}
+                  text={`${ingredient.name} (низ)`}
+                  price={ingredient.price}
+                  thumbnail={ingredient.image}
+                />
+              </div>
+            ))}
         </div>
       );
     }
