@@ -1,6 +1,7 @@
 const initialState = {
   ingredients: [],
   addedIngredients: [],
+  draggedItemId: 0,
   currentConstructor: [],
   currentIngredient: {},
   orderNumber: 0,
@@ -19,6 +20,15 @@ export const reactBurgerReducer = (state = initialState, action) => {
           ...state.addedIngredients,
           action.payload.ingredient,
         ],
+      };
+    case "MOVE_INGREDIENT":
+      return {
+        ...state,
+        addedIngredients: action.payload.reorderedIngredients,
+      };
+    case "SET_DRAG_ITEM_ID":
+      return {
+        draggedItemId: action.payload.id,
       };
     case "GET_INGREDIENT_DETAILS":
       return {

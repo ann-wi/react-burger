@@ -4,10 +4,10 @@ import ingredientStyles from "./ingredient-styles.module.css";
 
 const Ingredient = ({ ingredient, onClickPopup }) => {
   // Draggable element
-  const { _id, name, price, image } = ingredient;
+  const { _id, name, price, image, type } = ingredient;
 
   const [, dragRef] = useDrag({
-    type: "sauce",
+    type: type,
     item: { id: _id, name: name, price: price, image: image },
   });
 

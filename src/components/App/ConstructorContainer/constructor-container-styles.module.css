@@ -12,3 +12,7 @@
   max-width: 568px;
   gap: 8px;
 }
+
+.elementBun {
+  align-self: flex-end;
+}

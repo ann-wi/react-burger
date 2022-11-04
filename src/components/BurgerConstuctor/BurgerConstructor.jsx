@@ -38,43 +38,13 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
   return (
     <>
       <section className={`${constructorStyles.constr} pt-25`}>
-        <div className={`${constructorStyles.elementBun} mb-4 mr-4`}>
-          {ingredients
-            .filter(
-              (ingredient) => ingredient.name === "Краторная булка N-200i"
-            )
-            .map((ingredient, index) => (
-              <ConstructorElement
-                key={index}
-                type="top"
-                isLocked={true}
-                text={`${ingredient.name} (верх)`}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            ))}
-        </div>
+        <ConstructorContainer containerType={"bun-top"} />
         <Scrollbar damping={0.07}>
           <a>
-            <ConstructorContainer containerType={"sauce"} />
+            <ConstructorContainer containerType={"main-sauce"} />
           </a>
         </Scrollbar>
-        <div className={`${constructorStyles.elementBun} mt-4 mr-4`}>
-          {ingredients
-            .filter(
-              (ingredient) => ingredient.name === "Краторная булка N-200i"
-            )
-            .map((ingredient, index) => (
-              <ConstructorElement
-                key={index}
-                type="bottom"
-                isLocked={true}
-                text={`${ingredient.name} (низ)`}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            ))}
-        </div>
+        <ConstructorContainer containerType={"bun-bottom"} />
         <div className={`${constructorStyles.order} mt-10`}>
           <div className={constructorStyles.orderNum}>
             <OrderPrice />
