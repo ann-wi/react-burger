@@ -17,18 +17,25 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return {
         ...state,
         addedIngredients: [
-          ...state.addedIngredients,
+          ...state.addedIngredients.filter((item, index, items) => {
+            return item.type === "bun"
+              ? !items.some((i, idx) => i.type === item.type && idx > index)
+              : item.price * 2;
+          }),
           action.payload.ingredient,
         ],
+      };
+    case "DELETE_INGREDIENT":
+      return {
+        ...state,
+        addedIngredients: state.addedIngredients.filter(
+          (item) => item !== action.payload.ingredient
+        ),
       };
     case "MOVE_INGREDIENT":
       return {
         ...state,
         addedIngredients: action.payload.reorderedIngredients,
-      };
-    case "SET_DRAG_ITEM_ID":
-      return {
-        draggedItemId: action.payload.id,
       };
     case "GET_INGREDIENT_DETAILS":
       return {
@@ -75,9 +82,3 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-//case "ADD_INGREDIENT":
-//      return {
-//        ...state,
-//        addedIngredients: state.addedIngredients.concat(action.payload.id),
-//      };

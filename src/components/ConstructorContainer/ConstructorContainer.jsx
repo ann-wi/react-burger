@@ -1,34 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useDrop, useDrag } from "react-dnd";
+import { useDrop } from "react-dnd";
 import {
   ConstructorElement,
   DragIcon,
-  CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorContainerStyles from "./constructor-container-styles.module.css";
+import PropTypes from "prop-types";
 
-import { addIngredient } from "../../../services/actions/addIngredient";
-import { moveIngredient } from "../../../services/actions/moveIngredient";
-import { setDragItemId } from "../../../services/actions/setDragItemId";
+import { addIngredient } from "../../services/actions/addIngredient";
+import { moveIngredient } from "../../services/actions/moveIngredient";
 
-const ConstructorContainer = ({ containerType }) => {
+const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
   const dispatch = useDispatch();
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
   const [itemId, setItemId] = useState(0);
 
-  const dragId = useSelector((state) => state.reactBurgerReducer.draggedItemId);
-
-  const [{ canDrop }, dropMainSauce] = useDrop({
-    drop(item, monitor) {
+  const [, dropMainSauce] = useDrop({
+    drop(item) {
       dispatch(addIngredient(item));
     },
     accept: ["sauce", "main"],
-    collect: (monitor) => ({
-      canDrop: monitor.canDrop(),
-    }),
   });
 
   const [, dropBun] = useDrop({
@@ -64,7 +58,7 @@ const ConstructorContainer = ({ containerType }) => {
   const returnContainer = (type) => {
     if (type === "bun-top") {
       return (
-        <div className={constructorContainerStyles.elements} ref={dropBun}>
+        <div className={constructorContainerStyles.elementsBuns} ref={dropBun}>
           {addedIngredients
             .filter((ingredient) => ingredient.type === "bun")
             .map((ingredient, index) => (
@@ -111,6 +105,7 @@ const ConstructorContainer = ({ containerType }) => {
                   text={ingredient.name}
                   price={ingredient.price}
                   thumbnail={ingredient.image}
+                  handleClose={() => handleDeleteIngredient(ingredient)}
                 />
               </div>
             ))}
@@ -118,7 +113,10 @@ const ConstructorContainer = ({ containerType }) => {
       );
     } else if (type === "bun-bottom") {
       return (
-        <div className={constructorContainerStyles.elements} ref={dropBun}>
+        <div
+          className={`${constructorContainerStyles.elementsBuns} mb-4 mr-4`}
+          ref={dropBun}
+        >
           {addedIngredients
             .filter((ingredient) => ingredient.type === "bun")
             .map((ingredient, index) => (
@@ -145,11 +143,16 @@ const ConstructorContainer = ({ containerType }) => {
     }
   };
 
-  return [returnContainer(containerType)];
+  return (
+    <div className={constructorContainerStyles.containers}>
+      {returnContainer(containerType)}
+    </div>
+  );
+};
+
+ConstructorContainer.propTypes = {
+  containerType: PropTypes.string,
+  handleDeleteIngredient: PropTypes.func,
 };
 
 export default ConstructorContainer;
-
-//[returnContainer(containerType)]
-//<div className={constructorStyles.elements} ref={dropBun} containerType={"bun-top"}>
-//</div>

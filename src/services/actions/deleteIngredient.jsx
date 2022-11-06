@@ -1,3 +1,6 @@
-import { createAction } from "@reduxjs/toolkit";
-
-export const deleteIngredient = createAction("DELETE_INGREDIENT");
+export function deleteIngredient(ingredient) {
+  return {
+    type: "DELETE_INGREDIENT",
+    payload: { ingredient },
+  };
+}

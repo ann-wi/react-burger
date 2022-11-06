@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
@@ -9,13 +9,10 @@ import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientsDetails";
 import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
-import { DndProvider, useDrag } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
-import { getIngredientsList } from "../../services/actions/burgerIngredients";
-import { addIngredient } from "../../services/actions/addIngredient";
-//import { getOrderNumber } from "../../services/actions/orderDetails";
 import { getIngredients } from "../../services/actions/server-actions";
 
 const App = () => {
@@ -23,17 +20,15 @@ const App = () => {
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
-  //const [ingredients, setIngredients] = useState([]); // in store
   const ingredients = useSelector(
     (state) => state.reactBurgerReducer.ingredients
   );
 
-  //const [currentIngredient, setCurrentIngredient] = useState({}); // in store
   const currentIngredient = useSelector(
     (state) => state.reactBurgerReducer.currentIngredient
   );
+
   const [orderPrice, setOrderPrice] = useState(0);
-  //const [orderDetails, setOrderDetalis] = useState(0); // in store
   const orderDetails = useSelector(
     (state) => state.reactBurgerReducer.orderNumber
   );
@@ -52,7 +47,6 @@ const App = () => {
   };
 
   const handleIngredientClick = (ingredient) => {
-    //setCurrentIngredient(ingredient);
     dispatch(getIngredientDetails(ingredient));
     setIsIngredientDetailsOpened(true);
   };
@@ -60,10 +54,6 @@ const App = () => {
   const handleOrderClick = () => {
     setIsOrderOpened(true);
   };
-
-  //const handleIngredientAddition = (ingredient) => {
-  //  dispatch(addIngredient(ingredient));
-  //};
 
   return (
     <BurgerContext.Provider value={ingredients}>
@@ -78,7 +68,6 @@ const App = () => {
             <BurgerConstructor
               ingredients={ingredients}
               onClickPopup={handleOrderClick}
-              //setOrderDetalis={setOrderDetalis}
             />
           </OrderPriceContext.Provider>
         </DndProvider>

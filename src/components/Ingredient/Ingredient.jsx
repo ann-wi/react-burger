@@ -2,8 +2,9 @@ import { useDrag } from "react-dnd";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-styles.module.css";
 
+import PropTypes from "prop-types";
+
 const Ingredient = ({ ingredient, onClickPopup }) => {
-  // Draggable element
   const { _id, name, price, image, type } = ingredient;
 
   const [, dragRef] = useDrag({
@@ -32,6 +33,11 @@ const Ingredient = ({ ingredient, onClickPopup }) => {
       </p>
     </div>
   );
+};
+
+Ingredient.propTypes = {
+  ingredient: PropTypes.object,
+  onClickPopup: PropTypes.func,
 };
 
 export default Ingredient;

@@ -1,31 +1,42 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useDrop } from "react-dnd";
-import ConstructorContainer from "../App/ConstructorContainer/ConstructorContainer";
+import ConstructorContainer from "../ConstructorContainer/ConstructorContainer";
 import OrderPriceContext from "../../context/order-price-context";
-import {
-  ConstructorElement,
-  DragIcon,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import OrderPrice from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
+import { deleteIngredient } from "../../services/actions/deleteIngredient";
 import { getOrderNumber } from "../../services/actions/server-actions";
 
-// Drag Target
-const BurgerConstructor = ({ ingredients, onClickPopup }) => {
+const BurgerConstructor = ({ onClickPopup }) => {
   const dispatch = useDispatch();
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
   const { setOrderPrice } = useContext(OrderPriceContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let total = 0;
-    addedIngredients.map((item) => (total += item.price));
+
+    addedIngredients
+      .filter((item, index, items) => {
+        if (item.type === "bun") {
+          return !items.some((i, idx) => i.type === item.type && idx > index);
+        } else {
+          return item;
+        }
+      })
+      .map((ingredient) => {
+        if (ingredient.type === "bun") {
+          const multiPrice = ingredient.price * 2;
+          return (total += multiPrice);
+        }
+        return (total += ingredient.price);
+      });
+
     setOrderPrice(total);
   }, [addedIngredients, setOrderPrice]);
 
@@ -35,13 +46,20 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
     dispatch(getOrderNumber(ingredientsIds));
   };
 
+  const handleDeleteIngredient = (ingredient) => {
+    dispatch(deleteIngredient(ingredient));
+  };
+
   return (
     <>
       <section className={`${constructorStyles.constr} pt-25`}>
         <ConstructorContainer containerType={"bun-top"} />
         <Scrollbar damping={0.07}>
           <a>
-            <ConstructorContainer containerType={"main-sauce"} />
+            <ConstructorContainer
+              containerType={"main-sauce"}
+              handleDeleteIngredient={handleDeleteIngredient}
+            />
           </a>
         </Scrollbar>
         <ConstructorContainer containerType={"bun-bottom"} />
@@ -71,7 +89,6 @@ const BurgerConstructor = ({ ingredients, onClickPopup }) => {
 
 BurgerConstructor.propTypes = {
   onClickPopup: PropTypes.func,
-  setOrderDetalis: PropTypes.func,
 };
 
 export default BurgerConstructor;

@@ -1,21 +1,10 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { useDrag } from "react-dnd";
+import React, { useRef, useState } from "react";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
-import {
-  Tab,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-// Drag List
 const BurgerIngredients = ({ onClickPopup, ingredients }) => {
   const tabBuns = useRef(null);
   const tabSauces = useRef(null);

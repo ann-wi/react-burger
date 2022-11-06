@@ -34,6 +34,10 @@
   width: 272px;
 }
 
+.image {
+  cursor: pointer;
+}
+
 .name {
   font-size: 16px;
   line-height: 24px;
