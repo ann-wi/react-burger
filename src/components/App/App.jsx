@@ -56,19 +56,13 @@ const App = () => {
   };
 
   return (
-    <BurgerContext.Provider value={ingredients}>
+    <>
       <AppHeader />
       <main className={appStyles.app}>
         <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients
-            ingredients={ingredients}
-            onClickPopup={handleIngredientClick}
-          />
+          <BurgerIngredients onClickPopup={handleIngredientClick} />
           <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
-            <BurgerConstructor
-              ingredients={ingredients}
-              onClickPopup={handleOrderClick}
-            />
+            <BurgerConstructor onClickPopup={handleOrderClick} />
           </OrderPriceContext.Provider>
         </DndProvider>
       </main>
@@ -82,7 +76,7 @@ const App = () => {
           <Order orderNumber={orderDetails} />
         </Modal>
       )}
-    </BurgerContext.Provider>
+    </>
   );
 };
 

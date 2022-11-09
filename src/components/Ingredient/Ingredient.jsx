@@ -3,13 +3,21 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import ingredientStyles from "./ingredient-styles.module.css";
 
 import PropTypes from "prop-types";
+import uuid from "react-uuid";
 
 const Ingredient = ({ ingredient, onClickPopup }) => {
   const { _id, name, price, image, type } = ingredient;
 
   const [, dragRef] = useDrag({
     type: type,
-    item: { id: _id, name: name, price: price, image: image, type: type },
+    item: {
+      id: _id,
+      name: name,
+      price: price,
+      image: image,
+      type: type,
+      uuid: uuid(),
+    },
   });
 
   return (
@@ -18,7 +26,7 @@ const Ingredient = ({ ingredient, onClickPopup }) => {
         onClick={() => onClickPopup(ingredient)}
         src={ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
-        alt={`ingredient_image`}
+        alt={ingredient.name}
       />
       <div
         className={`${ingredientStyles.price} pt-1 pb-1 text text_type_digits-default`}

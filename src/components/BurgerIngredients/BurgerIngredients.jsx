@@ -4,8 +4,13 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-const BurgerIngredients = ({ onClickPopup, ingredients }) => {
+const BurgerIngredients = ({ onClickPopup }) => {
+  const ingredients = useSelector(
+    (state) => state.reactBurgerReducer.ingredients
+  );
+
   const tabBuns = useRef(null);
   const tabSauces = useRef(null);
   const tabMain = useRef(null);
@@ -57,9 +62,9 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
-                  .map((ingredient, index) => (
+                  .map((ingredient) => (
                     <Ingredient
-                      key={index}
+                      key={ingredient._id}
                       id={ingredient._id}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
@@ -76,9 +81,9 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "sauce")
-                  .map((ingredient, index) => (
+                  .map((ingredient) => (
                     <Ingredient
-                      key={index}
+                      key={ingredient._id}
                       id={ingredient._id}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
@@ -95,9 +100,9 @@ const BurgerIngredients = ({ onClickPopup, ingredients }) => {
               <div className={ingredientsStyles.cards}>
                 {ingredients
                   .filter((ingredient) => ingredient.type === "main")
-                  .map((ingredient, index) => (
+                  .map((ingredient) => (
                     <Ingredient
-                      key={index}
+                      key={ingredient._id}
                       id={ingredient._id}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}

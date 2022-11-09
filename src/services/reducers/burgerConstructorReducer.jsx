@@ -1,7 +1,6 @@
 const initialState = {
   ingredients: [],
   addedIngredients: [],
-  draggedItemId: 0,
   currentConstructor: [],
   currentIngredient: {},
   orderNumber: 0,
