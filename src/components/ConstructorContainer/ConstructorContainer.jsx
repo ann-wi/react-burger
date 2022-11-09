@@ -25,7 +25,7 @@ const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
 
   const [, dropBun] = useDrop({
     drop(item) {
-      dispatch(addIngredient(item));
+      dispatch(addIngredient(item, item.uuid));
     },
     accept: "bun",
   });
@@ -57,7 +57,15 @@ const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
     if (type === "bun-top") {
       return (
         <div className={constructorContainerStyles.elementsBuns} ref={dropBun}>
-          <SelectedConstructorElement elemType={"bun-top"} />
+          {addedIngredients
+            .filter((ingredient) => ingredient.type === "bun")
+            .map((ingredient) => (
+              <SelectedConstructorElement
+                key={ingredient.uuid}
+                elemType={"bun-top"}
+                ingredient={ingredient}
+              />
+            ))}
         </div>
       );
     } else if (type === "main-sauce") {
@@ -66,7 +74,15 @@ const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
           className={constructorContainerStyles.elements}
           ref={dropMainSauce}
         >
-          <SelectedConstructorElement elemType={"main-sauce"} />
+          {addedIngredients
+            .filter((ingredient) => ingredient.type !== "bun")
+            .map((ingredient) => (
+              <SelectedConstructorElement
+                key={ingredient.uuid}
+                ingredient={ingredient}
+                elemType={"main-sauce"}
+              />
+            ))}
         </div>
       );
     } else if (type === "bun-bottom") {
@@ -75,7 +91,15 @@ const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
           className={`${constructorContainerStyles.elementsBuns} mb-4 mr-4`}
           ref={dropBun}
         >
-          <SelectedConstructorElement elemType={"bun-bottom"} />
+          {addedIngredients
+            .filter((ingredient) => ingredient.type === "bun")
+            .map((ingredient) => (
+              <SelectedConstructorElement
+                key={ingredient.uuid}
+                elemType={"bun-bottom"}
+                ingredient={ingredient}
+              />
+            ))}
         </div>
       );
     }

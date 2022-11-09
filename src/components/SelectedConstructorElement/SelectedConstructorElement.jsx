@@ -1,4 +1,4 @@
-import { useDrop } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -9,25 +9,28 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { moveIngredient } from "../../services/actions/moveIngredient";
-import Ingredient from "../Ingredient/Ingredient";
+import uuid from "react-uuid";
 
-const SelectedConstructorElement = ({
-  onDragStart,
-  onDrop,
-  name,
-  price,
-  thumbnail,
-  id,
-  uuid,
-  elemType,
-  handleClose,
-}) => {
+const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
   const dispatch = useDispatch();
   const [itemId, setItemId] = useState(0);
 
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
+
+  const { name, price, image, type } = ingredient;
+
+  const [, dragRef] = useDrag({
+    type: type,
+    item: {
+      uuid: uuid(),
+      name: name,
+      price: price,
+      image: image,
+      type: type,
+    },
+  });
 
   const handleDrop = (currIngr) => {
     let sortItems = [...addedIngredients];
@@ -54,81 +57,79 @@ const SelectedConstructorElement = ({
 
   const returnElement = (elemType) => {
     if (elemType === "bun-top") {
-      return addedIngredients
-        .filter((ingredient) => ingredient.type === "bun")
-        .map((ingredient) => (
-          <div
-            key={ingredient.uuid}
-            className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
-            onDragStart={(e) => {
-              console.log(e.currentTarget);
-              handleDrag(addedIngredients.indexOf(ingredient));
-            }}
-            onDrop={(e) => {
-              console.log(e.currentTarget);
-              handleDrop(addedIngredients.indexOf(ingredient));
-            }}
-          >
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${ingredient.name} (верх)`}
-              price={ingredient.price}
-              thumbnail={ingredient.image}
-              handleClose
-            />
-          </div>
-        ));
+      return (
+        <div
+          key={uuid}
+          ref={dragRef}
+          className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
+          onDragStart={(e) => {
+            console.log(e.currentTarget);
+            handleDrag(addedIngredients.indexOf(ingredient));
+          }}
+          onDrop={(e) => {
+            console.log(e.currentTarget);
+            handleDrop(addedIngredients.indexOf(ingredient));
+          }}
+        >
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={`${name} (верх)`}
+            price={price}
+            thumbnail={image}
+            handleClose
+          />
+        </div>
+      );
     } else if (elemType === "main-sauce") {
-      return addedIngredients
-        .filter((ingredient) => ingredient.type !== "bun")
-        .map((ingredient) => (
-          <div
-            key={ingredient.uuid}
-            className={`${SelectedConstructorElementStyles.element} mb-4`}
-            onDragStart={(e) => {
-              console.log(e.currentTarget);
-              handleDrag(addedIngredients.indexOf(ingredient));
-            }}
-            onDrop={(e) => {
-              console.log(e.currentTarget);
-              handleDrop(addedIngredients.indexOf(ingredient));
-            }}
-          >
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={`${ingredient.name}`}
-              price={ingredient.price}
-              thumbnail={ingredient.image}
-              handleClose={handleClose}
-            />
-          </div>
-        ));
+      return (
+        <div
+          draggable
+          key={uuid}
+          ref={dragRef}
+          className={`${SelectedConstructorElementStyles.element} mb-4`}
+          onDragStart={(e) => {
+            console.log(e.currentTarget);
+            handleDrag(addedIngredients.indexOf(ingredient));
+          }}
+          onDrop={(e) => {
+            console.log(e.currentTarget);
+            handleDrop(addedIngredients.indexOf(ingredient));
+          }}
+        >
+          <DragIcon type="primary" />
+          <ConstructorElement
+            text={`${name}`}
+            price={price}
+            thumbnail={image}
+            handleClose={handleClose}
+          />
+        </div>
+      );
     } else if (elemType === "bun-bottom") {
-      return addedIngredients
-        .filter((ingredient) => ingredient.type === "bun")
-        .map((ingredient) => (
-          <div
-            key={ingredient.uuid}
-            className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
-            onDragStart={(e) => {
-              console.log(e.currentTarget);
-              handleDrag(addedIngredients.indexOf(ingredient));
-            }}
-            onDrop={(e) => {
-              console.log(e.currentTarget);
-              handleDrop(addedIngredients.indexOf(ingredient));
-            }}
-          >
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${ingredient.name} (низ)`}
-              price={ingredient.price}
-              thumbnail={ingredient.image}
-            />
-          </div>
-        ));
+      return (
+        <div
+          key={uuid}
+          ref={dragRef}
+          className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
+          onDragStart={(e) => {
+            console.log(e.currentTarget);
+            handleDrag(addedIngredients.indexOf(ingredient));
+          }}
+          onDrop={(e) => {
+            console.log(e.currentTarget);
+            handleDrop(addedIngredients.indexOf(ingredient));
+          }}
+        >
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={`${name} (низ)`}
+            price={price}
+            thumbnail={image}
+          />
+        </div>
+      );
     }
   };
 
