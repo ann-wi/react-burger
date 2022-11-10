@@ -19,7 +19,7 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
     (state) => state.reactBurgerReducer.addedIngredients
   );
 
-  const { id, name, price, image, type, uuid } = ingredient;
+  const { id, name, price, image, type } = ingredient;
 
   const [, dragRef] = useDrag({
     type: type,
@@ -29,7 +29,7 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
       price: price,
       image: image,
       type: type,
-      uuid: uuid,
+      uuid: uuid(),
     },
   });
 
@@ -41,7 +41,7 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
 
     const draggedItem = sortedItems.splice(dragItem.current, 1)[0];
 
-    console.log(draggedItem);
+    console.log(sortedItems.indexOf(draggedItem));
 
     sortedItems.splice(dragOverItem.current, 0, draggedItem);
     console.log(sortedItems);
@@ -96,18 +96,9 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
     } else if (elemType === "main-sauce") {
       return (
         <div
-          draggable
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.element} mb-4`}
-          onDragStart={(e) =>
-            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragEnter={(e) =>
-            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragOver={(e) => e.preventDefault()}
-          onDragEnd={handleDrop}
         >
           <DragIcon type="primary" />
           <ConstructorElement
