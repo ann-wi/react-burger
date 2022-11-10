@@ -9,6 +9,7 @@ import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
 import { getOrderNumber } from "../../services/actions/server-actions";
+import { deleteIngredient } from "../../services/actions/deleteIngredient";
 
 const BurgerConstructor = ({ onClickPopup }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,17 @@ const BurgerConstructor = ({ onClickPopup }) => {
         return (total += ingredient.price);
       });
 
+    const buns = addedIngredients.filter((item) => {
+      if (item.type === "bun") {
+        return item;
+      }
+    });
+
+    if (buns.length > 1) {
+      dispatch(deleteIngredient(buns[0]));
+    }
+
+    console.log(buns);
     setOrderPrice(total);
   }, [addedIngredients, setOrderPrice]);
 
