@@ -1,57 +1,36 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
-import { DragIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorContainerStyles from "./constructor-container-styles.module.css";
 import PropTypes from "prop-types";
 import SelectedConstructorElement from "../SelectedConstructorElement/SelectedConstructorElement";
 
 import { addIngredient } from "../../services/actions/addIngredient";
-import { moveIngredient } from "../../services/actions/moveIngredient";
+import { deleteIngredient } from "../../services/actions/deleteIngredient";
 
-const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
+const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
-  //const [itemId, setItemId] = useState(0);
 
   const [, dropMainSauce] = useDrop({
     drop(item) {
       dispatch(addIngredient(item, item.uuid));
     },
-    accept: ["sauce", "main"],
+    accept: "ingredient",
   });
 
   const [, dropBun] = useDrop({
     drop(item) {
       dispatch(addIngredient(item, item.uuid));
     },
-    accept: "bun",
+    accept: "burgerBun",
   });
 
-  //const handleDrop = (currIngr) => {
-  //  let sortItems = [...addedIngredients];
-  //
-  //  const dragItem = sortItems.find(
-  //    (item) => sortItems.indexOf(item) === itemId
-  //  );
-  //  const dropItem = sortItems.find(
-  //    (item) => sortItems.indexOf(item) === currIngr
-  //  );
-  //
-  //  let dragItemOrder = sortItems.indexOf(dragItem);
-  //   let dropItemOrder = sortItems.indexOf(dropItem);
-  //
-  //  const remAndSavDrag = sortItems.splice(dragItemOrder, 1)[0];
-  //  sortItems.splice(dropItemOrder, 0, remAndSavDrag);
-  //
-  //  dispatch(moveIngredient(sortItems));
-  //};
-
-  //const handleDrag = (currIngr) => {
-  //  setItemId(currIngr);
-  //};
+  const handleDeleteIngredient = (ingredient) => {
+    dispatch(deleteIngredient(ingredient));
+  };
 
   const returnContainer = (type) => {
     if (type === "bun-top") {
@@ -81,6 +60,7 @@ const ConstructorContainer = ({ containerType, handleDeleteIngredient }) => {
                 key={ingredient.uuid}
                 ingredient={ingredient}
                 elemType={"main-sauce"}
+                deleteItem={handleDeleteIngredient}
               />
             ))}
         </div>

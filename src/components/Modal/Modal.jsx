@@ -7,25 +7,29 @@ import PropTypes from "prop-types";
 
 const popupContainer = document.querySelector("#popups");
 
-const Modal = ({ onCloseClick, onEscKeydown, children }) => {
+const Modal = ({ onCloseClick, children }) => {
+  const handleEscKeydown = (event) => {
+    event.key === "Escape" && onCloseClick();
+  };
+
   React.useEffect(() => {
-    document.addEventListener("keydown", onEscKeydown);
+    document.addEventListener("keydown", handleEscKeydown);
 
     return () => {
-      document.removeEventListener("keydown", onEscKeydown);
+      document.removeEventListener("keydown", handleEscKeydown);
     };
   }, []);
 
   return ReactDOM.createPortal(
-      <div className={ModalStyles.background}>
-        <div className={ModalStyles.container}>
-          <button className={ModalStyles.closeButton} type="button">
-            <CloseIcon type="primary" onClick={onCloseClick} />
-          </button>
-          {children}
-        </div>
-        <ModalOverlay onClick={onCloseClick} />
-      </div>,
+    <div className={ModalStyles.background}>
+      <div className={ModalStyles.container}>
+        <button className={ModalStyles.closeButton} type="button">
+          <CloseIcon type="primary" onClick={onCloseClick} />
+        </button>
+        {children}
+      </div>
+      <ModalOverlay onClick={onCloseClick} />
+    </div>,
     popupContainer
   );
 };

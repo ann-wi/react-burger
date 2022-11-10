@@ -8,7 +8,6 @@ import OrderPrice from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-import { deleteIngredient } from "../../services/actions/deleteIngredient";
 import { getOrderNumber } from "../../services/actions/server-actions";
 
 const BurgerConstructor = ({ onClickPopup }) => {
@@ -46,20 +45,13 @@ const BurgerConstructor = ({ onClickPopup }) => {
     dispatch(getOrderNumber(ingredientsIds));
   };
 
-  const handleDeleteIngredient = (ingredient) => {
-    dispatch(deleteIngredient(ingredient));
-  };
-
   return (
     <>
       <section className={`${constructorStyles.constr} pt-25`}>
         <ConstructorContainer containerType={"bun-top"} />
         <Scrollbar damping={0.07}>
           <a>
-            <ConstructorContainer
-              containerType={"main-sauce"}
-              handleDeleteIngredient={handleDeleteIngredient}
-            />
+            <ConstructorContainer containerType={"main-sauce"} />
           </a>
         </Scrollbar>
         <ConstructorContainer containerType={"bun-bottom"} />

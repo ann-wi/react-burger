@@ -64,6 +64,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .filter((ingredient) => ingredient.type === "bun")
                   .map((ingredient) => (
                     <Ingredient
+                      ingrType={"burgerBun"}
                       key={ingredient._id}
                       id={ingredient._id}
                       onClickPopup={onClickPopup}
@@ -83,6 +84,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .filter((ingredient) => ingredient.type === "sauce")
                   .map((ingredient) => (
                     <Ingredient
+                      ingrType={"ingredient"}
                       key={ingredient._id}
                       id={ingredient._id}
                       onClickPopup={onClickPopup}
@@ -102,6 +104,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .filter((ingredient) => ingredient.type === "main")
                   .map((ingredient) => (
                     <Ingredient
+                      ingrType={"ingredient"}
                       key={ingredient._id}
                       id={ingredient._id}
                       onClickPopup={onClickPopup}

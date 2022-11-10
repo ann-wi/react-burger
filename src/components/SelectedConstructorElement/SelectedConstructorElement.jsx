@@ -11,9 +11,8 @@ import PropTypes from "prop-types";
 import { moveIngredient } from "../../services/actions/moveIngredient";
 import uuid from "react-uuid";
 
-const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
+const SelectedConstructorElement = ({ ingredient, elemType, deleteItem }) => {
   const dispatch = useDispatch();
-  const [itemId, setItemId] = useState(0);
 
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
@@ -41,38 +40,12 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
 
     const draggedItem = sortedItems.splice(dragItem.current, 1)[0];
 
-    console.log(sortedItems.indexOf(draggedItem));
-
     sortedItems.splice(dragOverItem.current, 0, draggedItem);
-    console.log(sortedItems);
 
     dragItem.current = null;
     dragOverItem.current = null;
 
     dispatch(moveIngredient(sortedItems));
-  };
-
-  //const handleDrop = (currIngr) => {
-  //  let sortItems = [...addedIngredients];
-  //
-  //  const dragItem = sortItems.find(
-  //    (item) => sortItems.indexOf(item) === itemId
-  //  );
-  //  const dropItem = sortItems.find(
-  //    (item) => sortItems.indexOf(item) === currIngr
-  //  );
-  //
-  //  let dragItemOrder = sortItems.indexOf(dragItem);
-  //  let dropItemOrder = sortItems.indexOf(dropItem);
-
-  //  const remAndSavDrag = sortItems.splice(dragItemOrder, 1)[0];
-  //  sortItems.splice(dropItemOrder, 0, remAndSavDrag);
-
-  //  dispatch(moveIngredient(sortItems));
-  //};
-
-  const handleDrag = (currIngr) => {
-    setItemId(currIngr);
   };
 
   const returnElement = (elemType) => {
@@ -82,6 +55,14 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
+          onDragStart={(e) =>
+            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragEnter={(e) =>
+            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragOver={(e) => e.preventDefault()}
+          onDragEnd={handleDrop}
         >
           <ConstructorElement
             type="top"
@@ -89,7 +70,6 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
             text={`${name} (верх)`}
             price={price}
             thumbnail={image}
-            handleClose
           />
         </div>
       );
@@ -99,13 +79,21 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.element} mb-4`}
+          onDragStart={(e) =>
+            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragEnter={(e) =>
+            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragOver={(e) => e.preventDefault()}
+          onDragEnd={handleDrop}
         >
           <DragIcon type="primary" />
           <ConstructorElement
             text={`${name}`}
             price={price}
             thumbnail={image}
-            handleClose={handleClose}
+            handleClose={() => deleteItem(ingredient)}
           />
         </div>
       );
@@ -115,6 +103,14 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
+          onDragStart={(e) =>
+            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragEnter={(e) =>
+            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragOver={(e) => e.preventDefault()}
+          onDragEnd={handleDrop}
         >
           <ConstructorElement
             type="bottom"

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import BurgerContext from "../../context/burger-context";
 import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
@@ -20,9 +19,6 @@ const App = () => {
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
-  const ingredients = useSelector(
-    (state) => state.reactBurgerReducer.ingredients
-  );
 
   const currentIngredient = useSelector(
     (state) => state.reactBurgerReducer.currentIngredient
@@ -41,10 +37,6 @@ const App = () => {
     setIsIngredientDetailsOpened(false);
     setIsOrderOpened(false);
   }
-
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closePopups();
-  };
 
   const handleIngredientClick = (ingredient) => {
     dispatch(getIngredientDetails(ingredient));
@@ -67,12 +59,12 @@ const App = () => {
         </DndProvider>
       </main>
       {isIngredientDetailsOpened && (
-        <Modal onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
+        <Modal onCloseClick={closePopups}>
           <IngredientDetails ingredient={currentIngredient} />
         </Modal>
       )}
       {isOrderOpened && (
-        <Modal onCloseClick={closePopups} onEscKeydown={handleEscKeydown}>
+        <Modal onCloseClick={closePopups}>
           <Order orderNumber={orderDetails} />
         </Modal>
       )}

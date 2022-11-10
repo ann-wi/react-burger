@@ -1,43 +1,51 @@
+import { checkResponse } from "../../utils/serverResponse";
+import { SEND_REQUEST_INGREDIENTS } from "./constants";
+import { RESPOND_SUCCESS_INGREDIENTS } from "./constants";
+import { RESPOND_ERROR_INGREDIENTS } from "./constants";
+import { SEND_REQUEST_ORDER } from "./constants";
+import { RESPOND_SUCCESS_ORDER } from "./constants";
+import { RESPOND_ERROR_ORDER } from "./constants";
+
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
 export function sendRequestIngredients(sendRequest) {
   return {
-    type: "SEND_REQUEST_INGREDIENTS",
+    type: SEND_REQUEST_INGREDIENTS,
     payload: { sendRequest },
   };
 }
 
 export function respondSuccessIngredients(ingredients) {
   return {
-    type: "RESPOND_SUCCESS_INGREDIENTS",
+    type: RESPOND_SUCCESS_INGREDIENTS,
     payload: { ingredients },
   };
 }
 
 export function respondErrorIngredients(respondError) {
   return {
-    type: "RESPOND_ERROR_INGREDIENTS",
+    type: RESPOND_ERROR_INGREDIENTS,
     payload: { respondError },
   };
 }
 
 export function sendRequestOrder(sendRequest) {
   return {
-    type: "SEND_REQUEST_ORDER",
+    type: SEND_REQUEST_ORDER,
     payload: { sendRequest },
   };
 }
 
 export function respondSuccessOrder(number) {
   return {
-    type: "RESPOND_SUCCESS_ORDER",
+    type: RESPOND_SUCCESS_ORDER,
     payload: { number },
   };
 }
 
 export function respondErrorOrder(respondError) {
   return {
-    type: "RESPOND_ERROR_ORDER",
+    type: RESPOND_ERROR_ORDER,
     payload: { respondError },
   };
 }
@@ -51,7 +59,7 @@ export function getIngredients() {
         "Content-Type": "application/json",
       },
     })
-      .then((res) => res.json())
+      .then(checkResponse)
       .then((data) => {
         dispatch(respondSuccessIngredients(data.data));
       })
@@ -74,7 +82,7 @@ export function getOrderNumber(ingredientsIds) {
         ingredients: ingredientsIds,
       }),
     })
-      .then((res) => res.json())
+      .then(checkResponse)
       .then((data) => {
         dispatch(respondSuccessOrder(data.order.number));
       })
