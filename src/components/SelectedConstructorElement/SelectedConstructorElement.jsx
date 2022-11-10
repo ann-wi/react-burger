@@ -1,5 +1,5 @@
 import { useDrag, useDrop } from "react-dnd";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import SelectedConstructorElementStyles from "./selected-constructor-element-styles.module.css";
@@ -19,37 +19,57 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
     (state) => state.reactBurgerReducer.addedIngredients
   );
 
-  const { name, price, image, type } = ingredient;
+  const { id, name, price, image, type, uuid } = ingredient;
 
   const [, dragRef] = useDrag({
     type: type,
     item: {
-      uuid: uuid(),
+      id: id,
       name: name,
       price: price,
       image: image,
       type: type,
+      uuid: uuid,
     },
   });
 
-  const handleDrop = (currIngr) => {
-    let sortItems = [...addedIngredients];
+  const dragItem = useRef(null);
+  const dragOverItem = useRef(null);
 
-    const dragItem = sortItems.find(
-      (item) => sortItems.indexOf(item) === itemId
-    );
-    const dropItem = sortItems.find(
-      (item) => sortItems.indexOf(item) === currIngr
-    );
+  const handleDrop = () => {
+    let sortedItems = [...addedIngredients];
 
-    let dragItemOrder = sortItems.indexOf(dragItem);
-    let dropItemOrder = sortItems.indexOf(dropItem);
+    const draggedItem = sortedItems.splice(dragItem.current, 1)[0];
 
-    const remAndSavDrag = sortItems.splice(dragItemOrder, 1)[0];
-    sortItems.splice(dropItemOrder, 0, remAndSavDrag);
+    console.log(draggedItem);
 
-    dispatch(moveIngredient(sortItems));
+    sortedItems.splice(dragOverItem.current, 0, draggedItem);
+    console.log(sortedItems);
+
+    dragItem.current = null;
+    dragOverItem.current = null;
+
+    dispatch(moveIngredient(sortedItems));
   };
+
+  //const handleDrop = (currIngr) => {
+  //  let sortItems = [...addedIngredients];
+  //
+  //  const dragItem = sortItems.find(
+  //    (item) => sortItems.indexOf(item) === itemId
+  //  );
+  //  const dropItem = sortItems.find(
+  //    (item) => sortItems.indexOf(item) === currIngr
+  //  );
+  //
+  //  let dragItemOrder = sortItems.indexOf(dragItem);
+  //  let dropItemOrder = sortItems.indexOf(dropItem);
+
+  //  const remAndSavDrag = sortItems.splice(dragItemOrder, 1)[0];
+  //  sortItems.splice(dropItemOrder, 0, remAndSavDrag);
+
+  //  dispatch(moveIngredient(sortItems));
+  //};
 
   const handleDrag = (currIngr) => {
     setItemId(currIngr);
@@ -62,14 +82,6 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
-          onDragStart={(e) => {
-            console.log(e.currentTarget);
-            handleDrag(addedIngredients.indexOf(ingredient));
-          }}
-          onDrop={(e) => {
-            console.log(e.currentTarget);
-            handleDrop(addedIngredients.indexOf(ingredient));
-          }}
         >
           <ConstructorElement
             type="top"
@@ -88,14 +100,14 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.element} mb-4`}
-          onDragStart={(e) => {
-            console.log(e.currentTarget);
-            handleDrag(addedIngredients.indexOf(ingredient));
-          }}
-          onDrop={(e) => {
-            console.log(e.currentTarget);
-            handleDrop(addedIngredients.indexOf(ingredient));
-          }}
+          onDragStart={(e) =>
+            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragEnter={(e) =>
+            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
+          }
+          onDragOver={(e) => e.preventDefault()}
+          onDragEnd={handleDrop}
         >
           <DragIcon type="primary" />
           <ConstructorElement
@@ -112,14 +124,6 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
           key={uuid}
           ref={dragRef}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
-          onDragStart={(e) => {
-            console.log(e.currentTarget);
-            handleDrag(addedIngredients.indexOf(ingredient));
-          }}
-          onDrop={(e) => {
-            console.log(e.currentTarget);
-            handleDrop(addedIngredients.indexOf(ingredient));
-          }}
         >
           <ConstructorElement
             type="bottom"
@@ -137,5 +141,3 @@ const SelectedConstructorElement = ({ ingredient, elemType, handleClose }) => {
 };
 
 export default SelectedConstructorElement;
-
-// handleDrop(addedIngredients.indexOf(ingredient));
