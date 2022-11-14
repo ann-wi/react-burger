@@ -47,7 +47,6 @@ const BurgerConstructor = ({ onClickPopup }) => {
       dispatch(deleteIngredient(buns[0]));
     }
 
-    console.log(buns);
     setOrderPrice(total);
   }, [addedIngredients, setOrderPrice]);
 

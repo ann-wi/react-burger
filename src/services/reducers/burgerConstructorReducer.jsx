@@ -2,6 +2,7 @@ import { ADD_INGREDIENT } from "../actions/constants";
 import { DELETE_INGREDIENT } from "../actions/constants";
 import { GET_INGREDIENT_DETAILS } from "../actions/constants";
 import { MOVE_INGREDIENT } from "../actions/constants";
+import { GET_COUNTER_NUMBER } from "../actions/constants";
 import { SEND_REQUEST_INGREDIENTS } from "../actions/constants";
 import { RESPOND_SUCCESS_INGREDIENTS } from "../actions/constants";
 import { RESPOND_ERROR_INGREDIENTS } from "../actions/constants";
@@ -15,6 +16,7 @@ const initialState = {
   currentConstructor: [],
   currentIngredient: {},
   orderNumber: 0,
+  counterNum: 0,
   sendRequestOrder: false,
   respondErrorOrder: false,
   sendRequestIngredients: false,
@@ -46,6 +48,11 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return {
         ...state,
         addedIngredients: action.payload.reorderedIngredients,
+      };
+    case GET_COUNTER_NUMBER:
+      return {
+        ...state,
+        counterNum: action.payload.number,
       };
     case GET_INGREDIENT_DETAILS:
       return {

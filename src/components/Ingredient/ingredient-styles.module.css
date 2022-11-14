@@ -25,6 +25,7 @@
 
 .card {
   grid-area: card;
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,4 +59,18 @@
 .priceNum {
   font-size: 28px;
   line-height: 24px;
+}
+
+.addedIngrNum {
+  z-index: 1;
+  top: 0;
+  right: 0;
+  display: flex;
+  position: absolute;
+  border-radius: 16px;
+  height: 32px;
+  width: 32px;
+  font-size: 28px;
+  line-height: 24px;
+  background-color: #4c4cff;
 }

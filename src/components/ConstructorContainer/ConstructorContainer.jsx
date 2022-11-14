@@ -7,6 +7,7 @@ import SelectedConstructorElement from "../SelectedConstructorElement/SelectedCo
 
 import { addIngredient } from "../../services/actions/addIngredient";
 import { deleteIngredient } from "../../services/actions/deleteIngredient";
+import { getCounterNumber } from "../../services/actions/getCounterNumber";
 
 const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
