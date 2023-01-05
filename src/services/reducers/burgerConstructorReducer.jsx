@@ -2,7 +2,8 @@ import { ADD_INGREDIENT } from "../actions/constants";
 import { DELETE_INGREDIENT } from "../actions/constants";
 import { GET_INGREDIENT_DETAILS } from "../actions/constants";
 import { MOVE_INGREDIENT } from "../actions/constants";
-import { GET_COUNTER_NUMBER } from "../actions/constants";
+import { INCREASE_INGREDIENT } from "../actions/constants";
+import { DECREASE_INGREDIENT } from "../actions/constants";
 import { SEND_REQUEST_INGREDIENTS } from "../actions/constants";
 import { RESPOND_SUCCESS_INGREDIENTS } from "../actions/constants";
 import { RESPOND_ERROR_INGREDIENTS } from "../actions/constants";
@@ -49,10 +50,23 @@ export const reactBurgerReducer = (state = initialState, action) => {
         ...state,
         addedIngredients: action.payload.reorderedIngredients,
       };
-    case GET_COUNTER_NUMBER:
+    case INCREASE_INGREDIENT:
       return {
         ...state,
-        counterNum: action.payload.number,
+        ingredients: [...state.ingredients].map((item) =>
+          item._id === action.payload.id
+            ? { ...item, counter: ++item.counter }
+            : item
+        ),
+      };
+    case DECREASE_INGREDIENT:
+      return {
+        ...state,
+        addedIngredients: [...state.ingredients].map((item) =>
+          item._id === action.payload.id
+            ? { ...item, counter: --item.counter }
+            : item
+        ),
       };
     case GET_INGREDIENT_DETAILS:
       return {

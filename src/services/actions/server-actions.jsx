@@ -61,6 +61,7 @@ export function getIngredients() {
     })
       .then(checkResponse)
       .then((data) => {
+        data.data.forEach((item) => (item.counter = 0));
         dispatch(respondSuccessIngredients(data.data));
       })
       .catch((err) => {

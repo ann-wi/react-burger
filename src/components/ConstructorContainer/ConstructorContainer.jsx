@@ -1,4 +1,5 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
+import update from "immutability-helper";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import constructorContainerStyles from "./constructor-container-styles.module.css";
@@ -6,8 +7,8 @@ import PropTypes from "prop-types";
 import SelectedConstructorElement from "../SelectedConstructorElement/SelectedConstructorElement";
 
 import { addIngredient } from "../../services/actions/addIngredient";
+import { moveIngredient } from "../../services/actions/moveIngredient";
 import { deleteIngredient } from "../../services/actions/deleteIngredient";
-import { getCounterNumber } from "../../services/actions/getCounterNumber";
 
 const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
@@ -33,6 +34,38 @@ const ConstructorContainer = ({ containerType }) => {
     dispatch(deleteIngredient(ingredient));
   };
 
+  const findElement = useCallback(
+    (id) => {
+      const selectedElement = addedIngredients.filter(
+        (elem) => elem.id === id
+      )[0];
+      //console.log(addedIngredients.indexOf(selectedElement));
+      return {
+        selectedElement,
+        idx: addedIngredients.indexOf(selectedElement),
+      };
+    },
+    [addedIngredients]
+  );
+
+  const moveSelectedIngredient = useCallback(
+    (id, atIndex) => {
+      const { selectedElement, idx } = findElement(id);
+
+      dispatch(
+        moveIngredient(
+          update(addedIngredients, {
+            $splice: [
+              [idx, 1],
+              [atIndex, 0, selectedElement],
+            ],
+          })
+        )
+      );
+    },
+    [findElement, addedIngredients, dispatch]
+  );
+
   const returnContainer = (type) => {
     if (type === "bun-top") {
       return (
@@ -44,6 +77,9 @@ const ConstructorContainer = ({ containerType }) => {
                 key={ingredient.uuid}
                 elemType={"bun-top"}
                 ingredient={ingredient}
+                id={ingredient._id}
+                findElem={findElement}
+                moveElem={moveSelectedIngredient}
               />
             ))}
         </div>
@@ -62,6 +98,9 @@ const ConstructorContainer = ({ containerType }) => {
                 ingredient={ingredient}
                 elemType={"main-sauce"}
                 deleteItem={handleDeleteIngredient}
+                id={ingredient._id}
+                findElem={findElement}
+                moveElem={moveSelectedIngredient}
               />
             ))}
         </div>
@@ -79,6 +118,9 @@ const ConstructorContainer = ({ containerType }) => {
                 key={ingredient.uuid}
                 elemType={"bun-bottom"}
                 ingredient={ingredient}
+                id={ingredient._id}
+                findElem={findElement}
+                moveElem={moveSelectedIngredient}
               />
             ))}
         </div>

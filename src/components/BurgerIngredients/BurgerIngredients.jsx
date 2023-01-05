@@ -67,6 +67,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"burgerBun"}
                       key={ingredient._id}
                       id={ingredient._id}
+                      idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />
@@ -87,6 +88,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"ingredient"}
                       key={ingredient._id}
                       id={ingredient._id}
+                      idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />
@@ -107,6 +109,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"ingredient"}
                       key={ingredient._id}
                       id={ingredient._id}
+                      idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />

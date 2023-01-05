@@ -1,5 +1,5 @@
 import { useDrag, useDrop } from "react-dnd";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import SelectedConstructorElementStyles from "./selected-constructor-element-styles.module.css";
@@ -11,7 +11,13 @@ import PropTypes from "prop-types";
 import { moveIngredient } from "../../services/actions/moveIngredient";
 import uuid from "react-uuid";
 
-const SelectedConstructorElement = ({ ingredient, elemType, deleteItem }) => {
+const SelectedConstructorElement = ({
+  ingredient,
+  elemType,
+  deleteItem,
+  moveElem,
+  findElem,
+}) => {
   const dispatch = useDispatch();
 
   const addedIngredients = useSelector(
@@ -20,6 +26,7 @@ const SelectedConstructorElement = ({ ingredient, elemType, deleteItem }) => {
 
   const { id, name, price, image, type } = ingredient;
 
+  /*
   const [, dragRef] = useDrag({
     type: type,
     item: {
@@ -47,22 +54,102 @@ const SelectedConstructorElement = ({ ingredient, elemType, deleteItem }) => {
 
     dispatch(moveIngredient(sortedItems));
   };
+*/
+
+  const findElement = useCallback(
+    (id) => {
+      const selectedElement = addedIngredients.filter(
+        (elem) => `${elem.id}` === id
+      )[0];
+      return {
+        selectedElement,
+        idx: addedIngredients.indexOf(selectedElement),
+      };
+    },
+    [addedIngredients]
+  );
+
+  /*
+  const moveSelectedIngredient = useCallback((id, atIndex) => {
+    const { selectedElement, idx } = findElement(id);
+
+    const newSort = addedIngredients.splice(selectedElement, 1);
+
+    dispatch(moveIngredient(newSort));
+    console.log(newSort);
+    //dispatch(moveIngredient())
+  });
+*/
+
+  const originalIdx = findElem(id).idx;
+
+  const [, drag] = useDrag(
+    () => ({
+      type: type,
+      item: { id, originalIdx },
+      end: (item, monitor) => {
+        console.log(originalIdx);
+        console.log(addedIngredients);
+        /*
+        const { id: droppedId, originalIdx } = item;
+        const didDrop = monitor.didDrop();
+
+        if (didDrop) {
+          moveElem(droppedId, originalIdx);
+        }
+        */
+      },
+    }),
+    [id, originalIdx, moveElem]
+  );
+
+  const eleme = findElem(id).SelectedElement;
+
+  const [, drop] = useDrop(
+    () => ({
+      accept: type,
+      hover: (item, monitor) => {
+        const isOver = monitor.isOver();
+        const { id: draggedId } = item;
+        if (isOver) {
+          const { index: overIndex } = findElem(id);
+          moveElem(draggedId, overIndex);
+          console.log(overIndex);
+        }
+      },
+      drop: (item, monitor) => {
+        const didDrop = monitor.didDrop();
+        const { id: draggedId } = item;
+        if (didDrop) {
+          const { index: overIndex } = findElem(id);
+          moveElem(draggedId, overIndex);
+        }
+      },
+    }),
+    [findElem, moveElem]
+  );
+
+  /*
+  const [{ isHover }, drop] = useDrop({
+    accept: type,
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(item) {
+      const { id: draggedId } = item;
+      const { index: overIndex } = findElem(id);
+
+      moveElem(draggedId, overIndex);
+    },
+  });
+  */
 
   const returnElement = (elemType) => {
     if (elemType === "bun-top") {
       return (
         <div
           key={uuid}
-          ref={dragRef}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
-          onDragStart={(e) =>
-            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragEnter={(e) =>
-            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragOver={(e) => e.preventDefault()}
-          onDragEnd={handleDrop}
         >
           <ConstructorElement
             type="top"
@@ -76,17 +163,8 @@ const SelectedConstructorElement = ({ ingredient, elemType, deleteItem }) => {
     } else if (elemType === "main-sauce") {
       return (
         <div
-          key={uuid}
-          ref={dragRef}
+          ref={(node) => drag(drop(node))}
           className={`${SelectedConstructorElementStyles.element} mb-4`}
-          onDragStart={(e) =>
-            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragEnter={(e) =>
-            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragOver={(e) => e.preventDefault()}
-          onDragEnd={handleDrop}
         >
           <DragIcon type="primary" />
           <ConstructorElement
@@ -101,16 +179,7 @@ const SelectedConstructorElement = ({ ingredient, elemType, deleteItem }) => {
       return (
         <div
           key={uuid}
-          ref={dragRef}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
-          onDragStart={(e) =>
-            (dragItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragEnter={(e) =>
-            (dragOverItem.current = addedIngredients.indexOf(e.currentTarget))
-          }
-          onDragOver={(e) => e.preventDefault()}
-          onDragEnd={handleDrop}
         >
           <ConstructorElement
             type="bottom"
