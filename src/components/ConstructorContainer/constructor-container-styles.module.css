@@ -10,7 +10,7 @@
   height: 80px;
   overflow-y: hidden;
   text-align: right;
-  margin: 0;
+  margin: 16px 0 16px 0;
   outline: 1px solid #3921f2;
   background-color: rgba(133, 133, 173, 0.1);
 }

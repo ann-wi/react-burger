@@ -6,6 +6,8 @@ import { SEND_REQUEST_ORDER } from "./constants";
 import { RESPOND_SUCCESS_ORDER } from "./constants";
 import { RESPOND_ERROR_ORDER } from "./constants";
 
+import uuid from "react-uuid";
+
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
 export function sendRequestIngredients(sendRequest) {
@@ -61,7 +63,10 @@ export function getIngredients() {
     })
       .then(checkResponse)
       .then((data) => {
-        data.data.forEach((item) => (item.counter = 0));
+        data.data.forEach((item) => {
+          item.counter = 0;
+          item.uuid = uuid();
+        });
         dispatch(respondSuccessIngredients(data.data));
       })
       .catch((err) => {

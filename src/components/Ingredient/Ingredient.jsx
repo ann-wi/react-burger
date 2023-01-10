@@ -9,10 +9,10 @@ import PropTypes from "prop-types";
 import uuid from "react-uuid";
 import { useSelector, useDispatch } from "react-redux";
 
-const Ingredient = ({ ingredient, onClickPopup, ingrType, id, uuid }) => {
+const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
   const dispatch = useDispatch();
 
-  const { _id, name, price, image, type, counter } = ingredient;
+  const { _id, name, price, image, type, counter, uuid } = ingredient;
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
@@ -63,7 +63,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id, uuid }) => {
       className={ingredientStyles.card}
       ref={ingrDragRef}
       draggable
-      onDrag={() => console.log(uuid, ingredient)}
+      onDrag={() => console.log(ingredient)}
     >
       <p
         className={ingredientStyles.addedIngrNum}

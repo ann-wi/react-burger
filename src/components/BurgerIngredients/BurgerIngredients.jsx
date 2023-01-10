@@ -5,7 +5,6 @@ import Ingredient from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
-import uuid from "react-uuid";
 
 const BurgerIngredients = ({ onClickPopup }) => {
   const ingredients = useSelector(
@@ -66,8 +65,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .map((ingredient) => (
                     <Ingredient
                       ingrType={"burgerBun"}
-                      key={uuid()}
-                      uuid={uuid()}
+                      key={ingredient.uuid}
                       id={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
@@ -88,8 +86,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .map((ingredient) => (
                     <Ingredient
                       ingrType={"ingredient"}
-                      key={uuid()}
-                      uuid={uuid()}
+                      key={ingredient.uuid}
                       id={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
@@ -110,8 +107,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .map((ingredient) => (
                     <Ingredient
                       ingrType={"ingredient"}
-                      key={uuid()}
-                      uuid={uuid()}
+                      key={ingredient.uuid}
                       id={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}

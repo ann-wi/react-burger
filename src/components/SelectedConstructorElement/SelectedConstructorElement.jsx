@@ -77,9 +77,20 @@ const SelectedConstructorElement = ({
 
       console.log(item);
 
-      dispatch(sortItems(dragIndex, hoverIndex, addedIngredients));
+      //dispatch(sortItems(dragIndex, hoverIndex, addedIngredients));
 
-      dragIndex = hoverIndex;
+      const dragItem = addedIngredients[dragIndex];
+
+      const sortedIngredients = [...addedIngredients];
+
+      const hoverItem = sortedIngredients.splice(hoverIndex, 1, dragItem);
+
+      sortedIngredients.splice(dragIndex, 1, hoverItem[0]);
+
+      //console.log(selectedIngredients);
+      dispatch(setNewIngrs(sortedIngredients));
+
+      //dragIndex = hoverIndex;
     },
   });
 
