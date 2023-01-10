@@ -1,8 +1,8 @@
 import { MOVE_INGREDIENT } from "./constants";
 
-export function moveIngredient(reorderedIngredients) {
+export function moveIngredient(selectedIngr) {
   return {
     type: MOVE_INGREDIENT,
-    payload: { reorderedIngredients },
+    payload: { selectedIngr },
   };
 }

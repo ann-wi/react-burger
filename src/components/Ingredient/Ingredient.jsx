@@ -3,14 +3,13 @@ import { useEffect, useMemo, useState } from "react";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-styles.module.css";
 
-//import { getCounterNumber } from "../../services/actions/getCounterNumber";
 import { increaseIngredient } from "../../services/actions/increaseIngredient";
 import { decreaseIngredient } from "../../services/actions/decreaseIngredient";
 import PropTypes from "prop-types";
 import uuid from "react-uuid";
 import { useSelector, useDispatch } from "react-redux";
 
-const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
+const Ingredient = ({ ingredient, onClickPopup, ingrType, id, uuid }) => {
   const dispatch = useDispatch();
 
   const { _id, name, price, image, type, counter } = ingredient;
@@ -27,7 +26,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
       price: price,
       image: image,
       type: type,
-      uuid: uuid(),
+      uuid: uuid,
     },
   });
 
@@ -40,12 +39,21 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
       price: price,
       image: image,
       type: type,
-      uuid: uuid(),
+      uuid: uuid,
     },
   });
 
+  const counterVisibilityBuns = addedIngredients.find(
+    (item) =>
+      item.type === "bun" &&
+      item.id === ingredient._id &&
+      ingredient.counter !== 0
+  )
+    ? "flex"
+    : "none";
+
   const counterVisibility = addedIngredients.find(
-    (item) => item.id === ingredient._id
+    (item) => item.id === ingredient.id && ingredient.counter !== 0
   )
     ? "flex"
     : "none";
@@ -55,9 +63,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
       className={ingredientStyles.card}
       ref={ingrDragRef}
       draggable
-      onDragEnd={() => {
-        dispatch(increaseIngredient(ingredient._id));
-      }}
+      onDrag={() => console.log(uuid, ingredient)}
     >
       <p
         className={ingredientStyles.addedIngrNum}
@@ -88,13 +94,11 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
       className={ingredientStyles.card}
       ref={bunDragRef}
       draggable
-      onDragEnd={() => {
-        dispatch(increaseIngredient(ingredient._id));
-      }}
+      onDragEnd={() => dispatch(decreaseIngredient(ingredient.id))}
     >
       <p
         className={ingredientStyles.addedIngrNum}
-        style={{ display: counterVisibility }}
+        style={{ display: counterVisibilityBuns }}
       >
         {ingredient.counter}
       </p>

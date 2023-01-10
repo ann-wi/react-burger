@@ -6,65 +6,68 @@ import constructorContainerStyles from "./constructor-container-styles.module.cs
 import PropTypes from "prop-types";
 import SelectedConstructorElement from "../SelectedConstructorElement/SelectedConstructorElement";
 
+import { decreaseIngredient } from "../../services/actions/decreaseIngredient";
+import { increaseIngredient } from "../../services/actions/increaseIngredient";
+import SortSelectedIngredients from "../SortSelectedIngredients/SortSelectedIngredients";
+import { setNewIngrs } from "../../services/actions/setIngredients";
+
 import { addIngredient } from "../../services/actions/addIngredient";
 import { moveIngredient } from "../../services/actions/moveIngredient";
 import { deleteIngredient } from "../../services/actions/deleteIngredient";
 
 const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
+  const ingredientsData = useSelector(
+    (state) => state.reactBurgerReducer.ingredients
+  );
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
 
+  const handleDrop = (item, id) => {
+    const selectedIngr = ingredientsData.find(
+      (ingredient) => ingredient._id === item.id
+    );
+
+    //const uuidIngr = item.uuid;
+
+    //console.log(uuidIngr);
+    dispatch(addIngredient(selectedIngr, id));
+  };
+
+  const [{ isHover }, dropMainSauce] = useDrop({
+    accept: "ingredient",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+    drop(item) {
+      //dispatch(addIngredient(item, item.uuid));
+      dispatch(increaseIngredient(item.id));
+      handleDrop(item, item.uuid);
+    },
+  });
+
+  /*
   const [, dropMainSauce] = useDrop({
     drop(item) {
       dispatch(addIngredient(item, item.uuid));
     },
     accept: "ingredient",
   });
-
+*/
   const [, dropBun] = useDrop({
     drop(item) {
+      console.log(item);
       dispatch(addIngredient(item, item.uuid));
+      dispatch(increaseIngredient(item.id));
     },
     accept: "burgerBun",
   });
 
   const handleDeleteIngredient = (ingredient) => {
     dispatch(deleteIngredient(ingredient));
+    dispatch(decreaseIngredient(ingredient._id));
   };
-
-  const findElement = useCallback(
-    (id) => {
-      const selectedElement = addedIngredients.filter(
-        (elem) => elem.id === id
-      )[0];
-      //console.log(addedIngredients.indexOf(selectedElement));
-      return {
-        selectedElement,
-        idx: addedIngredients.indexOf(selectedElement),
-      };
-    },
-    [addedIngredients]
-  );
-
-  const moveSelectedIngredient = useCallback(
-    (id, atIndex) => {
-      const { selectedElement, idx } = findElement(id);
-
-      dispatch(
-        moveIngredient(
-          update(addedIngredients, {
-            $splice: [
-              [idx, 1],
-              [atIndex, 0, selectedElement],
-            ],
-          })
-        )
-      );
-    },
-    [findElement, addedIngredients, dispatch]
-  );
 
   const returnContainer = (type) => {
     if (type === "bun-top") {
@@ -74,12 +77,10 @@ const ConstructorContainer = ({ containerType }) => {
             .filter((ingredient) => ingredient.type === "bun")
             .map((ingredient) => (
               <SelectedConstructorElement
-                key={ingredient.uuid}
+                key={ingredient._id}
                 elemType={"bun-top"}
                 ingredient={ingredient}
                 id={ingredient._id}
-                findElem={findElement}
-                moveElem={moveSelectedIngredient}
               />
             ))}
         </div>
@@ -94,13 +95,12 @@ const ConstructorContainer = ({ containerType }) => {
             .filter((ingredient) => ingredient.type !== "bun")
             .map((ingredient) => (
               <SelectedConstructorElement
-                key={ingredient.uuid}
+                key={ingredient._id}
                 ingredient={ingredient}
                 elemType={"main-sauce"}
                 deleteItem={handleDeleteIngredient}
                 id={ingredient._id}
-                findElem={findElement}
-                moveElem={moveSelectedIngredient}
+                index={addedIngredients.indexOf(ingredient)}
               />
             ))}
         </div>
@@ -115,12 +115,10 @@ const ConstructorContainer = ({ containerType }) => {
             .filter((ingredient) => ingredient.type === "bun")
             .map((ingredient) => (
               <SelectedConstructorElement
-                key={ingredient.uuid}
+                key={ingredient._id}
                 elemType={"bun-bottom"}
                 ingredient={ingredient}
                 id={ingredient._id}
-                findElem={findElement}
-                moveElem={moveSelectedIngredient}
               />
             ))}
         </div>

@@ -11,20 +11,81 @@ import PropTypes from "prop-types";
 import { moveIngredient } from "../../services/actions/moveIngredient";
 import uuid from "react-uuid";
 
+import { setNewIngrs } from "../../services/actions/setIngredients";
+
 const SelectedConstructorElement = ({
   ingredient,
   elemType,
   deleteItem,
   moveElem,
   findElem,
+  index,
 }) => {
   const dispatch = useDispatch();
+
+  const { id, name, price, image, type, uuid } = ingredient;
 
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
 
-  const { id, name, price, image, type } = ingredient;
+  const sortItems = (dragIndex, hoverIndex, selectedIngredients) => {
+    const dragItem = selectedIngredients[dragIndex];
+
+    const sortedIngredients = [...selectedIngredients];
+
+    const hoverItem = sortedIngredients.splice(hoverIndex, 1, dragItem);
+
+    sortedIngredients.splice(dragIndex, 1, hoverItem[0]);
+
+    //console.log(selectedIngredients);
+    dispatch(setNewIngrs(sortedIngredients));
+  };
+
+  //const moveIngrs = (dragIndex, hoverIndex, addedIngredients) => {
+  //  dispatch(sortItems(dragIndex, hoverIndex, addedIngredients));
+  //};
+
+  const [{ isDragging }, dragRef] = useDrag({
+    type: "selected",
+    item: () => {
+      return ingredient;
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const [{ handlerId }, dropRef] = useDrop({
+    accept: "selected",
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    drop: (item, monitor) => {
+      if (!ref.current) {
+        return;
+      }
+
+      const dragIndex = addedIngredients.indexOf(item);
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+
+      console.log(item);
+
+      dispatch(sortItems(dragIndex, hoverIndex, addedIngredients));
+
+      dragIndex = hoverIndex;
+    },
+  });
+
+  const ref = useRef(null);
+  const dragDropRef = dragRef(dropRef(ref));
+  const opacity = isDragging ? 0 : 1;
 
   /*
   const [, dragRef] = useDrag({
@@ -56,6 +117,7 @@ const SelectedConstructorElement = ({
   };
 */
 
+  /*
   const findElement = useCallback(
     (id) => {
       const selectedElement = addedIngredients.filter(
@@ -68,6 +130,7 @@ const SelectedConstructorElement = ({
     },
     [addedIngredients]
   );
+  */
 
   /*
   const moveSelectedIngredient = useCallback((id, atIndex) => {
@@ -81,6 +144,7 @@ const SelectedConstructorElement = ({
   });
 */
 
+  /*
   const originalIdx = findElem(id).idx;
 
   const [, drag] = useDrag(
@@ -90,14 +154,14 @@ const SelectedConstructorElement = ({
       end: (item, monitor) => {
         console.log(originalIdx);
         console.log(addedIngredients);
-        /*
-        const { id: droppedId, originalIdx } = item;
-        const didDrop = monitor.didDrop();
+        
+        //const { id: droppedId, originalIdx } = item;
+        //const didDrop = monitor.didDrop();
 
-        if (didDrop) {
-          moveElem(droppedId, originalIdx);
-        }
-        */
+        //if (didDrop) {
+        //  moveElem(droppedId, originalIdx);
+        //}
+        
       },
     }),
     [id, originalIdx, moveElem]
@@ -128,6 +192,7 @@ const SelectedConstructorElement = ({
     }),
     [findElem, moveElem]
   );
+*/
 
   /*
   const [{ isHover }, drop] = useDrop({
@@ -148,7 +213,6 @@ const SelectedConstructorElement = ({
     if (elemType === "bun-top") {
       return (
         <div
-          key={uuid}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
         >
           <ConstructorElement
@@ -163,7 +227,8 @@ const SelectedConstructorElement = ({
     } else if (elemType === "main-sauce") {
       return (
         <div
-          ref={(node) => drag(drop(node))}
+          ref={dragDropRef}
+          data-handler-id={handlerId}
           className={`${SelectedConstructorElementStyles.element} mb-4`}
         >
           <DragIcon type="primary" />
@@ -172,13 +237,13 @@ const SelectedConstructorElement = ({
             price={price}
             thumbnail={image}
             handleClose={() => deleteItem(ingredient)}
+            index={index}
           />
         </div>
       );
     } else if (elemType === "bun-bottom") {
       return (
         <div
-          key={uuid}
           className={`${SelectedConstructorElementStyles.elementBun} mb-4 mr-4`}
         >
           <ConstructorElement
