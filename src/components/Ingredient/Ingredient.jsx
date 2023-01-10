@@ -1,15 +1,11 @@
 import { useDrag } from "react-dnd";
-import { useEffect, useMemo, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-styles.module.css";
 
-import { increaseIngredient } from "../../services/actions/increaseIngredient";
-import { decreaseIngredient } from "../../services/actions/decreaseIngredient";
 import PropTypes from "prop-types";
-import uuid from "react-uuid";
-import { useSelector, useDispatch } from "react-redux";
 
-const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
+const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
   const dispatch = useDispatch();
 
   const { _id, name, price, image, type, counter, uuid } = ingredient;
@@ -52,22 +48,17 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
     ? "flex"
     : "none";
 
-  const counterVisibility = addedIngredients.find(
+  const counterVisibilityMain = addedIngredients.find(
     (item) => item.id === ingredient.id && ingredient.counter !== 0
   )
     ? "flex"
     : "none";
 
   return ingrType === "ingredient" ? (
-    <div
-      className={ingredientStyles.card}
-      ref={ingrDragRef}
-      draggable
-      onDrag={() => console.log(ingredient)}
-    >
+    <div className={ingredientStyles.card} ref={ingrDragRef} draggable>
       <p
         className={ingredientStyles.addedIngrNum}
-        style={{ display: counterVisibility }}
+        style={{ display: counterVisibilityMain }}
       >
         {ingredient.counter}
       </p>
@@ -90,12 +81,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
       </p>
     </div>
   ) : (
-    <div
-      className={ingredientStyles.card}
-      ref={bunDragRef}
-      draggable
-      onDragEnd={() => dispatch(decreaseIngredient(ingredient.id))}
-    >
+    <div className={ingredientStyles.card} ref={bunDragRef} draggable>
       <p
         className={ingredientStyles.addedIngrNum}
         style={{ display: counterVisibilityBuns }}
@@ -126,6 +112,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType, id }) => {
 Ingredient.propTypes = {
   ingredient: PropTypes.object,
   onClickPopup: PropTypes.func,
+  ingrType: PropTypes.string,
 };
 
 export default Ingredient;

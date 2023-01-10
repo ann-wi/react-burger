@@ -36,7 +36,6 @@ const Modal = ({ onCloseClick, children }) => {
 
 Modal.propTypes = {
   onCloseClick: PropTypes.func,
-  onEscKeydown: PropTypes.func,
 };
 
 export default Modal;

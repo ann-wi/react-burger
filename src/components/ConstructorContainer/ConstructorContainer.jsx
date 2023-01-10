@@ -1,5 +1,3 @@
-import React, { useRef, useState, useCallback } from "react";
-import update from "immutability-helper";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import constructorContainerStyles from "./constructor-container-styles.module.css";
@@ -8,11 +6,7 @@ import SelectedConstructorElement from "../SelectedConstructorElement/SelectedCo
 
 import { decreaseIngredient } from "../../services/actions/decreaseIngredient";
 import { increaseIngredient } from "../../services/actions/increaseIngredient";
-import SortSelectedIngredients from "../SortSelectedIngredients/SortSelectedIngredients";
-import { setNewIngrs } from "../../services/actions/setIngredients";
-
 import { addIngredient } from "../../services/actions/addIngredient";
-import { moveIngredient } from "../../services/actions/moveIngredient";
 import { deleteIngredient } from "../../services/actions/deleteIngredient";
 
 import uuid from "react-uuid";
@@ -31,35 +25,19 @@ const ConstructorContainer = ({ containerType }) => {
       (ingredient) => ingredient._id === item.id
     );
 
-    //const uuidIngr = item.uuid;
-
-    //console.log(uuidIngr);
     dispatch(addIngredient(selectedIngr, id));
   };
 
-  const [{ isHover }, dropMainSauce] = useDrop({
+  const [, dropMainSauce] = useDrop({
     accept: "ingredient",
-    collect: (monitor) => ({
-      isHover: monitor.isOver(),
-    }),
     drop(item) {
-      //dispatch(addIngredient(item, item.uuid));
       dispatch(increaseIngredient(item.id));
       handleDrop(item, item.uuid);
     },
   });
 
-  /*
-  const [, dropMainSauce] = useDrop({
-    drop(item) {
-      dispatch(addIngredient(item, item.uuid));
-    },
-    accept: "ingredient",
-  });
-*/
   const [, dropBun] = useDrop({
     drop(item) {
-      console.log(item);
       dispatch(addIngredient(item, item.uuid));
       dispatch(increaseIngredient(item.id));
     },
@@ -137,7 +115,6 @@ const ConstructorContainer = ({ containerType }) => {
 
 ConstructorContainer.propTypes = {
   containerType: PropTypes.string,
-  handleDeleteIngredient: PropTypes.func,
 };
 
 export default ConstructorContainer;
