@@ -65,8 +65,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .map((ingredient) => (
                     <Ingredient
                       ingrType={"burgerBun"}
-                      key={ingredient.uuid}
-                      id={ingredient._id}
+                      key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
@@ -86,8 +85,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .map((ingredient) => (
                     <Ingredient
                       ingrType={"ingredient"}
-                      key={ingredient.uuid}
-                      id={ingredient._id}
+                      key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}
@@ -107,8 +105,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
                   .map((ingredient) => (
                     <Ingredient
                       ingrType={"ingredient"}
-                      key={ingredient.uuid}
-                      id={ingredient._id}
+                      key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
                       onClickPopup={onClickPopup}
                       ingredient={ingredient}

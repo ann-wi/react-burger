@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import OrderPriceContext from "../../context/order-price-context";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstuctor/BurgerConstructor";
@@ -53,9 +52,7 @@ const App = () => {
       <main className={appStyles.app}>
         <DndProvider backend={HTML5Backend}>
           <BurgerIngredients onClickPopup={handleIngredientClick} />
-          <OrderPriceContext.Provider value={{ orderPrice, setOrderPrice }}>
-            <BurgerConstructor onClickPopup={handleOrderClick} />
-          </OrderPriceContext.Provider>
+          <BurgerConstructor onClickPopup={handleOrderClick} />
         </DndProvider>
       </main>
       {isIngredientDetailsOpened && (

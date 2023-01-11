@@ -4,11 +4,11 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import ingredientStyles from "./ingredient-styles.module.css";
 
 import PropTypes from "prop-types";
+import uuid from "react-uuid";
 
 const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
-  const dispatch = useDispatch();
-
-  const { _id, name, price, image, type, counter, uuid } = ingredient;
+  const { _id, name, price, image, type, counter } = ingredient;
+  ingredient.uuid = uuid();
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
@@ -22,7 +22,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
       price: price,
       image: image,
       type: type,
-      uuid: uuid,
+      uuid: ingredient.uuid,
     },
   });
 
@@ -35,7 +35,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
       price: price,
       image: image,
       type: type,
-      uuid: uuid,
+      uuid: ingredient.uuid,
     },
   });
 

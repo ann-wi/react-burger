@@ -1,13 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ConstructorContainer from "../ConstructorContainer/ConstructorContainer";
-import OrderPriceContext from "../../context/order-price-context";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import OrderPrice from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
+import { sumOrder } from "../../services/actions/sumOrder";
 import { getOrderNumber } from "../../services/actions/server-actions";
 import { deleteIngredient } from "../../services/actions/deleteIngredient";
 
@@ -16,7 +16,6 @@ const BurgerConstructor = ({ onClickPopup }) => {
   const addedIngredients = useSelector(
     (state) => state.reactBurgerReducer.addedIngredients
   );
-  const { setOrderPrice } = useContext(OrderPriceContext);
 
   useEffect(() => {
     let total = 0;
@@ -47,8 +46,8 @@ const BurgerConstructor = ({ onClickPopup }) => {
       dispatch(deleteIngredient(buns[0]));
     }
 
-    setOrderPrice(total);
-  }, [addedIngredients, setOrderPrice]);
+    dispatch(sumOrder(total));
+  }, [addedIngredients]);
 
   const ingredientsIds = addedIngredients.map((ingredient) => ingredient.id);
 

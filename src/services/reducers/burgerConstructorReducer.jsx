@@ -2,6 +2,7 @@ import { ADD_INGREDIENT } from "../actions/constants";
 import { DELETE_INGREDIENT } from "../actions/constants";
 import { GET_INGREDIENT_DETAILS } from "../actions/constants";
 import { SET_INGREDIENTS } from "../actions/constants";
+import { SUM_ORDER } from "../actions/constants";
 import { INCREASE_INGREDIENT } from "../actions/constants";
 import { DECREASE_INGREDIENT } from "../actions/constants";
 import { SEND_REQUEST_INGREDIENTS } from "../actions/constants";
@@ -15,6 +16,7 @@ const initialState = {
   ingredients: [],
   addedIngredients: [],
   currentIngredient: {},
+  orderSum: 0,
   orderNumber: 0,
   sendRequestOrder: false,
   respondErrorOrder: false,
@@ -35,6 +37,11 @@ export const reactBurgerReducer = (state = initialState, action) => {
           }),
           action.payload.ingredient,
         ],
+      };
+    case SUM_ORDER:
+      return {
+        ...state,
+        orderSum: action.payload.total,
       };
     case DELETE_INGREDIENT:
       return {

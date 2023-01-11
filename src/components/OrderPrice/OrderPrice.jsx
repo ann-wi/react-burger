@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import OrderPriceContext from "../../context/order-price-context";
+import { useSelector } from "react-redux";
 
 const OrderPrice = () => {
-  const { orderPrice } = useContext(OrderPriceContext);
+  const orderPrice = useSelector((state) => state.reactBurgerReducer.orderSum);
 
   return <p className={`text text_type_digits-medium`}>{orderPrice}</p>;
 };

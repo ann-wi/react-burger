@@ -66,6 +66,8 @@
   top: 0;
   right: 0;
   display: flex;
+  justify-content: space-evenly;
+  align-items: center;
   position: absolute;
   border-radius: 16px;
   height: 32px;

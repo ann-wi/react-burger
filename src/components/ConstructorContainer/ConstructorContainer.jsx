@@ -9,8 +9,6 @@ import { increaseIngredient } from "../../services/actions/increaseIngredient";
 import { addIngredient } from "../../services/actions/addIngredient";
 import { deleteIngredient } from "../../services/actions/deleteIngredient";
 
-import uuid from "react-uuid";
-
 const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
   const ingredientsData = useSelector(
@@ -57,7 +55,7 @@ const ConstructorContainer = ({ containerType }) => {
             .filter((ingredient) => ingredient.type === "bun")
             .map((ingredient) => (
               <SelectedConstructorElement
-                key={uuid()}
+                key={ingredient.uuid}
                 elemType={"bun-top"}
                 ingredient={ingredient}
                 id={ingredient._id}
@@ -75,8 +73,8 @@ const ConstructorContainer = ({ containerType }) => {
             .filter((ingredient) => ingredient.type !== "bun")
             .map((ingredient) => (
               <SelectedConstructorElement
-                key={uuid()}
                 ingredient={ingredient}
+                key={ingredient.uuid}
                 elemType={"main-sauce"}
                 deleteItem={handleDeleteIngredient}
                 id={ingredient._id}
@@ -95,7 +93,7 @@ const ConstructorContainer = ({ containerType }) => {
             .filter((ingredient) => ingredient.type === "bun")
             .map((ingredient) => (
               <SelectedConstructorElement
-                key={uuid()}
+                key={ingredient.uuid}
                 elemType={"bun-bottom"}
                 ingredient={ingredient}
                 id={ingredient._id}
