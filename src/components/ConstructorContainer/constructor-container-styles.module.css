@@ -1,0 +1,27 @@
+.elements {
+  height: 464px;
+  width: 584px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(57, 33, 242, 0.1);
+}
+
+.elementsBuns {
+  height: 80px;
+  overflow-y: hidden;
+  text-align: right;
+  margin: 16px 0 16px 0;
+  background-color: rgba(133, 133, 173, 0.1);
+}
+
+.element {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 568px;
+  gap: 8px;
+}
+
+.elementBun {
+  align-self: flex-end;
+}

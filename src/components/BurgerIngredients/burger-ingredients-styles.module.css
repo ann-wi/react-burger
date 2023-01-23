@@ -1,13 +1,46 @@
 .ingredients {
   display: flex;
   flex-direction: column;
+  max-width: 600px;
 }
 
 .title {
   font-size: 36px;
   line-height: 40px;
+  margin: 0;
 }
 
 .tabs {
   display: flex;
+}
+
+.products {
+  height: 690px;
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: grid;
+  max-width: 600px;
+  grid-template-columns: 600px;
+  grid-template-rows: min-content;
+  grid-template-areas:
+    "section"
+    "cards";
+  align-content: center;
+  padding: 0;
+}
+
+.cards {
+  grid-area: cards;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+}
+
+.sectionTitle {
+  grid-area: section;
 }

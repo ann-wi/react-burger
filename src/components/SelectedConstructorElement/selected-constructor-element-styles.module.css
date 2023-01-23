@@ -1,0 +1,19 @@
+.elements {
+  height: 464px;
+  width: 584px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(57, 33, 242, 0.1);
+}
+
+.element {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 568px;
+  gap: 8px;
+}
+
+.elementBun {
+  align-self: flex-end;
+}
