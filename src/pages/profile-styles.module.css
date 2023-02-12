@@ -1,0 +1,14 @@
+.profile {
+  display: flex;
+  flex-direction: row;
+}
+
+.profilePagesLinks {
+  display: flex;
+  flex-direction: column;
+}
+
+.profileForm {
+  display: flex;
+  flex-direction: column;
+}

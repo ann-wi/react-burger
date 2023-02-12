@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AppHeader from "../AppHeader/AppHeader";
+import { AppHeader } from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstuctor/BurgerConstructor";
 import Modal from "../Modal/Modal";
@@ -9,6 +9,9 @@ import Order from "../Order/Order";
 import appStyles from "./app-styles.module.css";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ProfilePage } from "../../pages/profile";
+import { LoginPage } from "../../pages/login";
 
 import { getIngredientDetails } from "../../services/actions/ingredietDetails";
 import { getIngredients } from "../../services/actions/server-actions";
@@ -46,15 +49,28 @@ const App = () => {
     setIsOrderOpened(true);
   };
 
+  const HomePage = () => {
+    return (
+      <>
+        <AppHeader />
+        <main className={appStyles.app}>
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients onClickPopup={handleIngredientClick} />
+            <BurgerConstructor onClickPopup={handleOrderClick} />
+          </DndProvider>
+        </main>
+      </>
+    );
+  };
+
   return (
     <>
-      <AppHeader />
-      <main className={appStyles.app}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients onClickPopup={handleIngredientClick} />
-          <BurgerConstructor onClickPopup={handleOrderClick} />
-        </DndProvider>
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={HomePage()} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </BrowserRouter>
       {isIngredientDetailsOpened && (
         <Modal onCloseClick={closePopups}>
           <IngredientDetails ingredient={currentIngredient} />
