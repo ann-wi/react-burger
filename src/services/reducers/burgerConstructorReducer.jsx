@@ -12,7 +12,14 @@ import { SEND_REQUEST_ORDER } from "../actions/constants";
 import { RESPOND_SUCCESS_ORDER } from "../actions/constants";
 import { RESPOND_ERROR_ORDER } from "../actions/constants";
 
+import { REGISTER_USER } from "../actions/constants";
+
 const initialState = {
+  regFormInfo: {
+    email: "ann.wider99@gmail.com",
+    password: "a11111",
+    name: "Mia",
+  },
   ingredients: [],
   addedIngredients: [],
   currentIngredient: {},
@@ -26,6 +33,11 @@ const initialState = {
 
 export const reactBurgerReducer = (state = initialState, action) => {
   switch (action.type) {
+    case REGISTER_USER:
+      return {
+        ...state,
+        regFormInfo: action.payload.info,
+      };
     case ADD_INGREDIENT:
       return {
         ...state,

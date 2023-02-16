@@ -94,3 +94,27 @@ export function getOrderNumber(ingredientsIds) {
       });
   };
 }
+
+//Server 9-1
+export function registerUserApi(regFormInfo) {
+  return function (dispatch) {
+    fetch(`${apiBurger}auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: regFormInfo.email,
+        password: regFormInfo.password,
+        name: regFormInfo.name,
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(`error: ${err}`);
+      });
+  };
+}
