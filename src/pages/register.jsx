@@ -1,4 +1,10 @@
 import React from "react";
+import {
+  Input,
+  EmailInput,
+  PasswordInput,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { AppHeader } from "../components/AppHeader/AppHeader";
 import { registerUserApi } from "../services/actions/server-actions";
@@ -23,39 +29,49 @@ export const RegistrationPage = () => {
 
   return (
     <div className={registerStyles.registerContainer}>
-      <h2>Регистрация</h2>
+      <h1 className="text text_type_main-medium">Регистрация</h1>
       <form action="" className={registerStyles.registerForm}>
-        <input
-          className={registerStyles.registerInput}
+        <Input
           type="text"
-          name="name"
-          value={newUser.name}
-          onChange={onChange}
           placeholder="Имя"
-        />
-        <input
-          className={`${registerStyles.registerInput} mt-6 text text_type_main-default`}
-          type="email"
-          name="email"
-          value={newUser.email}
           onChange={onChange}
+          value="Mia"
+          name="name"
+          size={"default"}
+          extraClass="mt-6 mb-6"
+        />
+        <EmailInput
+          onChange={onChange}
+          value="@email"
+          name={"email"}
           placeholder="E-mail"
+          isIcon={false}
+          extraClass="mb-6"
         />
-        <input
-          className={`${registerStyles.registerInput} mt-6 text text_type_main-default`}
-          type="password"
-          name="password"
-          value={newUser.password}
+        <PasswordInput
           onChange={onChange}
-          placeholder="Пароль"
+          value="pass"
+          name={"password"}
+          extraClass="mb-6"
         />
-        <button
-          className={`${registerStyles.button} mt-6 text text_type_main-default`}
-          onClick={submitReg}
-        >
-          <p className={registerStyles.buttonText}>Зарегистрироваться</p>
-        </button>
+        <Button type="primary" size="medium" extraClass="mb-20">
+          <p
+            className={`${registerStyles.buttonText} text text_type_main-default`}
+          >
+            Зарегистрироваться
+          </p>
+        </Button>
       </form>
+      <div className={registerStyles.buttonsContainer}>
+        <p
+          className={`${registerStyles.buttonText} text text_type_main-default`}
+        >
+          Уже зарегистрированы?
+        </p>
+        <Button htmlType="button" type="secondary" size="medium">
+          Войти
+        </Button>
+      </div>
     </div>
   );
 };
