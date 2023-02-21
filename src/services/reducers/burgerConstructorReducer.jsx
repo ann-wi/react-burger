@@ -12,13 +12,15 @@ import { SEND_REQUEST_ORDER } from "../actions/constants";
 import { RESPOND_SUCCESS_ORDER } from "../actions/constants";
 import { RESPOND_ERROR_ORDER } from "../actions/constants";
 
+import { SEND_REQUEST_REGISTER } from "../actions/constants";
+
 import { REGISTER_USER } from "../actions/constants";
 
 const initialState = {
   regFormInfo: {
-    email: "ann.wider99@gmail.com",
-    password: "a11111",
-    name: "Mia",
+    email: "",
+    password: "",
+    name: "",
   },
   ingredients: [],
   addedIngredients: [],
@@ -129,6 +131,11 @@ export const reactBurgerReducer = (state = initialState, action) => {
         ...state,
         sendRequestOrder: false,
         respondErrorOrder: true,
+      };
+    case SEND_REQUEST_REGISTER:
+      return {
+        ...state,
+        sendRequestRegister: true,
       };
     default:
       return state;

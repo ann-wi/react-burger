@@ -1,0 +1,11 @@
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 200px auto 300px auto;
+  width: 480px;
+  height: 200px;
+  background-color: rgba(57, 33, 242, 0.1);
+  outline: 1px dashed rgb(57, 33, 242);
+}

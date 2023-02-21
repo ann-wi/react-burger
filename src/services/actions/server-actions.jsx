@@ -6,6 +6,8 @@ import { SEND_REQUEST_ORDER } from "./constants";
 import { RESPOND_SUCCESS_ORDER } from "./constants";
 import { RESPOND_ERROR_ORDER } from "./constants";
 
+import { SEND_REQUEST_REGISTER } from "./constants";
+
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
 export function sendRequestIngredients(sendRequest) {
@@ -47,6 +49,13 @@ export function respondErrorOrder(respondError) {
   return {
     type: RESPOND_ERROR_ORDER,
     payload: { respondError },
+  };
+}
+
+export function sendRequestRegister(sendRequest) {
+  return {
+    type: SEND_REQUEST_REGISTER,
+    payload: { sendRequest },
   };
 }
 
@@ -98,6 +107,8 @@ export function getOrderNumber(ingredientsIds) {
 //Server 9-1
 export function registerUserApi(regFormInfo) {
   return function (dispatch) {
+    dispatch(sendRequestRegister(true));
+
     fetch(`${apiBurger}auth/register`, {
       method: "POST",
       headers: {

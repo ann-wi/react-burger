@@ -6,7 +6,6 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { AppHeader } from "../components/AppHeader/AppHeader";
 import { registerUserApi } from "../services/actions/server-actions";
 import { registerUser } from "../services/actions/registerUser";
 
@@ -33,28 +32,33 @@ export const RegistrationPage = () => {
       <form action="" className={registerStyles.registerForm}>
         <Input
           type="text"
+          value={newUser.name}
           placeholder="Имя"
           onChange={onChange}
-          value="Mia"
           name="name"
           size={"default"}
           extraClass="mt-6 mb-6"
         />
         <EmailInput
           onChange={onChange}
-          value="@email"
-          name={"email"}
+          value={newUser.email}
+          name="email"
           placeholder="E-mail"
           isIcon={false}
           extraClass="mb-6"
         />
         <PasswordInput
           onChange={onChange}
-          value="pass"
-          name={"password"}
+          name="password"
           extraClass="mb-6"
+          value={newUser.password}
         />
-        <Button type="primary" size="medium" extraClass="mb-20">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="medium"
+          extraClass="mb-20"
+        >
           <p
             className={`${registerStyles.buttonText} text text_type_main-default`}
           >

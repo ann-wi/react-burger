@@ -42,7 +42,7 @@ export function AppHeader() {
               </Link>
             </li>
             <li className={headerStyles.navOrders}>
-              <Link className={`${headerStyles.button} p-5`} to="/orders">
+              <Link className={`${headerStyles.button} p-5`} to="/feed">
                 <ListIcon type="secondary" />
                 <h3
                   className={`${headerStyles.buttonText} ml-2 text text_type_main-default`}

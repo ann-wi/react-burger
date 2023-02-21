@@ -30,7 +30,12 @@ export const LoginPage = () => {
           name={"password"}
           extraClass="mb-6"
         />
-        <Button type="primary" size="medium" extraClass="mb-20">
+        <Button
+          htmlType="button"
+          type="primary"
+          size="medium"
+          extraClass="mb-20"
+        >
           <p
             className={`${loginStyles.buttonText} text text_type_main-default`}
           >
@@ -42,17 +47,23 @@ export const LoginPage = () => {
         <p className={`${loginStyles.buttonText} text text_type_main-default`}>
           Вы — новый пользователь?
         </p>
-        <Button htmlType="button" type="secondary" size="medium">
+        <Link
+          className={`${loginStyles.buttonText} text text_type_main-default`}
+          to="/register"
+        >
           Зарегистрироваться
-        </Button>
+        </Link>
       </div>
       <div className={loginStyles.buttonsContainer}>
         <p className={`${loginStyles.buttonText} text text_type_main-default`}>
           Забыли пароль?
         </p>
-        <Button htmlType="button" type="secondary" size="medium">
+        <Link
+          className={`${loginStyles.buttonText} text text_type_main-default`}
+          to="/forgot-password"
+        >
           Восстановить пароль
-        </Button>
+        </Link>
       </div>
     </div>
   );
