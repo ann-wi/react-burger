@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AppHeader } from "../AppHeader/AppHeader";
 import { HomePage } from "../../pages/homepage";
 import { ProfilePage } from "../../pages/profile";
@@ -11,19 +11,17 @@ import { NotFoundPage } from "../../pages/not-found-404";
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<AppHeader />}>
-            <Route index element={<HomePage />} />
-            <Route path="register" element={<RegistrationPage />} />
-            <Route path="login" element={<LoginPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="reset-password" element={<ResetPasswordPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppHeader />}>
+          <Route index element={<HomePage />} />
+          <Route path="register" element={<RegistrationPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
     </>
   );
 };

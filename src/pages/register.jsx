@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Input,
   EmailInput,
@@ -16,20 +15,19 @@ export const RegistrationPage = () => {
   const newUser = useSelector((state) => state.reactBurgerReducer.regFormInfo);
 
   const onChange = (e) => {
-    dispatch(registerUser({ [e.target.name]: e.target.value }));
+    dispatch(registerUser({ ...newUser, [e.target.name]: e.target.value }));
   };
 
   const submitReg = (e) => {
     e.prevenDefault();
 
-    dispatch(registerUser(newUser));
-    dispatch(registerUserApi(newUser));
+    dispatch(registerUserApi(newUser.name, newUser.email, newUser.password));
   };
 
   return (
     <div className={registerStyles.registerContainer}>
       <h1 className="text text_type_main-medium">Регистрация</h1>
-      <form action="" className={registerStyles.registerForm}>
+      <form className={registerStyles.registerForm} onSubmit={submitReg}>
         <Input
           type="text"
           value={newUser.name}
@@ -54,7 +52,8 @@ export const RegistrationPage = () => {
           value={newUser.password}
         />
         <Button
-          htmlType="button"
+          onClick={submitReg}
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mb-20"

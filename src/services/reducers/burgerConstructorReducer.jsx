@@ -12,9 +12,10 @@ import { SEND_REQUEST_ORDER } from "../actions/constants";
 import { RESPOND_SUCCESS_ORDER } from "../actions/constants";
 import { RESPOND_ERROR_ORDER } from "../actions/constants";
 
-import { SEND_REQUEST_REGISTER } from "../actions/constants";
-
 import { REGISTER_USER } from "../actions/constants";
+import { SEND_REQUEST_REGISTER } from "../actions/constants";
+import { RESPOND_SUCCESS_REGISTER } from "../actions/constants";
+import { RESPOND_ERROR_REGISTER } from "../actions/constants";
 
 const initialState = {
   regFormInfo: {
@@ -31,6 +32,8 @@ const initialState = {
   respondErrorOrder: false,
   sendRequestIngredients: false,
   respondErrorIngredients: false,
+  sendRegisterOrder: false,
+  respondErrorRegister: false,
 };
 
 export const reactBurgerReducer = (state = initialState, action) => {
@@ -136,6 +139,19 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return {
         ...state,
         sendRequestRegister: true,
+      };
+    case RESPOND_SUCCESS_REGISTER:
+      return {
+        ...state,
+        regFormInfo: action.payload.info,
+        sendRequestRegister: false,
+        respondErrorRegister: false,
+      };
+    case RESPOND_ERROR_REGISTER:
+      return {
+        ...state,
+        sendRequestRegister: false,
+        respondErrorRegister: true,
       };
     default:
       return state;

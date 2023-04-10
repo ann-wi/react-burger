@@ -7,6 +7,8 @@ import { RESPOND_SUCCESS_ORDER } from "./constants";
 import { RESPOND_ERROR_ORDER } from "./constants";
 
 import { SEND_REQUEST_REGISTER } from "./constants";
+import { RESPOND_SUCCESS_REGISTER } from "./constants";
+import { RESPOND_ERROR_REGISTER } from "./constants";
 
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
@@ -59,6 +61,20 @@ export function sendRequestRegister(sendRequest) {
   };
 }
 
+export function respondSuccessRegister(newUser) {
+  return {
+    type: RESPOND_SUCCESS_REGISTER,
+    payload: { newUser },
+  };
+}
+
+export function respondErrorRegister(respondError) {
+  return {
+    type: RESPOND_ERROR_REGISTER,
+    payload: { respondError },
+  };
+}
+
 export function getIngredients() {
   return function (dispatch) {
     dispatch(sendRequestIngredients(true));
@@ -104,8 +120,9 @@ export function getOrderNumber(ingredientsIds) {
   };
 }
 
-//Server 9-1
-export function registerUserApi(regFormInfo) {
+//REGISTRATION
+
+export function registerUserApi(name, email, password) {
   return function (dispatch) {
     dispatch(sendRequestRegister(true));
 
@@ -115,17 +132,19 @@ export function registerUserApi(regFormInfo) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: regFormInfo.email,
-        password: regFormInfo.password,
-        name: regFormInfo.name,
+        email: email,
+        password: password,
+        name: name,
       }),
     })
       .then(checkResponse)
       .then((data) => {
         console.log(data);
+        dispatch(respondSuccessRegister(data));
       })
       .catch((err) => {
-        console.log(`error: ${err}`);
+        console.log(err);
+        dispatch(respondErrorRegister(true));
       });
   };
 }
