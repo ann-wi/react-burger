@@ -122,7 +122,7 @@ export function getOrderNumber(ingredientsIds) {
 
 //REGISTRATION
 
-export function registerUserApi(name, email, password) {
+export function registerNewUser(info) {
   return function (dispatch) {
     dispatch(sendRequestRegister(true));
 
@@ -132,18 +132,20 @@ export function registerUserApi(name, email, password) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
-        password: password,
-        name: name,
+        email: info.email,
+        password: info.password,
+        name: info.name,
       }),
     })
       .then(checkResponse)
       .then((data) => {
         console.log(data);
-        dispatch(respondSuccessRegister(data));
+        console.log(info);
+        dispatch(respondSuccessRegister(data.user));
       })
       .catch((err) => {
         console.log(err);
+        console.log(info);
         dispatch(respondErrorRegister(true));
       });
   };

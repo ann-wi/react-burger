@@ -9,7 +9,7 @@ import IngredientDetails from "../components/IngredientDetails/IngredientsDetail
 import Order from "../components/Order/Order";
 import Modal from "../components/Modal/Modal";
 
-import { getIngredientDetails } from "../services/actions/ingredietDetails";
+import { getIngredientDetails } from "../services/actions/ingredientDetails";
 import { getIngredients } from "../services/actions/server-actions";
 
 export const HomePage = () => {

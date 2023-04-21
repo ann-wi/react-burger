@@ -14,9 +14,9 @@ export const ProfilePage = () => {
   const dispatch = useDispatch();
   const newUser = useSelector((state) => state.reactBurgerReducer.regFormInfo);
 
-  const onChange = (e) => {
-    dispatch(registerUser({ [e.target.name]: e.target.value }));
-  };
+  //const onChange = (e) => {
+  //  dispatch(registerUser({ [e.target.name]: e.target.value }));
+  //};
 
   return (
     <div className={profileStyles.profile}>
@@ -36,24 +36,21 @@ export const ProfilePage = () => {
         <Input
           type="text"
           placeholder="Имя"
-          onChange={onChange}
-          value="Mia"
+          value={newUser.name}
           name="name"
           icon="EditIcon"
           size={"default"}
           extraClass="mt-6 mb-6"
         />
         <EmailInput
-          onChange={onChange}
-          value="@email"
+          value={newUser.email}
           name={"email"}
           placeholder="E-mail"
           isIcon={true}
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={onChange}
-          value="pass"
+          value={newUser.password}
           name={"password"}
           extraClass="mb-6"
           icon="EditIcon"

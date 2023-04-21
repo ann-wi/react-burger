@@ -32,7 +32,7 @@ const initialState = {
   respondErrorOrder: false,
   sendRequestIngredients: false,
   respondErrorIngredients: false,
-  sendRegisterOrder: false,
+  sendRequestRegister: false,
   respondErrorRegister: false,
 };
 
@@ -41,7 +41,10 @@ export const reactBurgerReducer = (state = initialState, action) => {
     case REGISTER_USER:
       return {
         ...state,
-        regFormInfo: action.payload.info,
+        regFormInfo: {
+          ...state.regFormInfo,
+          [action.payload.field]: action.payload.value,
+        },
       };
     case ADD_INGREDIENT:
       return {
@@ -143,7 +146,7 @@ export const reactBurgerReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_REGISTER:
       return {
         ...state,
-        regFormInfo: action.payload.info,
+        regFormInfo: action.payload.newUser,
         sendRequestRegister: false,
         respondErrorRegister: false,
       };
