@@ -19,6 +19,10 @@
   margin: 0;
 }
 
+.buttonText {
+  color: #8585ad;
+}
+
 .buttonsContainer {
   display: flex;
   flex-direction: row;

@@ -51,21 +51,29 @@ export const RegistrationPage = () => {
           value={newUser.password}
           name="password"
         />
-        <button type="submit">
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="medium"
+          extraClass="mb-20"
+        >
           <p
             className={`${registerStyles.buttonText} text text_type_main-default`}
           >
             Зарегистрироваться
           </p>
-        </button>
+        </Button>
       </form>
       <div className={registerStyles.buttonsContainer}>
-        <p
-          className={`${registerStyles.buttonText} text text_type_main-default`}
-        >
+        <p className={`${registerStyles.linkText} text text_type_main-default`}>
           Уже зарегистрированы?
         </p>
-        <Button htmlType="button" type="secondary" size="medium">
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          extraClass="pl-2 pr-2"
+        >
           Войти
         </Button>
       </div>

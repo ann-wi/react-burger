@@ -23,6 +23,10 @@
   margin: 0;
 }
 
+.linkText {
+  color: #8585ad;
+}
+
 .buttonsContainer {
   display: flex;
   flex-direction: row;

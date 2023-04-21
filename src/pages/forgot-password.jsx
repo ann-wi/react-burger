@@ -23,12 +23,13 @@ export const ForgotPasswordPage = () => {
           isIcon={false}
           extraClass="mt-6 mb-6"
         />
-        <Button type="primary" size="medium" extraClass="mb-20">
-          <p
-            className={`${forgotPasswordStyles.buttonText} text text_type_main-default`}
-          >
-            Восстановить
-          </p>
+        <Button
+          type="primary"
+          size="medium"
+          extraClass="mb-20"
+          htmlType="submit"
+        >
+          <p className={`text text_type_main-default`}>Восстановить</p>
         </Button>
       </form>
       <div className={forgotPasswordStyles.buttonsContainer}>
@@ -37,12 +38,14 @@ export const ForgotPasswordPage = () => {
         >
           Вспомнили пароль?
         </p>
-        <Link
-          className={`${forgotPasswordStyles.buttonText} text text_type_main-default`}
-          to="/login  "
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          extraClass="pl-2 pr-2"
         >
           Войти
-        </Link>
+        </Button>
       </div>
     </div>
   );

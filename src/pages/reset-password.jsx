@@ -17,25 +17,25 @@ export const ResetPasswordPage = () => {
       <form action="" className={resetPasswordStyles.passwordForm}>
         <PasswordInput
           onChange={onChange}
-          value="pass"
+          value=""
           name={"password"}
           extraClass="mt-6 mb-6"
           placeholder="Введите новый пароль"
         />
         <Input
           onChange={onChange}
-          value="0000"
+          value=""
           name={"code"}
           placeholder="E-Введите код из письма"
-          isIcon={false}
           extraClass="mb-6"
         />
-        <Button type="primary" size="medium" extraClass="mb-20">
-          <p
-            className={`${resetPasswordStyles.buttonText} text text_type_main-default`}
-          >
-            Сохранить
-          </p>
+        <Button
+          type="primary"
+          size="medium"
+          extraClass="mb-20"
+          htmlType="submit"
+        >
+          <p className={` text text_type_main-default`}>Сохранить</p>
         </Button>
       </form>
       <div className={resetPasswordStyles.buttonsContainer}>
@@ -44,7 +44,12 @@ export const ResetPasswordPage = () => {
         >
           Вспомнили пароль?
         </p>
-        <Button htmlType="button" type="secondary" size="medium">
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          extraClass="pl-2 pr-2"
+        >
           Войти
         </Button>
       </div>

@@ -31,39 +31,39 @@ export const LoginPage = () => {
           extraClass="mb-6"
         />
         <Button
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
           extraClass="mb-20"
         >
-          <p
-            className={`${loginStyles.buttonText} text text_type_main-default`}
-          >
-            Войти
-          </p>
+          <p className={`text text_type_main-default`}>Войти</p>
         </Button>
       </form>
       <div className={loginStyles.buttonsContainer}>
         <p className={`${loginStyles.buttonText} text text_type_main-default`}>
           Вы — новый пользователь?
         </p>
-        <Link
-          className={`${loginStyles.buttonText} text text_type_main-default`}
-          to="/register"
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          extraClass="pl-2 pr-2 pt-2 pb-2"
         >
           Зарегистрироваться
-        </Link>
+        </Button>
       </div>
       <div className={loginStyles.buttonsContainer}>
         <p className={`${loginStyles.buttonText} text text_type_main-default`}>
           Забыли пароль?
         </p>
-        <Link
-          className={`${loginStyles.buttonText} text text_type_main-default`}
-          to="/forgot-password"
+        <Button
+          htmlType="button"
+          type="secondary"
+          size="medium"
+          extraClass="pl-2 pr-2 pt-2 pb-2"
         >
           Восстановить пароль
-        </Link>
+        </Button>
       </div>
     </div>
   );
