@@ -11,6 +11,11 @@
   max-width: 320px;
 }
 
+.profileForm {
+  display: flex;
+  flex-direction: column;
+}
+
 .pageDescription {
   color: #8585ad;
 }

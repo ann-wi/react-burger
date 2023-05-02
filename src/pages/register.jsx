@@ -5,6 +5,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/actions/registerUser";
 import { registerNewUser } from "../services/actions/server-actions";
 
@@ -13,6 +14,11 @@ import registerStyles from "./register-styles.module.css";
 export const RegistrationPage = () => {
   const dispatch = useDispatch();
   const newUser = useSelector((state) => state.reactBurgerReducer.regFormInfo);
+
+  const navigate = useNavigate();
+  const navToLog = () => {
+    navigate("/login");
+  };
 
   const handleChange = (e) => {
     dispatch(registerUser(e.target.name, e.target.value));
@@ -69,6 +75,7 @@ export const RegistrationPage = () => {
           Уже зарегистрированы?
         </p>
         <Button
+          onClick={navToLog}
           htmlType="button"
           type="secondary"
           size="medium"

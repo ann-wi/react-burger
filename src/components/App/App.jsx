@@ -1,12 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 import { AppHeader } from "../AppHeader/AppHeader";
 import { HomePage } from "../../pages/homepage";
-import { ProfilePage } from "../../pages/profile";
 import { LoginPage } from "../../pages/login";
 import { RegistrationPage } from "../../pages/register";
 import { ForgotPasswordPage } from "../../pages/forgot-password";
 import { ResetPasswordPage } from "../../pages/reset-password";
 import { NotFoundPage } from "../../pages/not-found-404";
+import { ProfileForm } from "../ProfileForm/ProfileForm";
+import { ProfileNavigation } from "../ProfileNavigation/ProfileNavigation";
+import { ProfileOrders } from "../ProfileOrders/ProfileOrders";
 
 const App = () => {
   return (
@@ -16,7 +18,10 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProfileNavigation />}>
+            <Route index element={<ProfileForm />} />
+            <Route path="orders" element={<ProfileOrders />} />
+          </Route>
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
           <Route path="*" element={<NotFoundPage />} />

@@ -2,13 +2,18 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import forgotPasswordStyles from "./forgot-password-styles.module.css";
 
 export const ForgotPasswordPage = () => {
   const onChange = (e) => {
     console.log("change!");
+  };
+
+  const navigate = useNavigate();
+  const navToLog = () => {
+    navigate("/login");
   };
 
   return (
@@ -39,6 +44,7 @@ export const ForgotPasswordPage = () => {
           Вспомнили пароль?
         </p>
         <Button
+          onClick={navToLog}
           htmlType="button"
           type="secondary"
           size="medium"

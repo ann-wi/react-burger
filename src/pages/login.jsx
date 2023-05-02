@@ -3,13 +3,22 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import loginStyles from "./login-styles.module.css";
 
 export const LoginPage = () => {
   const onChange = (e) => {
     console.log("change!");
+  };
+
+  const navigate = useNavigate();
+  const navToReg = () => {
+    navigate("/register");
+  };
+
+  const navToForgotPass = () => {
+    navigate("/forgot-password");
   };
 
   return (
@@ -44,6 +53,7 @@ export const LoginPage = () => {
           Вы — новый пользователь?
         </p>
         <Button
+          onClick={navToReg}
           htmlType="button"
           type="secondary"
           size="medium"
@@ -57,6 +67,7 @@ export const LoginPage = () => {
           Забыли пароль?
         </p>
         <Button
+          onClick={navToForgotPass}
           htmlType="button"
           type="secondary"
           size="medium"
