@@ -20,7 +20,7 @@ const App = () => {
           <Route path="login" element={<LoginPage />} />
           <Route path="/profile" element={<ProfileNavigation />}>
             <Route index element={<ProfileForm />} />
-            <Route path="orders" element={<ProfileOrders />} />
+            <Route path="profile-orders" element={<ProfileOrders />} />
           </Route>
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />

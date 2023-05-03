@@ -5,11 +5,11 @@ import profileNavStyles from "./profile-navigation-styles.module.css";
 export const ProfileNavigation = () => {
   const navigate = useNavigate();
   const navToProfile = () => {
-    navigate("/profile-form");
+    navigate("/profile");
   };
 
   const navToOrders = () => {
-    navigate("/orders");
+    navigate("profile-orders");
   };
   return (
     <div className={`${profileNavStyles.profile} mt-30`}>
