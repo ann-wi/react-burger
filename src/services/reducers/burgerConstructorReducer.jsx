@@ -17,6 +17,11 @@ import { SEND_REQUEST_REGISTER } from "../actions/constants";
 import { RESPOND_SUCCESS_REGISTER } from "../actions/constants";
 import { RESPOND_ERROR_REGISTER } from "../actions/constants";
 
+import { LOGIN_USER } from "../actions/constants";
+import { SEND_REQUEST_LOGIN } from "../actions/constants";
+import { RESPOND_SUCCESS_LOGIN } from "../actions/constants";
+import { RESPOND_ERROR_LOGIN } from "../actions/constants";
+
 const initialState = {
   regFormInfo: {
     email: "",
@@ -34,11 +39,21 @@ const initialState = {
   respondErrorIngredients: false,
   sendRequestRegister: false,
   respondErrorRegister: false,
+  sendRequestLogin: false,
+  respondErrorLogin: false,
 };
 
 export const reactBurgerReducer = (state = initialState, action) => {
   switch (action.type) {
     case REGISTER_USER:
+      return {
+        ...state,
+        regFormInfo: {
+          ...state.regFormInfo,
+          [action.payload.field]: action.payload.value,
+        },
+      };
+    case LOGIN_USER:
       return {
         ...state,
         regFormInfo: {
@@ -155,6 +170,24 @@ export const reactBurgerReducer = (state = initialState, action) => {
         ...state,
         sendRequestRegister: false,
         respondErrorRegister: true,
+      };
+    case SEND_REQUEST_LOGIN:
+      return {
+        ...state,
+        sendRequestLogin: true,
+      };
+    case RESPOND_SUCCESS_LOGIN:
+      return {
+        ...state,
+        regFormInfo: action.payload.user,
+        sendRequestLogin: false,
+        respondErrorLogin: false,
+      };
+    case RESPOND_ERROR_LOGIN:
+      return {
+        ...state,
+        sendRequestLogin: false,
+        respondErrorLogin: true,
       };
     default:
       return state;

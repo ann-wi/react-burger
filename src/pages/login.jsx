@@ -4,13 +4,15 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../services/actions/loginUser";
+import { authUser } from "../services/actions/server-actions";
 
 import loginStyles from "./login-styles.module.css";
 
 export const LoginPage = () => {
-  const onChange = (e) => {
-    console.log("change!");
-  };
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.reactBurgerReducer.regFormInfo);
 
   const navigate = useNavigate();
   const navToReg = () => {
@@ -21,22 +23,32 @@ export const LoginPage = () => {
     navigate("/forgot-password");
   };
 
+  const handleChange = (e) => {
+    dispatch(loginUser(e.target.name, e.target.value));
+  };
+
+  const submitLogin = (e) => {
+    e.preventDefault();
+    console.log("clicked!!!", e, user);
+    dispatch(authUser(user));
+  };
+
   return (
     <div className={loginStyles.loginContainer}>
       <h1 className="text text_type_main-medium">Вход</h1>
-      <form action="" className={loginStyles.loginForm}>
+      <form className={loginStyles.loginForm} onSubmit={submitLogin}>
         <EmailInput
-          onChange={onChange}
-          value="@email"
-          name={"email"}
+          onChange={handleChange}
+          value={user.email}
+          name="email"
           placeholder="E-mail"
           isIcon={false}
           extraClass="mt-6 mb-6"
         />
         <PasswordInput
-          onChange={onChange}
-          value="pass"
-          name={"password"}
+          onChange={handleChange}
+          value={user.password}
+          name="password"
           extraClass="mb-6"
         />
         <Button

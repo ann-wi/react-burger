@@ -10,6 +10,10 @@ import { SEND_REQUEST_REGISTER } from "./constants";
 import { RESPOND_SUCCESS_REGISTER } from "./constants";
 import { RESPOND_ERROR_REGISTER } from "./constants";
 
+import { SEND_REQUEST_LOGIN } from "./constants";
+import { RESPOND_SUCCESS_LOGIN } from "./constants";
+import { RESPOND_ERROR_LOGIN } from "./constants";
+
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
 export function sendRequestIngredients(sendRequest) {
@@ -71,6 +75,27 @@ export function respondSuccessRegister(newUser) {
 export function respondErrorRegister(respondError) {
   return {
     type: RESPOND_ERROR_REGISTER,
+    payload: { respondError },
+  };
+}
+
+export function sendRequestLogin(sendRequest) {
+  return {
+    type: SEND_REQUEST_LOGIN,
+    payload: { sendRequest },
+  };
+}
+
+export function respondSuccessLogin(user) {
+  return {
+    type: RESPOND_SUCCESS_LOGIN,
+    payload: { user },
+  };
+}
+
+export function respondErrorLogin(respondError) {
+  return {
+    type: RESPOND_ERROR_LOGIN,
     payload: { respondError },
   };
 }
@@ -147,6 +172,36 @@ export function registerNewUser(info) {
         console.log(err);
         console.log(info);
         dispatch(respondErrorRegister(true));
+      });
+  };
+}
+
+//LOG IN
+
+export function authUser(info) {
+  return function (dispatch) {
+    dispatch(sendRequestLogin(true));
+
+    fetch(`${apiBurger}auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: info.email,
+        password: info.password,
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        console.log(data);
+        console.log(info);
+        dispatch(respondSuccessLogin(data.user));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(info);
+        dispatch(respondErrorLogin(true));
       });
   };
 }
