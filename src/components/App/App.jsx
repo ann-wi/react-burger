@@ -10,6 +10,8 @@ import { ProfileForm } from "../ProfileForm/ProfileForm";
 import { ProfileNavigation } from "../ProfileNavigation/ProfileNavigation";
 import { ProfileOrders } from "../ProfileOrders/ProfileOrders";
 
+import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
+
 const App = () => {
   return (
     <>
@@ -23,7 +25,10 @@ const App = () => {
             <Route path="profile-orders" element={<ProfileOrders />} />
           </Route>
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route
+            path="/"
+            element={<ProtectedRouteElement element={<ResetPasswordPage />} />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

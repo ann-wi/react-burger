@@ -14,6 +14,10 @@ import { SEND_REQUEST_LOGIN } from "./constants";
 import { RESPOND_SUCCESS_LOGIN } from "./constants";
 import { RESPOND_ERROR_LOGIN } from "./constants";
 
+import { SEND_REQUEST_FORGOT_PASSWORD } from "./constants";
+import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "./constants";
+import { RESPOND_ERROR_FORGOT_PASSWORD } from "./constants";
+
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
 export function sendRequestIngredients(sendRequest) {
@@ -96,6 +100,27 @@ export function respondSuccessLogin(user) {
 export function respondErrorLogin(respondError) {
   return {
     type: RESPOND_ERROR_LOGIN,
+    payload: { respondError },
+  };
+}
+
+export function sendRequestForgotPass(sendRequest) {
+  return {
+    type: SEND_REQUEST_FORGOT_PASSWORD,
+    payload: { sendRequest },
+  };
+}
+
+export function respondSuccessForgotPass(email) {
+  return {
+    type: RESPOND_SUCCESS_FORGOT_PASSWORD,
+    payload: { email },
+  };
+}
+
+export function respondErrorForgotPass(respondError) {
+  return {
+    type: RESPOND_ERROR_FORGOT_PASSWORD,
     payload: { respondError },
   };
 }
@@ -202,6 +227,35 @@ export function authUser(info) {
         console.log(err);
         console.log(info);
         dispatch(respondErrorLogin(true));
+      });
+  };
+}
+
+//FORGOT PASSWORD
+
+export function forgotPasswordSendEmail(email) {
+  return function (dispatch) {
+    dispatch(sendRequestForgotPass(true));
+
+    fetch(`https://norma.nomoreparties.space/api/password-reset`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        console.log(data);
+        console.log(email);
+        dispatch(respondSuccessForgotPass(email));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(email);
+        dispatch(respondErrorForgotPass(true));
       });
   };
 }

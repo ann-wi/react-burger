@@ -19,11 +19,11 @@
   border: none;
   width: 178px;
   height: 56px;
-  color: #fff;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
+  text-decoration-line: none;
 }
 
 .buttonText {
@@ -37,6 +37,11 @@
   color: #fff;
 }
 
+.activeLink {
+  composes: button;
+  color: #4c4cff;
+}
+
 .logo {
   margin-left: 17px;
 }
@@ -47,4 +52,8 @@
 
 .navProfile {
   margin-left: 288px;
+}
+
+.button:hover {
+  transition: all 0.3s ease-in;
 }

@@ -2,27 +2,44 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { forgotPassword } from "../services/actions/forgotPassword";
+import { forgotPasswordSendEmail } from "../services/actions/server-actions";
 
 import forgotPasswordStyles from "./forgot-password-styles.module.css";
 
 export const ForgotPasswordPage = () => {
-  const onChange = (e) => {
-    console.log("change!");
-  };
+  const dispatch = useDispatch();
+  const email = useSelector(
+    (state) => state.reactBurgerReducer.forgotPasswordEmail
+  );
 
   const navigate = useNavigate();
   const navToLog = () => {
     navigate("/login");
   };
 
+  const handleChange = (e) => {
+    dispatch(forgotPassword(e.target.name, e.target.value));
+  };
+
+  const submitEmail = (e) => {
+    e.preventDefault();
+    console.log("clicked!!!", e, email);
+    dispatch(forgotPasswordSendEmail(email));
+  };
+
   return (
     <div className={forgotPasswordStyles.passwordContainer}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <form action="" className={forgotPasswordStyles.passwordForm}>
+      <form
+        className={forgotPasswordStyles.passwordForm}
+        onSubmit={submitEmail}
+      >
         <EmailInput
-          onChange={onChange}
-          value="@email"
+          onChange={handleChange}
+          value={email.email}
           name={"email"}
           placeholder="Укажите e-mail"
           isIcon={false}

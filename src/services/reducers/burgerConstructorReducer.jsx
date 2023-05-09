@@ -22,11 +22,19 @@ import { SEND_REQUEST_LOGIN } from "../actions/constants";
 import { RESPOND_SUCCESS_LOGIN } from "../actions/constants";
 import { RESPOND_ERROR_LOGIN } from "../actions/constants";
 
+import { FORGOT_PASSWORD } from "../actions/constants";
+import { SEND_REQUEST_FORGOT_PASSWORD } from "../actions/constants";
+import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../actions/constants";
+import { RESPOND_ERROR_FORGOT_PASSWORD } from "../actions/constants";
+
 const initialState = {
   regFormInfo: {
     email: "",
     password: "",
     name: "",
+  },
+  forgotPasswordEmail: {
+    email: "",
   },
   ingredients: [],
   addedIngredients: [],
@@ -41,6 +49,8 @@ const initialState = {
   respondErrorRegister: false,
   sendRequestLogin: false,
   respondErrorLogin: false,
+  sendRequestForgotPass: false,
+  respondErrorForgotPass: false,
 };
 
 export const reactBurgerReducer = (state = initialState, action) => {
@@ -58,6 +68,14 @@ export const reactBurgerReducer = (state = initialState, action) => {
         ...state,
         regFormInfo: {
           ...state.regFormInfo,
+          [action.payload.field]: action.payload.value,
+        },
+      };
+    case FORGOT_PASSWORD:
+      return {
+        ...state,
+        forgotPasswordEmail: {
+          ...state.forgotPasswordEmail,
           [action.payload.field]: action.payload.value,
         },
       };
@@ -188,6 +206,24 @@ export const reactBurgerReducer = (state = initialState, action) => {
         ...state,
         sendRequestLogin: false,
         respondErrorLogin: true,
+      };
+    case SEND_REQUEST_FORGOT_PASSWORD:
+      return {
+        ...state,
+        sendRequestForgotPass: true,
+      };
+    case RESPOND_SUCCESS_FORGOT_PASSWORD:
+      return {
+        ...state,
+        forgotPasswordEmail: action.payload.email,
+        sendRequestForgotPass: false,
+        respondErrorForgotPass: false,
+      };
+    case RESPOND_ERROR_FORGOT_PASSWORD:
+      return {
+        ...state,
+        sendRequestForgotPass: false,
+        respondErrorForgotPass: true,
       };
     default:
       return state;
