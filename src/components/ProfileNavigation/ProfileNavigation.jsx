@@ -1,52 +1,46 @@
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Outlet, useNavigate } from "react-router-dom";
-import profileNavStyles from "./profile-navigation-styles.module.css";
+import { NavLink } from "react-router-dom";
+import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
-export const ProfileNavigation = () => {
-  const navigate = useNavigate();
-  const navToProfile = () => {
-    navigate("/profile");
-  };
-
-  const navToOrders = () => {
-    navigate("profile-orders");
-  };
+export const ProfileNavigation = (props) => {
   return (
-    <div className={`${profileNavStyles.profile} mt-30`}>
-      <div className={`${profileNavStyles.profilePagesLinks} mr-15`}>
-        <Button
-          onClick={navToProfile}
-          htmlType="button"
-          type="secondary"
-          size="large"
-          extraClass="pl-1 pr-1"
+    <ul className={profileNavigationStyles.navList}>
+      <li>
+        <NavLink to={"/profile"} className={profileNavigationStyles.navLink}>
+          <p
+            className={`${profileNavigationStyles.text} ${
+              props.active && profileNavigationStyles.active
+            }`}
+          >
+            Профиль
+          </p>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to={"/profile/orders"}
+          className={profileNavigationStyles.navLink}
         >
-          <p className="text text_type_main-medium">Профиль</p>
-        </Button>
-        <Button
-          onClick={navToOrders}
-          htmlType="button"
-          type="secondary"
-          size="large"
-          extraClass="pl-1 pr-1"
-        >
-          <p className="text text_type_main-medium">История заказов</p>
-        </Button>
-        <Button
-          htmlType="button"
-          type="secondary"
-          size="large"
-          extraClass="pl-1 pr-1 mb-20"
-        >
-          <p className="text text_type_main-medium">Выход</p>
-        </Button>
-        <p
-          className={`${profileNavStyles.pageDescription} pl-1 ext text_type_main-default`}
-        >
-          В этом разделе вы можете изменить свои персональные данные
-        </p>
-      </div>
-      <Outlet />
-    </div>
+          <p
+            className={`${profileNavigationStyles.text} ${
+              props.isActive && profileNavigationStyles.active
+            }`}
+          >
+            История заказов
+          </p>
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to={"/login"} className={profileNavigationStyles.navLink}>
+          <p className={profileNavigationStyles.text}>Выход</p>
+        </NavLink>
+      </li>
+      <p
+        className={`${profileNavigationStyles.about} ${
+          props.isActive && profileNavigationStyles.disabled
+        }`}
+      >
+        В этом разделе вы можете изменить свои персональные данные
+      </p>
+    </ul>
   );
 };

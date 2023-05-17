@@ -1,4 +1,4 @@
-import { INCREASE_INGREDIENT } from "./constants";
+import { INCREASE_INGREDIENT } from "../../utils/constants";
 
 export function increaseIngredient(id) {
   return {

@@ -1,4 +1,4 @@
-import { FORGOT_PASSWORD } from "./constants";
+import { FORGOT_PASSWORD } from "../../utils/constants";
 
 export function forgotPassword(field, value) {
   return {

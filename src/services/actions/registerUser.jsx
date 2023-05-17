@@ -1,4 +1,4 @@
-import { REGISTER_USER } from "./constants";
+import { REGISTER_USER } from "../../utils/constants";
 
 export function registerUser(field, value) {
   return {

@@ -13,7 +13,7 @@ import registerStyles from "./register-styles.module.css";
 
 export const RegistrationPage = () => {
   const dispatch = useDispatch();
-  const newUser = useSelector((state) => state.reactBurgerReducer.regFormInfo);
+  const newUser = useSelector((state) => state.reactBurgerReducer.user);
 
   const navigate = useNavigate();
   const navToLog = () => {

@@ -12,7 +12,7 @@ import loginStyles from "./login-styles.module.css";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.reactBurgerReducer.regFormInfo);
+  const user = useSelector((state) => state.reactBurgerReducer.user);
 
   const navigate = useNavigate();
   const navToReg = () => {

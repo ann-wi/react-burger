@@ -1,4 +1,4 @@
-import { ADD_INGREDIENT } from "./constants";
+import { ADD_INGREDIENT } from "../../utils/constants";
 
 export function addIngredient(ingredient, id) {
   return {

@@ -1,4 +1,4 @@
-import { SET_INGREDIENTS } from "./constants";
+import { SET_INGREDIENTS } from "../../utils/constants";
 
 export function setNewIngrs(sortedIngrs) {
   return {

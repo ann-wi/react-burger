@@ -1,38 +1,50 @@
-import { ADD_INGREDIENT } from "../actions/constants";
-import { DELETE_INGREDIENT } from "../actions/constants";
-import { GET_INGREDIENT_DETAILS } from "../actions/constants";
-import { SET_INGREDIENTS } from "../actions/constants";
-import { SUM_ORDER } from "../actions/constants";
-import { INCREASE_INGREDIENT } from "../actions/constants";
-import { DECREASE_INGREDIENT } from "../actions/constants";
-import { SEND_REQUEST_INGREDIENTS } from "../actions/constants";
-import { RESPOND_SUCCESS_INGREDIENTS } from "../actions/constants";
-import { RESPOND_ERROR_INGREDIENTS } from "../actions/constants";
-import { SEND_REQUEST_ORDER } from "../actions/constants";
-import { RESPOND_SUCCESS_ORDER } from "../actions/constants";
-import { RESPOND_ERROR_ORDER } from "../actions/constants";
+import { ADD_INGREDIENT } from "../../utils/constants";
+import { DELETE_INGREDIENT } from "../../utils/constants";
+import { GET_INGREDIENT_DETAILS } from "../../utils/constants";
+import { SET_INGREDIENTS } from "../../utils/constants";
+import { SUM_ORDER } from "../../utils/constants";
+import { INCREASE_INGREDIENT } from "../../utils/constants";
+import { DECREASE_INGREDIENT } from "../../utils/constants";
+import { SEND_REQUEST_INGREDIENTS } from "../../utils/constants";
+import { RESPOND_SUCCESS_INGREDIENTS } from "../../utils/constants";
+import { RESPOND_ERROR_INGREDIENTS } from "../../utils/constants";
+import { SEND_REQUEST_ORDER } from "../../utils/constants";
+import { RESPOND_SUCCESS_ORDER } from "../../utils/constants";
+import { RESPOND_ERROR_ORDER } from "../../utils/constants";
 
-import { REGISTER_USER } from "../actions/constants";
-import { SEND_REQUEST_REGISTER } from "../actions/constants";
-import { RESPOND_SUCCESS_REGISTER } from "../actions/constants";
-import { RESPOND_ERROR_REGISTER } from "../actions/constants";
+import { REGISTER_USER } from "../../utils/constants";
+import { SEND_REQUEST_REGISTER } from "../../utils/constants";
+import { RESPOND_SUCCESS_REGISTER } from "../../utils/constants";
+import { RESPOND_ERROR_REGISTER } from "../../utils/constants";
 
-import { LOGIN_USER } from "../actions/constants";
-import { SEND_REQUEST_LOGIN } from "../actions/constants";
-import { RESPOND_SUCCESS_LOGIN } from "../actions/constants";
-import { RESPOND_ERROR_LOGIN } from "../actions/constants";
+import { LOGIN_USER } from "../../utils/constants";
+import { SEND_REQUEST_LOGIN } from "../../utils/constants";
+import { RESPOND_SUCCESS_LOGIN } from "../../utils/constants";
+import { RESPOND_ERROR_LOGIN } from "../../utils/constants";
 
-import { FORGOT_PASSWORD } from "../actions/constants";
-import { SEND_REQUEST_FORGOT_PASSWORD } from "../actions/constants";
-import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../actions/constants";
-import { RESPOND_ERROR_FORGOT_PASSWORD } from "../actions/constants";
+import { SEND_REQUEST_USER } from "../../utils/constants";
+import { RESPOND_SUCCESS_USER } from "../../utils/constants";
+import { RESPOND_ERROR_USER } from "../../utils/constants";
+
+import { CHANGE_USER } from "../../utils/constants";
+import { SEND_REQUEST_CHANGE_USER } from "../../utils/constants";
+import { RESPOND_SUCCESS_CHANGE_USER } from "../../utils/constants";
+import { RESPOND_ERROR_CHANGE_USER } from "../../utils/constants";
+
+import { FORGOT_PASSWORD } from "../../utils/constants";
+import { SEND_REQUEST_FORGOT_PASSWORD } from "../../utils/constants";
+import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../utils/constants";
+import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../utils/constants";
 
 const initialState = {
-  regFormInfo: {
+  user: {
     email: "",
     password: "",
     name: "",
   },
+  accessToken: "",
+  refreshToken: "",
+  userIsAuthorized: false,
   forgotPasswordEmail: {
     email: "",
   },
@@ -49,6 +61,8 @@ const initialState = {
   respondErrorRegister: false,
   sendRequestLogin: false,
   respondErrorLogin: false,
+  sendRequestUser: false,
+  respondErrorUser: false,
   sendRequestForgotPass: false,
   respondErrorForgotPass: false,
 };
@@ -58,16 +72,24 @@ export const reactBurgerReducer = (state = initialState, action) => {
     case REGISTER_USER:
       return {
         ...state,
-        regFormInfo: {
-          ...state.regFormInfo,
+        user: {
+          ...state.user,
           [action.payload.field]: action.payload.value,
         },
       };
     case LOGIN_USER:
       return {
         ...state,
-        regFormInfo: {
-          ...state.regFormInfo,
+        user: {
+          ...state.user,
+          [action.payload.field]: action.payload.value,
+        },
+      };
+    case CHANGE_USER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
           [action.payload.field]: action.payload.value,
         },
       };
@@ -179,7 +201,9 @@ export const reactBurgerReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_REGISTER:
       return {
         ...state,
-        regFormInfo: action.payload.newUser,
+        user: action.payload.newUser,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
         sendRequestRegister: false,
         respondErrorRegister: false,
       };
@@ -197,7 +221,9 @@ export const reactBurgerReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_LOGIN:
       return {
         ...state,
-        regFormInfo: action.payload.user,
+        user: action.payload.user,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
         sendRequestLogin: false,
         respondErrorLogin: false,
       };
@@ -207,6 +233,44 @@ export const reactBurgerReducer = (state = initialState, action) => {
         sendRequestLogin: false,
         respondErrorLogin: true,
       };
+    case SEND_REQUEST_USER:
+      return {
+        ...state,
+        sendRequestUser: true,
+      };
+    case RESPOND_SUCCESS_USER:
+      return {
+        ...state,
+        user: action.payload.user,
+        userIsAuthorized: true,
+        sendRequestUser: false,
+        respondErrorUser: false,
+      };
+    case RESPOND_ERROR_USER:
+      return {
+        ...state,
+        sendRequestLogin: false,
+        respondErrorLogin: true,
+      };
+    case SEND_REQUEST_CHANGE_USER:
+      return {
+        ...state,
+        sendRequestChangeUser: true,
+      };
+    case RESPOND_SUCCESS_CHANGE_USER:
+      return {
+        ...state,
+        user: action.payload.user,
+        sendRequestChangeUser: false,
+        respondErrorChangeUser: false,
+      };
+    case RESPOND_ERROR_CHANGE_USER:
+      return {
+        ...state,
+        sendRequestChangeUser: false,
+        respondErrorChangeUser: true,
+      };
+
     case SEND_REQUEST_FORGOT_PASSWORD:
       return {
         ...state,

@@ -1,4 +1,4 @@
-import { LOGIN_USER } from "./constants";
+import { LOGIN_USER } from "../../utils/constants";
 
 export function loginUser(field, value) {
   return {

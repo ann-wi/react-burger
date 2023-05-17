@@ -9,7 +9,7 @@ import profileFormStyles from "./profile-form-styles.module.css";
 
 export const ProfileForm = () => {
   const dispatch = useDispatch();
-  const newUser = useSelector((state) => state.reactBurgerReducer.regFormInfo);
+  const newUser = useSelector((state) => state.reactBurgerReducer.user);
 
   const onChange = (e) => {
     console.log("change!");

@@ -1,22 +1,32 @@
 import { checkResponse } from "../../utils/serverResponse";
-import { SEND_REQUEST_INGREDIENTS } from "./constants";
-import { RESPOND_SUCCESS_INGREDIENTS } from "./constants";
-import { RESPOND_ERROR_INGREDIENTS } from "./constants";
-import { SEND_REQUEST_ORDER } from "./constants";
-import { RESPOND_SUCCESS_ORDER } from "./constants";
-import { RESPOND_ERROR_ORDER } from "./constants";
+import { setCookie, getCookie } from "../../utils/cookiesFunction";
 
-import { SEND_REQUEST_REGISTER } from "./constants";
-import { RESPOND_SUCCESS_REGISTER } from "./constants";
-import { RESPOND_ERROR_REGISTER } from "./constants";
+import { SEND_REQUEST_INGREDIENTS } from "../../utils/constants";
+import { RESPOND_SUCCESS_INGREDIENTS } from "../../utils/constants";
+import { RESPOND_ERROR_INGREDIENTS } from "../../utils/constants";
+import { SEND_REQUEST_ORDER } from "../../utils/constants";
+import { RESPOND_SUCCESS_ORDER } from "../../utils/constants";
+import { RESPOND_ERROR_ORDER } from "../../utils/constants";
 
-import { SEND_REQUEST_LOGIN } from "./constants";
-import { RESPOND_SUCCESS_LOGIN } from "./constants";
-import { RESPOND_ERROR_LOGIN } from "./constants";
+import { SEND_REQUEST_REGISTER } from "../../utils/constants";
+import { RESPOND_SUCCESS_REGISTER } from "../../utils/constants";
+import { RESPOND_ERROR_REGISTER } from "../../utils/constants";
 
-import { SEND_REQUEST_FORGOT_PASSWORD } from "./constants";
-import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "./constants";
-import { RESPOND_ERROR_FORGOT_PASSWORD } from "./constants";
+import { SEND_REQUEST_LOGIN } from "../../utils/constants";
+import { RESPOND_SUCCESS_LOGIN } from "../../utils/constants";
+import { RESPOND_ERROR_LOGIN } from "../../utils/constants";
+
+import { SEND_REQUEST_USER } from "../../utils/constants";
+import { RESPOND_SUCCESS_USER } from "../../utils/constants";
+import { RESPOND_ERROR_USER } from "../../utils/constants";
+
+import { SEND_REQUEST_CHANGE_USER } from "../../utils/constants";
+import { RESPOND_SUCCESS_CHANGE_USER } from "../../utils/constants";
+import { RESPOND_ERROR_CHANGE_USER } from "../../utils/constants";
+
+import { SEND_REQUEST_FORGOT_PASSWORD } from "../../utils/constants";
+import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../utils/constants";
+import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../utils/constants";
 
 const apiBurger = "https://norma.nomoreparties.space/api/";
 
@@ -69,10 +79,10 @@ export function sendRequestRegister(sendRequest) {
   };
 }
 
-export function respondSuccessRegister(newUser) {
+export function respondSuccessRegister(newUser, accessToken, refreshToken) {
   return {
     type: RESPOND_SUCCESS_REGISTER,
-    payload: { newUser },
+    payload: { newUser, accessToken, refreshToken },
   };
 }
 
@@ -90,16 +100,58 @@ export function sendRequestLogin(sendRequest) {
   };
 }
 
-export function respondSuccessLogin(user) {
+export function respondSuccessLogin(user, accessToken, refreshToken) {
   return {
     type: RESPOND_SUCCESS_LOGIN,
-    payload: { user },
+    payload: { user, accessToken, refreshToken },
   };
 }
 
 export function respondErrorLogin(respondError) {
   return {
     type: RESPOND_ERROR_LOGIN,
+    payload: { respondError },
+  };
+}
+
+export function sendRequestUser(user) {
+  return {
+    type: SEND_REQUEST_USER,
+    payload: { user },
+  };
+}
+
+export function respondSuccessUser(user) {
+  return {
+    type: RESPOND_SUCCESS_USER,
+    payload: { user },
+  };
+}
+
+export function respondErrorUser(respondError) {
+  return {
+    type: RESPOND_ERROR_USER,
+    payload: { respondError },
+  };
+}
+
+export function sendRequestChangeUser(user) {
+  return {
+    type: SEND_REQUEST_CHANGE_USER,
+    payload: { user },
+  };
+}
+
+export function respondSuccessChangeUser(user) {
+  return {
+    type: RESPOND_SUCCESS_CHANGE_USER,
+    payload: { user },
+  };
+}
+
+export function respondErrorChangeUser(respondError) {
+  return {
+    type: RESPOND_ERROR_CHANGE_USER,
     payload: { respondError },
   };
 }
@@ -189,9 +241,17 @@ export function registerNewUser(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
-        console.log(info);
-        dispatch(respondSuccessRegister(data.user));
+        if (data.success) {
+          console.log(data.accessToken, data.refreshToken);
+          setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
+          dispatch(
+            respondSuccessRegister(
+              data.user,
+              data.accessToken,
+              data.refreshToken
+            )
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -219,9 +279,13 @@ export function authUser(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
-        console.log(info);
-        dispatch(respondSuccessLogin(data.user));
+        if (data.success) {
+          console.log(data.accessToken, data.refreshToken);
+          setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
+          dispatch(
+            respondSuccessLogin(data.user, data.accessToken, data.refreshToken)
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -231,9 +295,65 @@ export function authUser(info) {
   };
 }
 
+// GET USER PROFILE
+
+export function getUserProfile() {
+  return function (dispatch) {
+    dispatch(sendRequestUser(true));
+
+    fetch(`${apiBurger}auth/user`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("accessToken"),
+      },
+    })
+      .then(checkResponse)
+      .then((data) => {
+        dispatch(respondSuccessUser(data.user));
+        console.log(data);
+        console.log(data.user);
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(respondErrorUser(true));
+      });
+  };
+}
+
+//CHANGE USER INFO
+
+export function changeUserInfo(info) {
+  return function (dispatch) {
+    dispatch(sendRequestChangeUser(true));
+
+    fetch(`${apiBurger}auth/user`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + getCookie("accessToken"),
+      },
+      body: JSON.stringify({
+        name: info.name,
+        email: info.email,
+        password: info.password,
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        dispatch(respondSuccessChangeUser(data.user));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(info);
+        dispatch(respondErrorChangeUser(true));
+      });
+  };
+}
+
 //FORGOT PASSWORD
 
-export function forgotPasswordSendEmail(email) {
+export function forgotPasswordSendEmail(info) {
   return function (dispatch) {
     dispatch(sendRequestForgotPass(true));
 
@@ -243,18 +363,18 @@ export function forgotPasswordSendEmail(email) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email: info.email,
       }),
     })
       .then(checkResponse)
       .then((data) => {
         console.log(data);
-        console.log(email);
-        dispatch(respondSuccessForgotPass(email));
+        console.log(info);
+        dispatch(respondSuccessForgotPass(info));
       })
       .catch((err) => {
         console.log(err);
-        console.log(email);
+        console.log(info);
         dispatch(respondErrorForgotPass(true));
       });
   };
