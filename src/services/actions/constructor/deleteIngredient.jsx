@@ -1,4 +1,4 @@
-import { DELETE_INGREDIENT } from "../../utils/constants";
+import { DELETE_INGREDIENT } from "../../../utils/constants";
 
 export function deleteIngredient(ingredient) {
   return {

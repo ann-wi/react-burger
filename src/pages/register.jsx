@@ -6,14 +6,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../services/actions/registerUser";
-import { registerNewUser } from "../services/actions/server-actions";
+import { registerUser } from "../services/actions/user/registerUser";
+import { registerNewUser } from "../services/actions/constructor/server-actions-constructor";
 
 import registerStyles from "./register-styles.module.css";
 
 export const RegistrationPage = () => {
   const dispatch = useDispatch();
-  const newUser = useSelector((state) => state.reactBurgerReducer.user);
+  const newUser = useSelector((state) => state.userReducer.user);
 
   const navigate = useNavigate();
   const navToLog = () => {

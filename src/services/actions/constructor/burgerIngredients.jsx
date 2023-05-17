@@ -1,4 +1,4 @@
-import { GET_INGREDIENTS_LIST } from "../../utils/constants";
+import { GET_INGREDIENTS_LIST } from "../../../utils/constants";
 
 export function getIngredientsList(ingredients) {
   return {

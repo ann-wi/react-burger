@@ -1,4 +1,4 @@
-import { CHANGE_USER } from "../../utils/constants";
+import { CHANGE_USER } from "../../../utils/constants";
 
 export function changeUser(field, value) {
   return {

@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserProfile,
   changeUserInfo,
-} from "../services/actions/server-actions";
-import { changeUser } from "../services/actions/changeUser";
+} from "../services/actions/constructor/server-actions-constructor";
+import { changeUser } from "../services/actions/user/changeUser";
 
 export const ProfilePage = () => {
-  const name = useSelector((state) => state.reactBurgerReducer.user.name);
-  const email = useSelector((state) => state.reactBurgerReducer.user.email);
-  const user = useSelector((state) => state.reactBurgerReducer.user);
+  const name = useSelector((state) => state.userReducer.user.name);
+  const email = useSelector((state) => state.userReducer.user.email);
+  const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
 
   useEffect(() => {

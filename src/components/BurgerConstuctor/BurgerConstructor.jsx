@@ -7,14 +7,14 @@ import OrderPrice from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 
-import { sumOrder } from "../../services/actions/sumOrder";
-import { getOrderNumber } from "../../services/actions/server-actions";
-import { deleteIngredient } from "../../services/actions/deleteIngredient";
+import { sumOrder } from "../../services/actions/constructor/sumOrder";
+import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
+import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
 
 const BurgerConstructor = ({ onClickPopup }) => {
   const dispatch = useDispatch();
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
 
   useEffect(() => {

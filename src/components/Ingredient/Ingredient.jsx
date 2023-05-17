@@ -10,7 +10,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
   const { _id, name, price, image, type, counter } = ingredient;
   ingredient.uuid = uuid();
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
 
   const [, ingrDragRef] = useDrag({

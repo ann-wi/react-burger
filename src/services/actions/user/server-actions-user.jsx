@@ -1,76 +1,25 @@
-import { checkResponse } from "../../utils/serverResponse";
-import { setCookie, getCookie } from "../../utils/cookiesFunction";
+import { checkResponse, apiBurger } from "../../../utils/server";
+import { setCookie, getCookie } from "../../../utils/cookiesFunction";
 
-import { SEND_REQUEST_INGREDIENTS } from "../../utils/constants";
-import { RESPOND_SUCCESS_INGREDIENTS } from "../../utils/constants";
-import { RESPOND_ERROR_INGREDIENTS } from "../../utils/constants";
-import { SEND_REQUEST_ORDER } from "../../utils/constants";
-import { RESPOND_SUCCESS_ORDER } from "../../utils/constants";
-import { RESPOND_ERROR_ORDER } from "../../utils/constants";
+import { SEND_REQUEST_REGISTER } from "../../../utils/constants";
+import { RESPOND_SUCCESS_REGISTER } from "../../../utils/constants";
+import { RESPOND_ERROR_REGISTER } from "../../../utils/constants";
 
-import { SEND_REQUEST_REGISTER } from "../../utils/constants";
-import { RESPOND_SUCCESS_REGISTER } from "../../utils/constants";
-import { RESPOND_ERROR_REGISTER } from "../../utils/constants";
+import { SEND_REQUEST_LOGIN } from "../../../utils/constants";
+import { RESPOND_SUCCESS_LOGIN } from "../../../utils/constants";
+import { RESPOND_ERROR_LOGIN } from "../../../utils/constants";
 
-import { SEND_REQUEST_LOGIN } from "../../utils/constants";
-import { RESPOND_SUCCESS_LOGIN } from "../../utils/constants";
-import { RESPOND_ERROR_LOGIN } from "../../utils/constants";
+import { SEND_REQUEST_USER } from "../../../utils/constants";
+import { RESPOND_SUCCESS_USER } from "../../../utils/constants";
+import { RESPOND_ERROR_USER } from "../../../utils/constants";
 
-import { SEND_REQUEST_USER } from "../../utils/constants";
-import { RESPOND_SUCCESS_USER } from "../../utils/constants";
-import { RESPOND_ERROR_USER } from "../../utils/constants";
+import { SEND_REQUEST_CHANGE_USER } from "../../../utils/constants";
+import { RESPOND_SUCCESS_CHANGE_USER } from "../../../utils/constants";
+import { RESPOND_ERROR_CHANGE_USER } from "../../../utils/constants";
 
-import { SEND_REQUEST_CHANGE_USER } from "../../utils/constants";
-import { RESPOND_SUCCESS_CHANGE_USER } from "../../utils/constants";
-import { RESPOND_ERROR_CHANGE_USER } from "../../utils/constants";
-
-import { SEND_REQUEST_FORGOT_PASSWORD } from "../../utils/constants";
-import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../utils/constants";
-import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../utils/constants";
-
-const apiBurger = "https://norma.nomoreparties.space/api/";
-
-export function sendRequestIngredients(sendRequest) {
-  return {
-    type: SEND_REQUEST_INGREDIENTS,
-    payload: { sendRequest },
-  };
-}
-
-export function respondSuccessIngredients(ingredients) {
-  return {
-    type: RESPOND_SUCCESS_INGREDIENTS,
-    payload: { ingredients },
-  };
-}
-
-export function respondErrorIngredients(respondError) {
-  return {
-    type: RESPOND_ERROR_INGREDIENTS,
-    payload: { respondError },
-  };
-}
-
-export function sendRequestOrder(sendRequest) {
-  return {
-    type: SEND_REQUEST_ORDER,
-    payload: { sendRequest },
-  };
-}
-
-export function respondSuccessOrder(number) {
-  return {
-    type: RESPOND_SUCCESS_ORDER,
-    payload: { number },
-  };
-}
-
-export function respondErrorOrder(respondError) {
-  return {
-    type: RESPOND_ERROR_ORDER,
-    payload: { respondError },
-  };
-}
+import { SEND_REQUEST_FORGOT_PASSWORD } from "../../../utils/constants";
+import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../../utils/constants";
+import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../../utils/constants";
 
 export function sendRequestRegister(sendRequest) {
   return {
@@ -174,51 +123,6 @@ export function respondErrorForgotPass(respondError) {
   return {
     type: RESPOND_ERROR_FORGOT_PASSWORD,
     payload: { respondError },
-  };
-}
-
-export function getIngredients() {
-  return function (dispatch) {
-    dispatch(sendRequestIngredients(true));
-
-    fetch(`${apiBurger}ingredients`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(checkResponse)
-      .then((data) => {
-        data.data.forEach((item) => {
-          item.counter = 0;
-        });
-        dispatch(respondSuccessIngredients(data.data));
-      })
-      .catch((err) => {
-        dispatch(respondErrorIngredients(true));
-      });
-  };
-}
-
-export function getOrderNumber(ingredientsIds) {
-  return function (dispatch) {
-    dispatch(sendRequestOrder(true));
-
-    fetch(`${apiBurger}orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsIds,
-      }),
-    })
-      .then(checkResponse)
-      .then((data) => {
-        dispatch(respondSuccessOrder(data.order.number));
-      })
-      .catch((err) => {
-        dispatch(respondErrorOrder(true));
-      });
   };
 }
 

@@ -7,9 +7,6 @@ import { ForgotPasswordPage } from "../../pages/forgot-password";
 import { ResetPasswordPage } from "../../pages/reset-password";
 import { NotFoundPage } from "../../pages/not-found-404";
 import { ProfilePage } from "../../pages/profile";
-import { ProfileForm } from "../ProfileForm/ProfileForm";
-import { ProfileNavigation } from "../ProfileNavigation/ProfileNavigation";
-import { ProfileOrders } from "../ProfileOrders/ProfileOrders";
 
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 

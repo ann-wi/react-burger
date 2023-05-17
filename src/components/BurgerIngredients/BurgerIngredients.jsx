@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 const BurgerIngredients = ({ onClickPopup }) => {
   const ingredients = useSelector(
-    (state) => state.reactBurgerReducer.ingredients
+    (state) => state.constructorReducer.ingredients
   );
 
   const tabBuns = useRef(null);

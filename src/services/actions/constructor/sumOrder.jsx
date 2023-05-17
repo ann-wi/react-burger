@@ -1,4 +1,4 @@
-import { SUM_ORDER } from "../../utils/constants";
+import { SUM_ORDER } from "../../../utils/constants";
 
 export function sumOrder(total) {
   return {

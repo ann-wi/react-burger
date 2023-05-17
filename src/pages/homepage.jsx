@@ -9,8 +9,8 @@ import IngredientDetails from "../components/IngredientDetails/IngredientsDetail
 import Order from "../components/Order/Order";
 import Modal from "../components/Modal/Modal";
 
-import { getIngredientDetails } from "../services/actions/ingredientDetails";
-import { getIngredients } from "../services/actions/server-actions";
+import { getIngredientDetails } from "../services/actions/constructor/ingredientDetails";
+import { getIngredients } from "../services/actions/constructor/server-actions-constructor";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -19,12 +19,12 @@ export const HomePage = () => {
   const [isOrderOpened, setIsOrderOpened] = useState(false);
 
   const currentIngredient = useSelector(
-    (state) => state.reactBurgerReducer.currentIngredient
+    (state) => state.constructorReducer.currentIngredient
   );
 
   const [orderPrice, setOrderPrice] = useState(0);
   const orderDetails = useSelector(
-    (state) => state.reactBurgerReducer.orderNumber
+    (state) => state.constructorReducer.orderNumber
   );
 
   useEffect(() => {

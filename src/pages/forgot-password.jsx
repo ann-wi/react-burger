@@ -4,16 +4,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { forgotPassword } from "../services/actions/forgotPassword";
-import { forgotPasswordSendEmail } from "../services/actions/server-actions";
+import { forgotPassword } from "../services/actions/user/forgotPassword";
+import { forgotPasswordSendEmail } from "../services/actions/constructor/server-actions-constructor";
 
 import forgotPasswordStyles from "./forgot-password-styles.module.css";
 
 export const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
-  const email = useSelector(
-    (state) => state.reactBurgerReducer.forgotPasswordEmail
-  );
+  const email = useSelector((state) => state.userReducer.forgotPasswordEmail);
 
   const navigate = useNavigate();
   const navToLog = () => {

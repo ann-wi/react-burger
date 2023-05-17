@@ -1,4 +1,4 @@
-import { DECREASE_INGREDIENT } from "../../utils/constants";
+import { DECREASE_INGREDIENT } from "../../../utils/constants";
 
 export function decreaseIngredient(id) {
   return {
