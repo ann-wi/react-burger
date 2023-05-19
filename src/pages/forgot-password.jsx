@@ -5,7 +5,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { forgotPassword } from "../services/actions/user/forgotPassword";
-import { forgotPasswordSendEmail } from "../services/actions/constructor/server-actions-constructor";
+import { forgotPasswordSendEmail } from "../services/actions/user/server-actions-user";
 
 import forgotPasswordStyles from "./forgot-password-styles.module.css";
 

@@ -10,6 +10,9 @@ const BurgerIngredients = ({ onClickPopup }) => {
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
+  const currentIngredient = useSelector(
+    (state) => state.constructorReducer.currentIngredient
+  );
 
   const tabBuns = useRef(null);
   const tabSauces = useRef(null);

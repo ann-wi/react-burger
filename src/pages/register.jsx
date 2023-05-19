@@ -7,7 +7,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/actions/user/registerUser";
-import { registerNewUser } from "../services/actions/constructor/server-actions-constructor";
+import { registerNewUser } from "../services/actions/user/server-actions-user";
 
 import registerStyles from "./register-styles.module.css";
 

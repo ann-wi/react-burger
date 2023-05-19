@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getUserProfile,
   changeUserInfo,
-} from "../services/actions/constructor/server-actions-constructor";
+} from "../services/actions/user/server-actions-user";
 import { changeUser } from "../services/actions/user/changeUser";
 
 export const ProfilePage = () => {

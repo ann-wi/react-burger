@@ -5,17 +5,17 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import homepageStyles from "./homepage-styles.module.css";
 import BurgerIngredients from "../components/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../components/BurgerConstuctor/BurgerConstructor";
-import IngredientDetails from "../components/IngredientDetails/IngredientsDetails";
+import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import Order from "../components/Order/Order";
 import Modal from "../components/Modal/Modal";
 
 import { getIngredientDetails } from "../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../services/actions/constructor/server-actions-constructor";
 
-export const HomePage = () => {
+export const HomePage = ({ clickFunc }) => {
   const dispatch = useDispatch();
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
-    useState(false);
+  //const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
+  //  useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
 
   const currentIngredient = useSelector(
@@ -27,18 +27,14 @@ export const HomePage = () => {
     (state) => state.constructorReducer.orderNumber
   );
 
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
-
   function closePopups() {
-    setIsIngredientDetailsOpened(false);
+    //setIsIngredientDetailsOpened(false);
     setIsOrderOpened(false);
   }
 
   const handleIngredientClick = (ingredient) => {
     dispatch(getIngredientDetails(ingredient));
-    setIsIngredientDetailsOpened(true);
+    //setIsIngredientDetailsOpened(true);
   };
 
   const handleOrderClick = () => {
@@ -49,15 +45,10 @@ export const HomePage = () => {
     <>
       <main className={homepageStyles.app}>
         <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients onClickPopup={handleIngredientClick} />
+          <BurgerIngredients onClickPopup={clickFunc} />
           <BurgerConstructor onClickPopup={handleOrderClick} />
         </DndProvider>
       </main>
-      {isIngredientDetailsOpened && (
-        <Modal onCloseClick={closePopups}>
-          <IngredientDetails ingredient={currentIngredient} />
-        </Modal>
-      )}
       {isOrderOpened && (
         <Modal onCloseClick={closePopups}>
           <Order orderNumber={orderDetails} />

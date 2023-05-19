@@ -6,7 +6,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/actions/user/loginUser";
-import { authUser } from "../services/actions/constructor/server-actions-constructor";
+import { authUser } from "../services/actions/user/server-actions-user";
 
 import loginStyles from "./login-styles.module.css";
 
