@@ -17,6 +17,10 @@ import { SEND_REQUEST_CHANGE_USER } from "../../../utils/constants";
 import { RESPOND_SUCCESS_CHANGE_USER } from "../../../utils/constants";
 import { RESPOND_ERROR_CHANGE_USER } from "../../../utils/constants";
 
+import { SEND_REQUEST_LOGOUT } from "../../../utils/constants";
+import { RESPOND_SUCCESS_LOGOUT } from "../../../utils/constants";
+import { RESPOND_ERROR_LOGOUT } from "../../../utils/constants";
+
 import { SEND_REQUEST_FORGOT_PASSWORD } from "../../../utils/constants";
 import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../../utils/constants";
 import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../../utils/constants";
@@ -105,6 +109,27 @@ export function respondErrorChangeUser(respondError) {
   };
 }
 
+export function sendRequestLogout(user) {
+  return {
+    type: SEND_REQUEST_LOGOUT,
+    payload: { user },
+  };
+}
+
+export function respondSuccessLogout(user, accessToken, refreshToken) {
+  return {
+    type: RESPOND_SUCCESS_LOGOUT,
+    payload: { user, accessToken, refreshToken },
+  };
+}
+
+export function respondErrorLogout(respondError) {
+  return {
+    type: RESPOND_ERROR_LOGOUT,
+    payload: { respondError },
+  };
+}
+
 export function sendRequestForgotPass(sendRequest) {
   return {
     type: SEND_REQUEST_FORGOT_PASSWORD,
@@ -145,17 +170,12 @@ export function registerNewUser(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        if (data.success) {
-          console.log(data.accessToken, data.refreshToken);
-          setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
-          dispatch(
-            respondSuccessRegister(
-              data.user,
-              data.accessToken,
-              data.refreshToken
-            )
-          );
-        }
+        console.log(data.accessToken, data.refreshToken);
+        setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
+        setCookie("refreshToken", data.refreshToken);
+        dispatch(
+          respondSuccessRegister(data.user, data.accessToken, data.refreshToken)
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -183,18 +203,46 @@ export function authUser(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        if (data.success) {
-          console.log(data.accessToken, data.refreshToken);
-          setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
-          dispatch(
-            respondSuccessLogin(data.user, data.accessToken, data.refreshToken)
-          );
-        }
+        console.log(data.accessToken, data.refreshToken);
+        setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
+        setCookie("refreshToken", data.refreshToken);
+        dispatch(
+          respondSuccessLogin(data.user, data.accessToken, data.refreshToken)
+        );
       })
       .catch((err) => {
         console.log(err);
         console.log(info);
         dispatch(respondErrorLogin(true));
+      });
+  };
+}
+
+// LOG OUT
+
+export function logoutUser() {
+  return function (dispatch) {
+    dispatch(sendRequestLogout(true));
+
+    fetch(`${apiBurger}auth/logout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: getCookie("refreshToken"),
+      }),
+    })
+      .then(checkResponse)
+      .then(() => {
+        setCookie("accessToken", "");
+        setCookie("refreshToken", "");
+        dispatch(respondSuccessLogout({}, "", ""));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log();
+        dispatch(respondErrorLogout(true));
       });
   };
 }

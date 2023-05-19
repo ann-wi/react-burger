@@ -17,6 +17,11 @@ import { SEND_REQUEST_CHANGE_USER } from "../../utils/constants";
 import { RESPOND_SUCCESS_CHANGE_USER } from "../../utils/constants";
 import { RESPOND_ERROR_CHANGE_USER } from "../../utils/constants";
 
+import { LOGOUT_USER } from "../../utils/constants";
+import { SEND_REQUEST_LOGOUT } from "../../utils/constants";
+import { RESPOND_SUCCESS_LOGOUT } from "../../utils/constants";
+import { RESPOND_ERROR_LOGOUT } from "../../utils/constants";
+
 import { FORGOT_PASSWORD } from "../../utils/constants";
 import { SEND_REQUEST_FORGOT_PASSWORD } from "../../utils/constants";
 import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../utils/constants";
@@ -38,6 +43,8 @@ const initialState = {
   respondErrorRegister: false,
   sendRequestLogin: false,
   respondErrorLogin: false,
+  sendRequestLogout: false,
+  respondErrorLogout: false,
   sendRequestUser: false,
   respondErrorUser: false,
   sendRequestForgotPass: false,
@@ -70,6 +77,11 @@ export const userReducer = (state = initialState, action) => {
           [action.payload.field]: action.payload.value,
         },
       };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        userIsAuthorized: false,
+      };
     case FORGOT_PASSWORD:
       return {
         ...state,
@@ -89,6 +101,7 @@ export const userReducer = (state = initialState, action) => {
         user: action.payload.newUser,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
+        userIsAuthorized: action.payload.accessToken,
         sendRequestRegister: false,
         respondErrorRegister: false,
       };
@@ -109,6 +122,7 @@ export const userReducer = (state = initialState, action) => {
         user: action.payload.user,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
+        userIsAuthorized: action.payload.accessToken,
         sendRequestLogin: false,
         respondErrorLogin: false,
       };
@@ -116,6 +130,26 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         sendRequestLogin: false,
+        respondErrorLogin: true,
+      };
+    case SEND_REQUEST_LOGOUT:
+      return {
+        ...state,
+        sendRequestLogout: true,
+      };
+    case RESPOND_SUCCESS_LOGOUT:
+      return {
+        ...state,
+        user: action.payload.user,
+        accessToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
+        sendRequestLogout: false,
+        respondErrorLogout: false,
+      };
+    case RESPOND_ERROR_LOGOUT:
+      return {
+        ...state,
+        sendRequestLogout: false,
         respondErrorLogin: true,
       };
     case SEND_REQUEST_USER:

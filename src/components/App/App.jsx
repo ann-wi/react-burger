@@ -7,6 +7,7 @@ import { ForgotPasswordPage } from "../../pages/forgot-password";
 import { ResetPasswordPage } from "../../pages/reset-password";
 import { NotFoundPage } from "../../pages/not-found-404";
 import { ProfilePage } from "../../pages/profile";
+import { ProfileOrdersPage } from "../../pages/profile-orders";
 
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 
@@ -18,7 +19,8 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile/orders" element={<ProfileOrdersPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route
             path="/"

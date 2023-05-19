@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ConstructorContainer from "../ConstructorContainer/ConstructorContainer";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  CurrencyIcon,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
 import OrderPrice from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
@@ -70,19 +73,18 @@ const BurgerConstructor = ({ onClickPopup }) => {
             <OrderPrice />
             <CurrencyIcon type="primary"></CurrencyIcon>
           </div>
-          <button
+          <Button
+            type={"primary"}
+            size={"medium"}
+            htmlType={"button"}
+            extraClass="ml-10"
             onClick={() => {
               handleMakeOrderClick();
               onClickPopup();
             }}
-            className={`${constructorStyles.button} ml-10`}
           >
-            <p
-              className={`${constructorStyles.buttonText} text text_type_main-default`}
-            >
-              Оформить заказ
-            </p>
-          </button>
+            Оформить заказ
+          </Button>
         </div>
       </section>
     </>

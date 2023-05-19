@@ -1,7 +1,15 @@
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { logoutUser } from "../../services/actions/user/server-actions-user";
 import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
 export const ProfileNavigation = (props) => {
+  const dispatch = useDispatch();
+
+  const logoutUser = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <ul className={profileNavigationStyles.navList}>
       <li>
@@ -30,7 +38,11 @@ export const ProfileNavigation = (props) => {
         </NavLink>
       </li>
       <li>
-        <NavLink to={"/login"} className={profileNavigationStyles.navLink}>
+        <NavLink
+          to={"/login"}
+          className={profileNavigationStyles.navLink}
+          onClick={logoutUser}
+        >
           <p className={profileNavigationStyles.text}>Выход</p>
         </NavLink>
       </li>
