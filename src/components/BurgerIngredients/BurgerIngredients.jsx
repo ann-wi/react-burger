@@ -2,11 +2,14 @@ import { useRef, useState } from "react";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../Ingredient/Ingredient";
+import { Link, useLocation } from "react-router-dom";
 import { Scrollbar } from "smooth-scrollbar-react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 const BurgerIngredients = ({ onClickPopup }) => {
+  const location = useLocation();
+
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
@@ -66,13 +69,21 @@ const BurgerIngredients = ({ onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
                   .map((ingredient) => (
-                    <Ingredient
-                      ingrType={"burgerBun"}
+                    <Link
+                      to={{
+                        pathname: `/ingredients/${ingredient._id}`,
+                        state: { background: location },
+                      }}
                       key={ingredient._id}
-                      idx={ingredients.indexOf(ingredient)}
-                      onClickPopup={onClickPopup}
-                      ingredient={ingredient}
-                    />
+                    >
+                      <Ingredient
+                        ingrType={"burgerBun"}
+                        key={ingredient._id}
+                        idx={ingredients.indexOf(ingredient)}
+                        onClickPopup={onClickPopup}
+                        ingredient={ingredient}
+                      />
+                    </Link>
                   ))}
               </div>
             </div>

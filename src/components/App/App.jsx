@@ -14,6 +14,9 @@ import { ProfileOrdersPage } from "../../pages/profile-orders";
 
 import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
+import { getUserProfile } from "../../services/actions/user/server-actions-user";
+import { refreshUserToken } from "../../services/actions/user/server-actions-user";
+import { getCookie } from "../../utils/cookiesFunction";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
@@ -23,6 +26,9 @@ const App = () => {
   const location = useLocation();
   const { id } = useParams();
   const background = location.state && location.state.background;
+
+  const cookie = getCookie("accessToken");
+  const userRefreshToken = getCookie("refreshToken");
 
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
@@ -38,6 +44,14 @@ const App = () => {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!cookie && userRefreshToken) {
+      dispatch(refreshUserToken());
+    } else if (cookie && userRefreshToken) {
+      dispatch(getUserProfile());
+    }
+  }, [cookie, userRefreshToken]);
+
   function closePopups() {
     setIsIngredientDetailsOpened(false);
   }
@@ -47,7 +61,7 @@ const App = () => {
     console.log(ingredient);
 
     const findIngr = ingredients.find((i) => i._id === id);
-    dispatch(getIngredientDetails(findIngr));
+    dispatch(getIngredientDetails(ingredient));
     console.log(currentIngredient);
   };
 

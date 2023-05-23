@@ -25,6 +25,10 @@ import { SEND_REQUEST_FORGOT_PASSWORD } from "../../../utils/constants";
 import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../../utils/constants";
 import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../../utils/constants";
 
+import { SEND_REQUEST_REFRESH_TOKEN } from "../../../utils/constants";
+import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../../utils/constants";
+import { RESPOND_ERROR_REFRESH_TOKEN } from "../../../utils/constants";
+
 export function sendRequestRegister(sendRequest) {
   return {
     type: SEND_REQUEST_REGISTER,
@@ -147,6 +151,27 @@ export function respondSuccessForgotPass(email) {
 export function respondErrorForgotPass(respondError) {
   return {
     type: RESPOND_ERROR_FORGOT_PASSWORD,
+    payload: { respondError },
+  };
+}
+
+export function sendRequestRefreshToken(sendRequest) {
+  return {
+    type: SEND_REQUEST_REFRESH_TOKEN,
+    payload: { sendRequest },
+  };
+}
+
+export function respondSuccessRefreshToken(access, refresh) {
+  return {
+    type: RESPOND_SUCCESS_REFRESH_TOKEN,
+    payload: { access, refresh },
+  };
+}
+
+export function respondErrorRefreshToken(respondError) {
+  return {
+    type: RESPOND_ERROR_REFRESH_TOKEN,
     payload: { respondError },
   };
 }
@@ -328,6 +353,37 @@ export function forgotPasswordSendEmail(info) {
         console.log(err);
         console.log(info);
         dispatch(respondErrorForgotPass(true));
+      });
+  };
+}
+
+//REFRESH USER TOKEN
+
+export function refreshUserToken() {
+  return function (dispatch) {
+    dispatch(sendRequestRefreshToken(true));
+
+    fetch(`${apiBurger}auth/token`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token: getCookie("refreshToken"),
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        console.log(data);
+        setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
+        setCookie("refreshToken", data.refreshToken);
+        dispatch(
+          respondSuccessRefreshToken(data.accessToken, data.refreshToken)
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        dispatch(respondErrorRefreshToken(true));
       });
   };
 }
