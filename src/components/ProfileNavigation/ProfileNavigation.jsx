@@ -1,12 +1,14 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logoutUser } from "../../services/actions/user/server-actions-user";
 import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
 export const ProfileNavigation = (props) => {
   const dispatch = useDispatch();
+  const userIsAuth = useSelector((state) => state.userReducer.userIsAuthorized);
 
-  const logoutUser = () => {
+  const clickLogout = () => {
+    console.log(userIsAuth);
     dispatch(logoutUser());
   };
 
@@ -41,7 +43,7 @@ export const ProfileNavigation = (props) => {
         <NavLink
           to={"/login"}
           className={profileNavigationStyles.navLink}
-          onClick={logoutUser}
+          onClick={clickLogout}
         >
           <p className={profileNavigationStyles.text}>Выход</p>
         </NavLink>

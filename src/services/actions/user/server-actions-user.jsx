@@ -25,6 +25,10 @@ import { SEND_REQUEST_FORGOT_PASSWORD } from "../../../utils/constants";
 import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../../utils/constants";
 import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../../utils/constants";
 
+import { SEND_REQUEST_RESET_PASSWORD } from "../../../utils/constants";
+import { RESPOND_SUCCESS_RESET_PASSWORD } from "../../../utils/constants";
+import { RESPOND_ERROR_RESET_PASSWORD } from "../../../utils/constants";
+
 import { SEND_REQUEST_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_ERROR_REFRESH_TOKEN } from "../../../utils/constants";
@@ -155,6 +159,27 @@ export function respondErrorForgotPass(respondError) {
   };
 }
 
+export function sendRequestResetPass(sendRequest) {
+  return {
+    type: SEND_REQUEST_RESET_PASSWORD,
+    payload: { sendRequest },
+  };
+}
+
+export function respondSuccessResetPass(success) {
+  return {
+    type: RESPOND_SUCCESS_RESET_PASSWORD,
+    payload: { success },
+  };
+}
+
+export function respondErrorResetPass(respondError) {
+  return {
+    type: RESPOND_ERROR_RESET_PASSWORD,
+    payload: { respondError },
+  };
+}
+
 export function sendRequestRefreshToken(sendRequest) {
   return {
     type: SEND_REQUEST_REFRESH_TOKEN,
@@ -263,10 +288,10 @@ export function logoutUser() {
         setCookie("accessToken", "");
         setCookie("refreshToken", "");
         dispatch(respondSuccessLogout({}, "", ""));
+        console.log("LOGGED OUT!!!!");
       })
       .catch((err) => {
         console.log(err);
-        console.log();
         dispatch(respondErrorLogout(true));
       });
   };
@@ -357,6 +382,36 @@ export function forgotPasswordSendEmail(info) {
   };
 }
 
+// RESET PASSWORD
+
+export function resetPassword(info) {
+  return function (dispatch) {
+    dispatch(sendRequestResetPass(true));
+
+    fetch(`${apiBurger}password-reset/reset`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        password: info.password,
+        token: info.token,
+      }),
+    })
+      .then(checkResponse)
+      .then((data) => {
+        console.log(data);
+        console.log(info);
+        dispatch(respondSuccessResetPass(true));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(info);
+        dispatch(respondErrorResetPass(true));
+      });
+  };
+}
+
 //REFRESH USER TOKEN
 
 export function refreshUserToken() {
@@ -374,7 +429,7 @@ export function refreshUserToken() {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
+        console.log("REFRESH TOKEN");
         setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
         setCookie("refreshToken", data.refreshToken);
         dispatch(
@@ -382,7 +437,7 @@ export function refreshUserToken() {
         );
       })
       .catch((err) => {
-        console.log(err);
+        console.log("no refresh token");
         dispatch(respondErrorRefreshToken(true));
       });
   };

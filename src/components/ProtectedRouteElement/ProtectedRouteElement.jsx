@@ -1,31 +1,21 @@
-import { Navigate, Route } from "react-router-dom";
+import { Navigate, Route, useLocation } from "react-router-dom";
 import { getCookie } from "../../utils/cookiesFunction";
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getUserProfile } from "../../services/actions/user/server-actions-user";
+import { useEffect, useState } from "react";
 
-export const ProtectedRouteElement = ({
-  mustBeAuthorized,
-  children,
-  ...rest
-}) => {
-  const isAuthorized = getCookie("accessToken");
+// add prop types
+export const ProtectedRouteElement = ({ element, mustBeAuthorized }) => {
+  const isAuthorized = useSelector(
+    (state) => state.userReducer.userIsAuthorized
+  );
   const location = useLocation();
 
-  if (!mustBeAuthorized && isAuthorized) {
-    const { from } = location.state || { from: { pathname: "/" } };
-    return (
-      <Route {...rest}>
-        <Navigate to={from} />
-      </Route>
-    );
-  }
+  const [isUserLoaded, setUserLoaded] = useState(false);
 
-  if (mustBeAuthorized && !isAuthorized) {
-    return (
-      <Route {...rest}>
-        <Navigate to={{ pathname: "/login", state: { from: location } }} />
-      </Route>
-    );
-  }
+  useEffect(() => {
+    console.log(isAuthorized);
+  }, []);
 
-  return <Route {...rest}>{children}</Route>;
+  return isAuthorized ? element : <Navigate to="/login" replace />;
 };

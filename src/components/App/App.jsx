@@ -1,4 +1,10 @@
-import { Routes, Route, useLocation, useParams } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useLocation,
+  useParams,
+  useNavigate,
+} from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,27 +30,29 @@ import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteEl
 const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const { id } = useParams();
   const background = location.state && location.state.background;
-
-  const cookie = getCookie("accessToken");
-  const userRefreshToken = getCookie("refreshToken");
-
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
-    useState(false);
-  const currentIngredient = useSelector(
-    (state) => state.constructorReducer.currentIngredient
-  );
 
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
+  const currentIngredient = useSelector(
+    (state) => state.constructorReducer.currentIngredient
+  );
+  const isAuth = useSelector((state) => state.userReducer.userIsAuthorized);
+  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
+    useState(false);
+
+  const cookie = getCookie("accessToken");
+  const userRefreshToken = getCookie("refreshToken");
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
   useEffect(() => {
+    console.log(cookie, userRefreshToken, isAuth);
     if (!cookie && userRefreshToken) {
       dispatch(refreshUserToken());
     } else if (cookie && userRefreshToken) {
@@ -54,6 +62,7 @@ const App = () => {
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);
+    navigate(-1);
   }
 
   const handleIngredientClick = (ingredient) => {
@@ -71,7 +80,7 @@ const App = () => {
         <Route path="/" element={<AppHeader />}>
           <Route
             index
-            element={<HomePage clickFunc={handleIngredientClick} />}
+            element={<HomePage openIngrPopup={handleIngredientClick} />}
           />
           <Route
             path="ingredients/:id"
@@ -83,7 +92,10 @@ const App = () => {
           />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route
+            path="profile"
+            element={<ProtectedRouteElement element={<ProfilePage />} />}
+          />
           <Route path="profile/orders" element={<ProfileOrdersPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route

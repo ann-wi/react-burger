@@ -27,6 +27,11 @@ import { SEND_REQUEST_FORGOT_PASSWORD } from "../../utils/constants";
 import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../utils/constants";
 import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../utils/constants";
 
+import { RESET_PASSWORD } from "../../utils/constants";
+import { SEND_REQUEST_RESET_PASSWORD } from "../../utils/constants";
+import { RESPOND_SUCCESS_RESET_PASSWORD } from "../../utils/constants";
+import { RESPOND_ERROR_RESET_PASSWORD } from "../../utils/constants";
+
 const initialState = {
   user: {
     email: "",
@@ -39,6 +44,8 @@ const initialState = {
   forgotPasswordEmail: {
     email: "",
   },
+  newPassSuccess: false,
+  pendingNewPass: false,
   sendRequestRegister: false,
   respondErrorRegister: false,
   sendRequestLogin: false,
@@ -49,6 +56,8 @@ const initialState = {
   respondErrorUser: false,
   sendRequestForgotPass: false,
   respondErrorForgotPass: false,
+  sendRequestResetPass: false,
+  respondErrorResetPass: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -68,6 +77,7 @@ export const userReducer = (state = initialState, action) => {
           ...state.user,
           [action.payload.field]: action.payload.value,
         },
+        userIsAuthorized: true,
       };
     case CHANGE_USER:
       return {
@@ -90,6 +100,11 @@ export const userReducer = (state = initialState, action) => {
           [action.payload.field]: action.payload.value,
         },
       };
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        token: action.payload.token,
+      };
     case SEND_REQUEST_REGISTER:
       return {
         ...state,
@@ -101,7 +116,7 @@ export const userReducer = (state = initialState, action) => {
         user: action.payload.newUser,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
-        userIsAuthorized: action.payload.accessToken,
+        userIsAuthorized: true,
         sendRequestRegister: false,
         respondErrorRegister: false,
       };
@@ -122,7 +137,7 @@ export const userReducer = (state = initialState, action) => {
         user: action.payload.user,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
-        userIsAuthorized: action.payload.accessToken,
+        userIsAuthorized: true,
         sendRequestLogin: false,
         respondErrorLogin: false,
       };
@@ -207,6 +222,25 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         sendRequestForgotPass: false,
         respondErrorForgotPass: true,
+      };
+    case SEND_REQUEST_RESET_PASSWORD:
+      return {
+        ...state,
+        sendRequestResetPass: true,
+      };
+    case RESPOND_SUCCESS_RESET_PASSWORD:
+      return {
+        ...state,
+        newPassSuccess: true,
+        pendingNewPass: false,
+        sendRequestResetPass: false,
+        respondErrorResetPass: false,
+      };
+    case RESPOND_ERROR_RESET_PASSWORD:
+      return {
+        ...state,
+        sendRequestResetPass: false,
+        respondErrorResetPass: true,
       };
     default:
       return state;

@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/actions/user/loginUser";
 import { authUser } from "../services/actions/user/server-actions-user";
+import { getCookie } from "../utils/cookiesFunction";
 
 import loginStyles from "./login-styles.module.css";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.user);
+  const isAuthorized = getCookie("accessToken");
 
   const navigate = useNavigate();
   const navToReg = () => {
@@ -31,6 +33,10 @@ export const LoginPage = () => {
     e.preventDefault();
     console.log("clicked!!!", e, user);
     dispatch(authUser(user));
+
+    if (isAuthorized) {
+      navigate("/profile");
+    }
   };
 
   return (

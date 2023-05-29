@@ -8,11 +8,12 @@ import BurgerConstructor from "../components/BurgerConstuctor/BurgerConstructor"
 import IngredientDetails from "../components/IngredientDetails/IngredientDetails";
 import Order from "../components/Order/Order";
 import Modal from "../components/Modal/Modal";
+import PropTypes from "prop-types";
 
 import { getIngredientDetails } from "../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../services/actions/constructor/server-actions-constructor";
 
-export const HomePage = ({ clickFunc }) => {
+export const HomePage = ({ openIngrPopup }) => {
   const dispatch = useDispatch();
   //const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
   //  useState(false);
@@ -45,7 +46,7 @@ export const HomePage = ({ clickFunc }) => {
     <>
       <main className={homepageStyles.app}>
         <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients onClickPopup={clickFunc} />
+          <BurgerIngredients onClickPopup={openIngrPopup} />
           <BurgerConstructor onClickPopup={handleOrderClick} />
         </DndProvider>
       </main>
@@ -56,4 +57,8 @@ export const HomePage = ({ clickFunc }) => {
       )}
     </>
   );
+};
+
+HomePage.propTypes = {
+  openIngrPopup: PropTypes.func,
 };
