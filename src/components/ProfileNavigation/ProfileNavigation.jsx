@@ -5,10 +5,8 @@ import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
 export const ProfileNavigation = (props) => {
   const dispatch = useDispatch();
-  const userIsAuth = useSelector((state) => state.userReducer.userIsAuthorized);
 
   const clickLogout = () => {
-    console.log(userIsAuth);
     dispatch(logoutUser());
   };
 

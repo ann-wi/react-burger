@@ -23,7 +23,7 @@ export const ProfilePage = () => {
     if (user) {
       dispatch(getUserProfile());
     }
-  }, []);
+  }, [dispatch]);
 
   const handleChange = (e) => {
     dispatch(changeUser(e.target.name, e.target.value));

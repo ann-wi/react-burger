@@ -31,16 +31,11 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const { id } = useParams();
   const background = location.state && location.state.background;
 
-  const ingredients = useSelector(
-    (state) => state.constructorReducer.ingredients
-  );
   const currentIngredient = useSelector(
     (state) => state.constructorReducer.currentIngredient
   );
-  const isAuth = useSelector((state) => state.userReducer.userIsAuthorized);
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
 
@@ -52,7 +47,6 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(cookie, userRefreshToken, isAuth);
     if (!cookie && userRefreshToken) {
       dispatch(refreshUserToken());
     } else if (cookie && userRefreshToken) {
@@ -67,11 +61,8 @@ const App = () => {
 
   const handleIngredientClick = (ingredient) => {
     setIsIngredientDetailsOpened(true);
-    console.log(ingredient);
 
-    const findIngr = ingredients.find((i) => i._id === id);
     dispatch(getIngredientDetails(ingredient));
-    console.log(currentIngredient);
   };
 
   return (
@@ -94,13 +85,23 @@ const App = () => {
           <Route path="login" element={<LoginPage />} />
           <Route
             path="profile"
-            element={<ProtectedRouteElement element={<ProfilePage />} />}
+            element={
+              <ProtectedRouteElement
+                element={<ProfilePage />}
+                mustBeAuthorized={true}
+              />
+            }
           />
           <Route path="profile/orders" element={<ProfileOrdersPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route
             path="/reset-password"
-            element={<ProtectedRouteElement element={<ResetPasswordPage />} />}
+            element={
+              <ProtectedRouteElement
+                element={<ResetPasswordPage />}
+                mustBeAuthorized={false}
+              />
+            }
           />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

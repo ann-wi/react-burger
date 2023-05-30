@@ -26,8 +26,9 @@ export const RegistrationPage = () => {
 
   const submitReg = (e) => {
     e.preventDefault();
-    console.log("clicked!!!", e, newUser);
     dispatch(registerNewUser(newUser));
+
+    navigate("/profile");
   };
 
   return (

@@ -46,6 +46,8 @@ const initialState = {
   },
   newPassSuccess: false,
   pendingNewPass: false,
+  userIsValid: false,
+  code: "",
   sendRequestRegister: false,
   respondErrorRegister: false,
   sendRequestLogin: false,
@@ -103,7 +105,7 @@ export const userReducer = (state = initialState, action) => {
     case RESET_PASSWORD:
       return {
         ...state,
-        token: action.payload.token,
+        [action.payload.field]: action.payload.value,
       };
     case SEND_REQUEST_REGISTER:
       return {
@@ -216,6 +218,7 @@ export const userReducer = (state = initialState, action) => {
         forgotPasswordEmail: action.payload.email,
         sendRequestForgotPass: false,
         respondErrorForgotPass: false,
+        userIsValid: true,
       };
     case RESPOND_ERROR_FORGOT_PASSWORD:
       return {

@@ -220,7 +220,6 @@ export function registerNewUser(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data.accessToken, data.refreshToken);
         setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
         setCookie("refreshToken", data.refreshToken);
         dispatch(
@@ -228,8 +227,6 @@ export function registerNewUser(info) {
         );
       })
       .catch((err) => {
-        console.log(err);
-        console.log(info);
         dispatch(respondErrorRegister(true));
       });
   };
@@ -253,7 +250,6 @@ export function authUser(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data.accessToken, data.refreshToken);
         setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
         setCookie("refreshToken", data.refreshToken);
         dispatch(
@@ -261,8 +257,6 @@ export function authUser(info) {
         );
       })
       .catch((err) => {
-        console.log(err);
-        console.log(info);
         dispatch(respondErrorLogin(true));
       });
   };
@@ -288,10 +282,8 @@ export function logoutUser() {
         setCookie("accessToken", "");
         setCookie("refreshToken", "");
         dispatch(respondSuccessLogout({}, "", ""));
-        console.log("LOGGED OUT!!!!");
       })
       .catch((err) => {
-        console.log(err);
         dispatch(respondErrorLogout(true));
       });
   };
@@ -313,11 +305,8 @@ export function getUserProfile() {
       .then(checkResponse)
       .then((data) => {
         dispatch(respondSuccessUser(data.user));
-        console.log(data);
-        console.log(data.user);
       })
       .catch((err) => {
-        console.log(err);
         dispatch(respondErrorUser(true));
       });
   };
@@ -346,8 +335,6 @@ export function changeUserInfo(info) {
         dispatch(respondSuccessChangeUser(data.user));
       })
       .catch((err) => {
-        console.log(err);
-        console.log(info);
         dispatch(respondErrorChangeUser(true));
       });
   };
@@ -370,13 +357,9 @@ export function forgotPasswordSendEmail(info) {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
-        console.log(info);
         dispatch(respondSuccessForgotPass(info));
       })
       .catch((err) => {
-        console.log(err);
-        console.log(info);
         dispatch(respondErrorForgotPass(true));
       });
   };
@@ -384,7 +367,7 @@ export function forgotPasswordSendEmail(info) {
 
 // RESET PASSWORD
 
-export function resetPassword(info) {
+export function resetUserPassword(password, code) {
   return function (dispatch) {
     dispatch(sendRequestResetPass(true));
 
@@ -394,19 +377,15 @@ export function resetPassword(info) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        password: info.password,
-        token: info.token,
+        password: password,
+        token: code,
       }),
     })
       .then(checkResponse)
       .then((data) => {
-        console.log(data);
-        console.log(info);
         dispatch(respondSuccessResetPass(true));
       })
       .catch((err) => {
-        console.log(err);
-        console.log(info);
         dispatch(respondErrorResetPass(true));
       });
   };
@@ -429,7 +408,6 @@ export function refreshUserToken() {
     })
       .then(checkResponse)
       .then((data) => {
-        console.log("REFRESH TOKEN");
         setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
         setCookie("refreshToken", data.refreshToken);
         dispatch(
@@ -437,7 +415,6 @@ export function refreshUserToken() {
         );
       })
       .catch((err) => {
-        console.log("no refresh token");
         dispatch(respondErrorRefreshToken(true));
       });
   };

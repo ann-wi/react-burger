@@ -24,8 +24,9 @@ export const ForgotPasswordPage = () => {
 
   const submitEmail = (e) => {
     e.preventDefault();
-    console.log("clicked!!!", e, email);
     dispatch(forgotPasswordSendEmail(email));
+
+    return navigate("/reset-password");
   };
 
   return (
