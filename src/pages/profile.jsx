@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
 import {
-  Button,
   Input,
+  EmailInput,
   PasswordInput,
+  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import profileStyles from "./profile-styles.module.css";
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
@@ -41,54 +42,46 @@ export const ProfilePage = () => {
   return (
     <div className={profileStyles.container}>
       <ProfileNavigation active={true} isActive={false} />
-      <form onSubmit={submitChange}>
-        <ul className={profileStyles.inputList}>
-          <li className={`mt-6`}>
-            <Input
-              value={name}
-              onChange={handleChange}
-              type={"text"}
-              placeholder={"Имя"}
-              name={"name"}
-              extraClass="ml-1"
-              icon={"EditIcon"}
-              error={false}
-            />
-          </li>
-          <li className={`mt-6`}>
-            <Input
-              value={email}
-              onChange={handleChange}
-              placeholder={"Email"}
-              name={"email"}
-              icon={"EditIcon"}
-            />
-          </li>
-          <li className={`mt-6`}>
-            <PasswordInput
-              value={user.password}
-              name={"password"}
-              onChange={handleChange}
-              extraClass="ml-1"
-              icon={"EditIcon"}
-            />
-          </li>
-          <li className={profileStyles.li}>
-            <div>
-              <Button
-                type={"secondary"}
-                size={"medium"}
-                htmlType={"button"}
-                onClick={cancelChanges}
-              >
-                Отмена
-              </Button>
-              <Button type={"primary"} size={"medium"} htmlType={"submit"}>
-                Сохранить
-              </Button>
-            </div>
-          </li>
-        </ul>
+      <form className={profileStyles.inputList} onSubmit={submitChange}>
+        <Input
+          value={name}
+          onChange={handleChange}
+          type={"text"}
+          placeholder={"Имя"}
+          name={"name"}
+          extraClass="ml-1 mt-6"
+          icon={"EditIcon"}
+          error={false}
+        />
+        <Input
+          value={email}
+          onChange={handleChange}
+          placeholder={"Email"}
+          name={"email"}
+          icon={"EditIcon"}
+          extraClass="mt-6"
+        />
+        <PasswordInput
+          value={user.password}
+          name={"password"}
+          onChange={handleChange}
+          extraClass="ml-1 mt-6"
+          icon={"EditIcon"}
+        />
+        <div>
+          <Button
+            type={"secondary"}
+            size={"medium"}
+            htmlType={"button"}
+            onClick={cancelChanges}
+            extraClass="pt-6"
+          >
+            Отмена
+          </Button>
+          <Button type={"primary"} size={"medium"} htmlType={"submit"}>
+            Сохранить
+          </Button>
+        </div>
       </form>
     </div>
   );

@@ -31,7 +31,6 @@ export const LoginPage = () => {
 
   const submitLogin = (e) => {
     e.preventDefault();
-    console.log("clicked!!!", e, user);
     dispatch(authUser(user));
 
     if (isAuthorized) {

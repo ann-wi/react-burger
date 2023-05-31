@@ -3,6 +3,7 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { resetPassword } from "../services/actions/user/resetPassword";
@@ -17,6 +18,12 @@ export const ResetPasswordPage = () => {
   const code = useSelector((state) => state.userReducer.code);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userIsValid) {
+      navigate("/forgot-password");
+    }
+  });
 
   const navToLogin = () => {
     navigate("/login");

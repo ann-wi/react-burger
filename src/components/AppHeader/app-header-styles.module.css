@@ -37,9 +37,8 @@
   color: #fff;
 }
 
-.activeLink {
-  composes: button;
-  color: #4c4cff;
+.active {
+  color: rgba(242, 242, 243, 1);
 }
 
 .logo {

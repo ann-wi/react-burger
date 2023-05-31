@@ -15,8 +15,6 @@ import { getIngredients } from "../services/actions/constructor/server-actions-c
 
 export const HomePage = ({ openIngrPopup }) => {
   const dispatch = useDispatch();
-  //const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
-  //  useState(false);
   const [isOrderOpened, setIsOrderOpened] = useState(false);
 
   const currentIngredient = useSelector(

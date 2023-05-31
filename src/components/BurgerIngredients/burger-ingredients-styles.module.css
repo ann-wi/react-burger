@@ -44,3 +44,12 @@
 .sectionTitle {
   grid-area: section;
 }
+
+.link {
+  text-decoration: none;
+  color: rgba(242, 242, 243, 1);
+}
+
+.active {
+  color: rgba(242, 242, 243, 1);
+}

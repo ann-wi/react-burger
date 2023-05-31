@@ -68,7 +68,7 @@ const App = () => {
   return (
     <>
       <Routes location={background || location}>
-        <Route path="/" element={<AppHeader />}>
+        <Route path="/" element={<AppHeader active={true} isActive={false} />}>
           <Route
             index
             element={<HomePage openIngrPopup={handleIngredientClick} />}
@@ -81,8 +81,24 @@ const App = () => {
               </Modal>
             }
           />
-          <Route path="register" element={<RegistrationPage />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route
+            path="register"
+            element={
+              <ProtectedRouteElement
+                element={<RegistrationPage />}
+                mustBeAuthorized={false}
+              />
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <ProtectedRouteElement
+                element={<LoginPage />}
+                mustBeAuthorized={false}
+              />
+            }
+          />
           <Route
             path="profile"
             element={
@@ -93,7 +109,15 @@ const App = () => {
             }
           />
           <Route path="profile/orders" element={<ProfileOrdersPage />} />
-          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route
+            path="forgot-password"
+            element={
+              <ProtectedRouteElement
+                element={<ForgotPasswordPage />}
+                mustBeAuthorized={false}
+              />
+            }
+          />
           <Route
             path="/reset-password"
             element={
