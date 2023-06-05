@@ -17,6 +17,7 @@ import { ResetPasswordPage } from "../../pages/reset-password";
 import { NotFoundPage } from "../../pages/not-found-404";
 import { ProfilePage } from "../../pages/profile";
 import { ProfileOrdersPage } from "../../pages/profile-orders";
+import { IngredientPage } from "../../pages/ingredient-page";
 
 import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
@@ -25,7 +26,11 @@ import { refreshUserToken } from "../../services/actions/user/server-actions-use
 import { getCookie } from "../../utils/cookiesFunction";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
+import ModalPageSwitch from "../../services/hocs/ModalPageFunc";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
+
+import { openModal } from "../../services/actions/user/openModal";
+import { closeModal } from "../../services/actions/user/closeModal";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -36,8 +41,16 @@ const App = () => {
   const currentIngredient = useSelector(
     (state) => state.constructorReducer.currentIngredient
   );
+
+  const ingredients = useSelector(
+    (state) => state.constructorReducer.ingredients
+  );
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
+
+  const visible = useSelector(
+    (state) => state.constructorReducer.modalIngrVisible
+  );
 
   const cookie = getCookie("accessToken");
   const userRefreshToken = getCookie("refreshToken");
@@ -60,8 +73,7 @@ const App = () => {
   }
 
   const handleIngredientClick = (ingredient) => {
-    setIsIngredientDetailsOpened(true);
-
+    //dispatch(openModal("ingredientDetails"));
     dispatch(getIngredientDetails(ingredient));
   };
 
@@ -73,14 +85,7 @@ const App = () => {
             index
             element={<HomePage openIngrPopup={handleIngredientClick} />}
           />
-          <Route
-            path="ingredients/:id"
-            element={
-              <Modal onCloseClick={closePopups}>
-                <IngredientDetails ingredient={currentIngredient} />
-              </Modal>
-            }
-          />
+          <Route path="ingredients/:id" element={<IngredientPage />} />
           <Route
             path="register"
             element={
@@ -135,9 +140,9 @@ const App = () => {
           <Route
             path="ingredients/:id"
             element={
-              isIngredientDetailsOpened && (
+              visible && (
                 <Modal onCloseClick={closePopups}>
-                  <IngredientDetails ingredient={currentIngredient} />
+                  <IngredientDetails />
                 </Modal>
               )
             }

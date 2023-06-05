@@ -69,22 +69,12 @@ const BurgerIngredients = ({ onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "bun")
                   .map((ingredient) => (
-                    <Link
-                      className={ingredientsStyles.link}
-                      to={{
-                        pathname: `/ingredients/${ingredient._id}`,
-                        state: { background: location },
-                      }}
+                    <Ingredient
+                      ingrType={"burgerBun"}
                       key={ingredient._id}
-                    >
-                      <Ingredient
-                        ingrType={"burgerBun"}
-                        key={ingredient._id}
-                        idx={ingredients.indexOf(ingredient)}
-                        onClickPopup={onClickPopup}
-                        ingredient={ingredient}
-                      />
-                    </Link>
+                      idx={ingredients.indexOf(ingredient)}
+                      ingredient={ingredient}
+                    />
                   ))}
               </div>
             </div>
@@ -98,22 +88,12 @@ const BurgerIngredients = ({ onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "sauce")
                   .map((ingredient) => (
-                    <Link
-                      className={ingredientsStyles.link}
-                      to={{
-                        pathname: `/ingredients/${ingredient._id}`,
-                        state: { background: location },
-                      }}
+                    <Ingredient
+                      ingrType={"ingredient"}
                       key={ingredient._id}
-                    >
-                      <Ingredient
-                        ingrType={"ingredient"}
-                        key={ingredient._id}
-                        idx={ingredients.indexOf(ingredient)}
-                        onClickPopup={onClickPopup}
-                        ingredient={ingredient}
-                      />
-                    </Link>
+                      idx={ingredients.indexOf(ingredient)}
+                      ingredient={ingredient}
+                    />
                   ))}
               </div>
             </div>
@@ -127,22 +107,13 @@ const BurgerIngredients = ({ onClickPopup }) => {
                 {ingredients
                   .filter((ingredient) => ingredient.type === "main")
                   .map((ingredient) => (
-                    <Link
-                      className={ingredientsStyles.link}
-                      to={{
-                        pathname: `/ingredients/${ingredient._id}`,
-                        state: { background: location },
-                      }}
+                    <Ingredient
+                      ingrType={"ingredient"}
                       key={ingredient._id}
-                    >
-                      <Ingredient
-                        ingrType={"ingredient"}
-                        key={ingredient._id}
-                        idx={ingredients.indexOf(ingredient)}
-                        onClickPopup={onClickPopup}
-                        ingredient={ingredient}
-                      />
-                    </Link>
+                      idx={ingredients.indexOf(ingredient)}
+                      onClickPopup={onClickPopup}
+                      ingredient={ingredient}
+                    />
                   ))}
               </div>
             </div>
