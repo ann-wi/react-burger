@@ -6,26 +6,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import headerStyles from "./app-header-styles.module.css";
 
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 export function AppHeader(props) {
-  const navigate = useNavigate();
-  function onClickProfile() {
-    navigate("/profile");
-  }
-
-  function onClickHome() {
-    navigate("/");
-  }
-
-  function onClickLogin() {
-    navigate("/login");
-  }
-
-  function onClickRegister() {
-    navigate("/register");
-  }
-
   return (
     <>
       <header className={headerStyles.header}>

@@ -24,9 +24,8 @@ export const IngredientPage = () => {
 
   const searchElement = findIngr(id);
 
-  useEffect(() => {
-    dispatch(getIngredientDetails(searchElement));
-  }, []);
+  findIngr(id);
+  console.log(searchElement);
 
   return (
     <div className={IngredientPageStyles.container}>

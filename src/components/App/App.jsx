@@ -18,6 +18,7 @@ import { NotFoundPage } from "../../pages/not-found-404";
 import { ProfilePage } from "../../pages/profile";
 import { ProfileOrdersPage } from "../../pages/profile-orders";
 import { IngredientPage } from "../../pages/ingredient-page";
+import Order from "../Order/Order";
 
 import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
@@ -48,9 +49,7 @@ const App = () => {
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
     useState(false);
 
-  const visible = useSelector(
-    (state) => state.constructorReducer.modalIngrVisible
-  );
+  const visible = useSelector((state) => state.constructorReducer.modalVisible);
 
   const cookie = getCookie("accessToken");
   const userRefreshToken = getCookie("refreshToken");
@@ -72,66 +71,25 @@ const App = () => {
     navigate(-1);
   }
 
-  const handleIngredientClick = (ingredient) => {
-    //dispatch(openModal("ingredientDetails"));
-    dispatch(getIngredientDetails(ingredient));
-  };
+  const orderDetails = useSelector(
+    (state) => state.constructorReducer.orderNumber
+  );
 
   return (
     <>
       <Routes location={background || location}>
         <Route path="/" element={<AppHeader active={true} isActive={false} />}>
-          <Route
-            index
-            element={<HomePage openIngrPopup={handleIngredientClick} />}
-          />
+          <Route index element={<HomePage />} />
           <Route path="ingredients/:id" element={<IngredientPage />} />
-          <Route
-            path="register"
-            element={
-              <ProtectedRouteElement
-                element={<RegistrationPage />}
-                mustBeAuthorized={false}
-              />
-            }
-          />
-          <Route
-            path="login"
-            element={
-              <ProtectedRouteElement
-                element={<LoginPage />}
-                mustBeAuthorized={false}
-              />
-            }
-          />
+          <Route path="register" element={<RegistrationPage />} />
+          <Route path="login" element={<LoginPage />} />
           <Route
             path="profile"
-            element={
-              <ProtectedRouteElement
-                element={<ProfilePage />}
-                mustBeAuthorized={true}
-              />
-            }
+            element={<ProtectedRouteElement element={<ProfilePage />} />}
           />
           <Route path="profile/orders" element={<ProfileOrdersPage />} />
-          <Route
-            path="forgot-password"
-            element={
-              <ProtectedRouteElement
-                element={<ForgotPasswordPage />}
-                mustBeAuthorized={false}
-              />
-            }
-          />
-          <Route
-            path="/reset-password"
-            element={
-              <ProtectedRouteElement
-                element={<ResetPasswordPage />}
-                mustBeAuthorized={false}
-              />
-            }
-          />
+          <Route path="forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="reset-password" element={<ResetPasswordPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
@@ -147,6 +105,20 @@ const App = () => {
               )
             }
           />
+          <Route
+            path="order"
+            element={
+              <ProtectedRouteElement
+                element={
+                  visible && (
+                    <Modal onCloseClick={closePopups}>
+                      <Order orderNumber={orderDetails} />
+                    </Modal>
+                  )
+                }
+              />
+            }
+          />
         </Routes>
       )}
     </>
@@ -154,3 +126,5 @@ const App = () => {
 };
 
 export default App;
+
+//<ProtectedRouteElement element={} />

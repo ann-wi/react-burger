@@ -3,7 +3,7 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/actions/user/loginUser";
 import { authUser } from "../services/actions/user/server-actions-user";
@@ -14,9 +14,12 @@ import loginStyles from "./login-styles.module.css";
 export const LoginPage = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userReducer.user);
-  const isAuthorized = getCookie("accessToken");
-
+  const isAuthorized = useSelector(
+    (state) => state.userReducer.userIsAuthorized
+  );
   const navigate = useNavigate();
+  const location = useLocation();
+
   const navToReg = () => {
     navigate("/register");
   };
@@ -32,11 +35,10 @@ export const LoginPage = () => {
   const submitLogin = (e) => {
     e.preventDefault();
     dispatch(authUser(user));
-
-    if (isAuthorized) {
-      navigate("/profile");
-    }
   };
+
+  if (isAuthorized)
+    return <Navigate to={`${location?.state?.from || "/"}`} replace />;
 
   return (
     <div className={loginStyles.loginContainer}>

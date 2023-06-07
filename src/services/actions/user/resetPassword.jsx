@@ -1,8 +1,8 @@
 import { RESET_PASSWORD } from "../../../utils/constants";
 
-export function resetPassword(field, value) {
+export function resetPassword(password, code) {
   return {
     type: RESET_PASSWORD,
-    payload: { field, value },
+    payload: { password, code },
   };
 }

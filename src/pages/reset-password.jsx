@@ -3,9 +3,9 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { resetPassword } from "../services/actions/user/resetPassword";
 import { resetUserPassword } from "../services/actions/user/server-actions-user";
 
@@ -14,28 +14,26 @@ import resetPasswordStyles from "./reset-password-styles.module.css";
 export const ResetPasswordPage = () => {
   const dispatch = useDispatch();
   const userIsValid = useSelector((state) => state.userReducer.userIsValid);
-  const user = useSelector((state) => state.userReducer.user);
-  const code = useSelector((state) => state.userReducer.code);
-
+  const [password, setPassword] = useState("");
+  const [code, setCode] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!userIsValid) {
-      navigate("/forgot-password");
-    }
-  });
 
   const navToLogin = () => {
     navigate("/login");
   };
 
   const handleChange = (e) => {
-    dispatch(resetPassword(e.target.name, e.target.value));
+    if (e.target.name === "code") {
+      setCode(e.target.value);
+    } else if (e.target.name === "password") {
+      setPassword(e.target.value);
+    }
+    dispatch(resetPassword(password, code));
   };
 
   const submitResetPass = (e) => {
     e.preventDefault();
-    dispatch(resetUserPassword(user.password, code));
+    dispatch(resetUserPassword(password, code));
 
     navigate("/login");
   };
@@ -49,7 +47,7 @@ export const ResetPasswordPage = () => {
       >
         <PasswordInput
           onChange={handleChange}
-          value={user.password}
+          value={password}
           name="password"
           extraClass="mt-6 mb-6"
           placeholder="Введите новый пароль"

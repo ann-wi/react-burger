@@ -12,51 +12,30 @@ import PropTypes from "prop-types";
 
 import { getIngredientDetails } from "../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../services/actions/constructor/server-actions-constructor";
+import { useNavigate } from "react-router-dom";
 
-export const HomePage = ({ openIngrPopup }) => {
+export const HomePage = () => {
   const dispatch = useDispatch();
-  const [isOrderOpened, setIsOrderOpened] = useState(false);
+
+  const navigate = useNavigate();
+  const userAuth = useSelector((state) => state.userReducer.userIsAuthorized);
 
   const currentIngredient = useSelector(
     (state) => state.constructorReducer.currentIngredient
   );
 
-  const [orderPrice, setOrderPrice] = useState(0);
   const orderDetails = useSelector(
     (state) => state.constructorReducer.orderNumber
   );
-
-  function closePopups() {
-    //setIsIngredientDetailsOpened(false);
-    setIsOrderOpened(false);
-  }
-
-  const handleIngredientClick = (ingredient) => {
-    dispatch(getIngredientDetails(ingredient));
-    //setIsIngredientDetailsOpened(true);
-  };
-
-  const handleOrderClick = () => {
-    setIsOrderOpened(true);
-  };
 
   return (
     <>
       <main className={homepageStyles.app}>
         <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients onClickPopup={openIngrPopup} />
-          <BurgerConstructor onClickPopup={handleOrderClick} />
+          <BurgerIngredients />
+          <BurgerConstructor />
         </DndProvider>
       </main>
-      {isOrderOpened && (
-        <Modal onCloseClick={closePopups}>
-          <Order orderNumber={orderDetails} />
-        </Modal>
-      )}
     </>
   );
-};
-
-HomePage.propTypes = {
-  openIngrPopup: PropTypes.func,
 };

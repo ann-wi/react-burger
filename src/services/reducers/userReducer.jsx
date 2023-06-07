@@ -41,13 +41,9 @@ const initialState = {
   accessToken: "",
   refreshToken: "",
   userIsAuthorized: false,
-  forgotPasswordEmail: {
-    email: "",
-  },
   newPassSuccess: false,
   pendingNewPass: false,
   userIsValid: false,
-  code: "",
   sendRequestRegister: false,
   respondErrorRegister: false,
   sendRequestLogin: false,
@@ -79,7 +75,6 @@ export const userReducer = (state = initialState, action) => {
           ...state.user,
           [action.payload.field]: action.payload.value,
         },
-        userIsAuthorized: true,
       };
     case CHANGE_USER:
       return {
@@ -97,15 +92,13 @@ export const userReducer = (state = initialState, action) => {
     case FORGOT_PASSWORD:
       return {
         ...state,
-        forgotPasswordEmail: {
-          ...state.forgotPasswordEmail,
-          [action.payload.field]: action.payload.value,
-        },
+        email: action.payload.email,
       };
     case RESET_PASSWORD:
       return {
         ...state,
-        [action.payload.field]: action.payload.value,
+        password: action.payload.password,
+        code: action.payload.code,
       };
     case SEND_REQUEST_REGISTER:
       return {
@@ -215,7 +208,6 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_FORGOT_PASSWORD:
       return {
         ...state,
-        forgotPasswordEmail: action.payload.email,
         sendRequestForgotPass: false,
         respondErrorForgotPass: false,
         userIsValid: true,

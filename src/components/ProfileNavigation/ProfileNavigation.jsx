@@ -1,13 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { logoutUser } from "../../services/actions/user/server-actions-user";
 import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
 export const ProfileNavigation = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const clickLogout = () => {
     dispatch(logoutUser());
+
+    <Navigate to="/login" replace state={{ from: location.pathname }} />;
   };
 
   return (

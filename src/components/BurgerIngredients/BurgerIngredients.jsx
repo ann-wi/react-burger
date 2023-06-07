@@ -4,10 +4,9 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../Ingredient/Ingredient";
 import { Link, useLocation } from "react-router-dom";
 import { Scrollbar } from "smooth-scrollbar-react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-const BurgerIngredients = ({ onClickPopup }) => {
+const BurgerIngredients = () => {
   const location = useLocation();
 
   const ingredients = useSelector(
@@ -111,7 +110,6 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"ingredient"}
                       key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
-                      onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />
                   ))}
@@ -122,10 +120,6 @@ const BurgerIngredients = ({ onClickPopup }) => {
       </section>
     </>
   );
-};
-
-BurgerIngredients.propTypes = {
-  onClickPopup: PropTypes.func,
 };
 
 export default BurgerIngredients;

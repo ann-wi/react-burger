@@ -16,7 +16,7 @@ const initialState = {
   ingredients: [],
   addedIngredients: [],
   currentIngredient: {},
-  modalIngrVisible: false,
+  modalVisible: false,
   orderSum: 0,
   orderNumber: 0,
   sendRequestOrder: false,
@@ -82,7 +82,7 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         currentIngredient: action.payload.ingredient,
-        modalIngrVisible: true,
+        modalVisible: true,
       };
     case SEND_REQUEST_INGREDIENTS:
       return {
@@ -113,6 +113,7 @@ export const constructorReducer = (state = initialState, action) => {
         orderNumber: action.payload.number,
         sendRequestOrder: false,
         respondErrorOrder: false,
+        modalVisible: true,
       };
     case RESPOND_ERROR_ORDER:
       return {

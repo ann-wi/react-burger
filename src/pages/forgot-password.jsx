@@ -2,8 +2,9 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { forgotPassword } from "../services/actions/user/forgotPassword";
 import { forgotPasswordSendEmail } from "../services/actions/user/server-actions-user";
 
@@ -11,23 +12,27 @@ import forgotPasswordStyles from "./forgot-password-styles.module.css";
 
 export const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
-  const email = useSelector((state) => state.userReducer.forgotPasswordEmail);
-
+  const isAuthorized = useSelector(
+    (state) => state.userReducer.userIsAuthorized
+  );
+  const [email, setEmail] = useState("");
   const navigate = useNavigate();
   const navToLog = () => {
     navigate("/login");
   };
 
   const handleChange = (e) => {
-    dispatch(forgotPassword(e.target.name, e.target.value));
+    setEmail(e.target.value);
+    dispatch(forgotPassword(email));
   };
 
   const submitEmail = (e) => {
     e.preventDefault();
     dispatch(forgotPasswordSendEmail(email));
-
-    return navigate("/reset-password");
+    navigate("/reset-password");
   };
+
+  if (isAuthorized) return <Navigate to={"/"} replace />;
 
   return (
     <div className={forgotPasswordStyles.passwordContainer}>
@@ -38,7 +43,7 @@ export const ForgotPasswordPage = () => {
       >
         <EmailInput
           onChange={handleChange}
-          value={email.email}
+          value={email}
           name={"email"}
           placeholder="Укажите e-mail"
           isIcon={false}

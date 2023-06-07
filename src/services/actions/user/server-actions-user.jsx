@@ -342,22 +342,22 @@ export function changeUserInfo(info) {
 
 //FORGOT PASSWORD
 
-export function forgotPasswordSendEmail(info) {
+export function forgotPasswordSendEmail(email) {
   return function (dispatch) {
     dispatch(sendRequestForgotPass(true));
 
-    fetch(`https://norma.nomoreparties.space/api/password-reset`, {
+    fetch(`${apiBurger}password-reset`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: info.email,
+        email: email,
       }),
     })
       .then(checkResponse)
       .then((data) => {
-        dispatch(respondSuccessForgotPass(info));
+        dispatch(respondSuccessForgotPass(email));
       })
       .catch((err) => {
         dispatch(respondErrorForgotPass(true));
@@ -367,7 +367,7 @@ export function forgotPasswordSendEmail(info) {
 
 // RESET PASSWORD
 
-export function resetUserPassword(password, code) {
+export function resetUserPassword(data) {
   return function (dispatch) {
     dispatch(sendRequestResetPass(true));
 
@@ -377,8 +377,8 @@ export function resetUserPassword(password, code) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        password: password,
-        token: code,
+        password: data.password,
+        token: data.code,
       }),
     })
       .then(checkResponse)

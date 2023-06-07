@@ -1,8 +1,8 @@
 import { FORGOT_PASSWORD } from "../../../utils/constants";
 
-export function forgotPassword(field, value) {
+export function forgotPassword(email) {
   return {
     type: FORGOT_PASSWORD,
-    payload: { field, value },
+    payload: { email },
   };
 }

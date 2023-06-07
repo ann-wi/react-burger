@@ -18,6 +18,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
   const clickHandler = () => {
     dispatch(getIngredientDetails(ingredient));
     navigate(`/ingredients/${ingredient._id}`, {

@@ -1,26 +1,16 @@
-import { Navigate, Route } from "react-router-dom";
+import { Navigate, Route, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 
 export const ProtectedRouteElement = ({ element, mustBeAuthorized }) => {
+  const location = useLocation();
   const isAuthorized = useSelector(
     (state) => state.userReducer.userIsAuthorized
   );
 
-  return (
-    <>
-      {!mustBeAuthorized && isAuthorized ? (
-        element
-      ) : mustBeAuthorized && !isAuthorized ? (
-        <Navigate to="/login" replace />
-      ) : (
-        element
-      )}
-    </>
+  return isAuthorized ? (
+    element
+  ) : (
+    <Navigate to="/login" replace state={{ from: location.pathname }} />
   );
-};
-
-ProtectedRouteElement.propTypes = {
-  element: PropTypes.object,
-  mustBeAuthorized: PropTypes.bool,
 };

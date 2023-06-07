@@ -13,9 +13,13 @@ import PropTypes from "prop-types";
 import { sumOrder } from "../../services/actions/constructor/sumOrder";
 import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
 import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BurgerConstructor = ({ onClickPopup }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const addedIngredients = useSelector(
     (state) => state.constructorReducer.addedIngredients
   );
@@ -56,6 +60,9 @@ const BurgerConstructor = ({ onClickPopup }) => {
 
   const handleMakeOrderClick = () => {
     dispatch(getOrderNumber(ingredientsIds));
+    navigate(`/order`, {
+      state: { background: location },
+    });
   };
 
   return (
@@ -80,7 +87,6 @@ const BurgerConstructor = ({ onClickPopup }) => {
             extraClass="ml-10"
             onClick={() => {
               handleMakeOrderClick();
-              onClickPopup();
             }}
           >
             Оформить заказ
