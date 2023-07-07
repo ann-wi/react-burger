@@ -1,8 +1,8 @@
 import { CHANGE_USER } from "../../../utils/constants";
 
-export function changeUser(field, value) {
+export function changeUser(data) {
   return {
     type: CHANGE_USER,
-    payload: { field, value },
+    payload: { data },
   };
 }

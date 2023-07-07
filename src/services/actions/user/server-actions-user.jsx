@@ -32,6 +32,7 @@ import { RESPOND_ERROR_RESET_PASSWORD } from "../../../utils/constants";
 import { SEND_REQUEST_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_ERROR_REFRESH_TOKEN } from "../../../utils/constants";
+import { setAuthChecked } from "./setAuthChecked";
 
 export function sendRequestRegister(sendRequest) {
   return {
@@ -40,10 +41,10 @@ export function sendRequestRegister(sendRequest) {
   };
 }
 
-export function respondSuccessRegister(newUser, accessToken, refreshToken) {
+export function respondSuccessRegister(data, accessToken, refreshToken) {
   return {
     type: RESPOND_SUCCESS_REGISTER,
-    payload: { newUser, accessToken, refreshToken },
+    payload: { data, accessToken, refreshToken },
   };
 }
 
@@ -255,6 +256,7 @@ export function authUser(info) {
         dispatch(
           respondSuccessLogin(data.user, data.accessToken, data.refreshToken)
         );
+        //dispatch(setAuthChecked(true));
       })
       .catch((err) => {
         dispatch(respondErrorLogin(true));
@@ -305,6 +307,7 @@ export function getUserProfile() {
       .then(checkResponse)
       .then((data) => {
         dispatch(respondSuccessUser(data.user));
+        console.log(data);
       })
       .catch((err) => {
         dispatch(respondErrorUser(true));
@@ -419,3 +422,22 @@ export function refreshUserToken() {
       });
   };
 }
+
+/*
+export const checkUserAuth = () => {
+  return (dispatch) => {
+    if (getCookie("accessToken")) {
+      dispatch(getUserProfile())
+        .catch(() => {
+          setCookie("accessToken", "");
+          setCookie("refreshToken", "");
+          console.log(getCookie("accessToken"));
+          dispatch(respondSuccessUser(null));
+        })
+        .finally(() => dispatch(setAuthChecked(true)));
+    } else {
+      dispatch(setAuthChecked(true));
+    }
+  };
+};
+*/

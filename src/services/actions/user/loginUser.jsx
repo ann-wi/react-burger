@@ -1,8 +1,8 @@
 import { LOGIN_USER } from "../../../utils/constants";
 
-export function loginUser(field, value) {
+export function loginUser(data) {
   return {
     type: LOGIN_USER,
-    payload: { field, value },
+    payload: { data },
   };
 }

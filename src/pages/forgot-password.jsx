@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
 import { forgotPassword } from "../services/actions/user/forgotPassword";
 import { forgotPasswordSendEmail } from "../services/actions/user/server-actions-user";
+import { useForm } from "../hooks/useForm";
 
 import forgotPasswordStyles from "./forgot-password-styles.module.css";
 
@@ -17,6 +18,15 @@ export const ForgotPasswordPage = () => {
   );
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
+  const { formData, onChange, setFormData, onSubmit } = useForm(
+    { email: "" },
+    () => {
+      dispatch(forgotPassword(formData));
+      dispatch(forgotPasswordSendEmail(formData));
+    }
+  );
+
   const navToLog = () => {
     navigate("/login");
   };
@@ -37,13 +47,10 @@ export const ForgotPasswordPage = () => {
   return (
     <div className={forgotPasswordStyles.passwordContainer}>
       <h1 className="text text_type_main-medium">Восстановление пароля</h1>
-      <form
-        className={forgotPasswordStyles.passwordForm}
-        onSubmit={submitEmail}
-      >
+      <form className={forgotPasswordStyles.passwordForm} onSubmit={onSubmit}>
         <EmailInput
-          onChange={handleChange}
-          value={email}
+          onChange={onChange}
+          value={formData.email}
           name={"email"}
           placeholder="Укажите e-mail"
           isIcon={false}

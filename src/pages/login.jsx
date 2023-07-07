@@ -7,18 +7,28 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../services/actions/user/loginUser";
 import { authUser } from "../services/actions/user/server-actions-user";
-import { getCookie } from "../utils/cookiesFunction";
+import { useForm } from "../hooks/useForm";
 
 import loginStyles from "./login-styles.module.css";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.userReducer.user);
+  //const user = useSelector((state) => state.userReducer.user);
   const isAuthorized = useSelector(
     (state) => state.userReducer.userIsAuthorized
   );
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { formData, onChange, setFormData, onSubmit } = useForm(
+    {
+      email: "",
+      password: "",
+    },
+    () => {
+      dispatch(authUser(formData));
+    }
+  );
 
   const navToReg = () => {
     navigate("/register");
@@ -28,33 +38,23 @@ export const LoginPage = () => {
     navigate("/forgot-password");
   };
 
-  const handleChange = (e) => {
-    dispatch(loginUser(e.target.name, e.target.value));
-  };
-
-  const submitLogin = (e) => {
-    e.preventDefault();
-    dispatch(authUser(user));
-  };
-
-  if (isAuthorized)
-    return <Navigate to={`${location?.state?.from || "/"}`} replace />;
+  if (isAuthorized) return <Navigate to="/profile" />;
 
   return (
     <div className={loginStyles.loginContainer}>
       <h1 className="text text_type_main-medium">Вход</h1>
-      <form className={loginStyles.loginForm} onSubmit={submitLogin}>
+      <form className={loginStyles.loginForm} onSubmit={onSubmit}>
         <EmailInput
-          onChange={handleChange}
-          value={user.email}
+          onChange={onChange}
+          value={formData.email}
           name="email"
           placeholder="E-mail"
           isIcon={false}
           extraClass="mt-6 mb-6"
         />
         <PasswordInput
-          onChange={handleChange}
-          value={user.password}
+          onChange={onChange}
+          value={formData.password}
           name="password"
           extraClass="mb-6"
         />

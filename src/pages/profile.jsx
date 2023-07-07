@@ -13,18 +13,24 @@ import {
   changeUserInfo,
 } from "../services/actions/user/server-actions-user";
 import { changeUser } from "../services/actions/user/changeUser";
+import { useForm } from "../hooks/useForm";
 
 export const ProfilePage = () => {
-  const name = useSelector((state) => state.userReducer.user.name);
-  const email = useSelector((state) => state.userReducer.user.email);
   const user = useSelector((state) => state.userReducer.user);
   const dispatch = useDispatch();
+
+  const { formData, onChange, setFormData } = useForm({
+    name: "",
+    email: "",
+    password: "",
+  });
 
   useEffect(() => {
     if (user) {
       dispatch(getUserProfile());
+      setFormData({ name: user.name, email: user.email, password: "" });
     }
-  }, [dispatch]);
+  }, []);
 
   const handleChange = (e) => {
     dispatch(changeUser(e.target.name, e.target.value));
@@ -44,7 +50,7 @@ export const ProfilePage = () => {
       <ProfileNavigation active={true} isActive={false} />
       <form className={profileStyles.inputList} onSubmit={submitChange}>
         <Input
-          value={name}
+          value={formData.name}
           onChange={handleChange}
           type={"text"}
           placeholder={"Имя"}
@@ -54,7 +60,7 @@ export const ProfilePage = () => {
           error={false}
         />
         <Input
-          value={email}
+          value={formData.email}
           onChange={handleChange}
           placeholder={"Email"}
           name={"email"}
@@ -62,7 +68,7 @@ export const ProfilePage = () => {
           extraClass="mt-6"
         />
         <PasswordInput
-          value={user.password}
+          value={formData.password}
           name={"password"}
           onChange={handleChange}
           extraClass="ml-1 mt-6"

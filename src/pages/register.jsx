@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/actions/user/registerUser";
 import { registerNewUser } from "../services/actions/user/server-actions-user";
+import { useForm } from "../hooks/useForm";
 
 import registerStyles from "./register-styles.module.css";
 
@@ -16,6 +17,19 @@ export const RegistrationPage = () => {
   const newUser = useSelector((state) => state.userReducer.user);
 
   const navigate = useNavigate();
+
+  const { formData, onChange, setFormData, onSubmit } = useForm(
+    {
+      name: "",
+      email: "",
+      password: "",
+    },
+    () => {
+      dispatch(registerUser(formData));
+      dispatch(registerNewUser(formData));
+    }
+  );
+
   const navToLog = () => {
     navigate("/login");
   };
@@ -34,28 +48,28 @@ export const RegistrationPage = () => {
   return (
     <div className={registerStyles.registerContainer}>
       <h1 className="text text_type_main-medium">Регистрация</h1>
-      <form className={registerStyles.registerForm} onSubmit={submitReg}>
+      <form className={registerStyles.registerForm} onSubmit={onSubmit}>
         <Input
           type="text"
-          value={newUser.name}
+          value={formData.name}
           name="name"
           placeholder="Имя"
-          onChange={handleChange}
+          onChange={onChange}
           size={"default"}
           extraClass="mt-6 mb-6"
         />
         <EmailInput
-          onChange={handleChange}
-          value={newUser.email}
+          onChange={onChange}
+          value={formData.email}
           name="email"
           placeholder="E-mail"
           isIcon={false}
           extraClass="mb-6"
         />
         <PasswordInput
-          onChange={handleChange}
+          onChange={onChange}
           extraClass="mb-6"
-          value={newUser.password}
+          value={formData.password}
           name="password"
         />
         <Button

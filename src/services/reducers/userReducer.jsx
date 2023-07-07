@@ -12,6 +12,8 @@ import { SEND_REQUEST_USER } from "../../utils/constants";
 import { RESPOND_SUCCESS_USER } from "../../utils/constants";
 import { RESPOND_ERROR_USER } from "../../utils/constants";
 
+import { SET_AUTH_CHECKED } from "../../utils/constants";
+
 import { CHANGE_USER } from "../../utils/constants";
 import { SEND_REQUEST_CHANGE_USER } from "../../utils/constants";
 import { RESPOND_SUCCESS_CHANGE_USER } from "../../utils/constants";
@@ -33,13 +35,10 @@ import { RESPOND_SUCCESS_RESET_PASSWORD } from "../../utils/constants";
 import { RESPOND_ERROR_RESET_PASSWORD } from "../../utils/constants";
 
 const initialState = {
-  user: {
-    email: "",
-    password: "",
-    name: "",
-  },
+  user: null,
   accessToken: "",
   refreshToken: "",
+  isAuthChecked: false,
   userIsAuthorized: false,
   newPassSuccess: false,
   pendingNewPass: false,
@@ -63,26 +62,17 @@ export const userReducer = (state = initialState, action) => {
     case REGISTER_USER:
       return {
         ...state,
-        user: {
-          ...state.user,
-          [action.payload.field]: action.payload.value,
-        },
+        user: action.payload.data,
       };
     case LOGIN_USER:
       return {
         ...state,
-        user: {
-          ...state.user,
-          [action.payload.field]: action.payload.value,
-        },
+        user: action.payload.data,
       };
     case CHANGE_USER:
       return {
         ...state,
-        user: {
-          ...state.user,
-          [action.payload.field]: action.payload.value,
-        },
+        user: action.payload.data,
       };
     case LOGOUT_USER:
       return {
@@ -92,13 +82,17 @@ export const userReducer = (state = initialState, action) => {
     case FORGOT_PASSWORD:
       return {
         ...state,
-        email: action.payload.email,
+        user: action.payload.data,
       };
     case RESET_PASSWORD:
       return {
         ...state,
-        password: action.payload.password,
         code: action.payload.code,
+      };
+    case SET_AUTH_CHECKED:
+      return {
+        ...state,
+        isAuthChecked: action.payload.check,
       };
     case SEND_REQUEST_REGISTER:
       return {
@@ -108,7 +102,7 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_REGISTER:
       return {
         ...state,
-        user: action.payload.newUser,
+        user: action.payload.data,
         accessToken: action.payload.accessToken,
         refreshToken: action.payload.refreshToken,
         userIsAuthorized: true,
@@ -171,7 +165,6 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
-        userIsAuthorized: true,
         sendRequestUser: false,
         respondErrorUser: false,
       };
@@ -189,7 +182,7 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_CHANGE_USER:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.payload.data,
         sendRequestChangeUser: false,
         respondErrorChangeUser: false,
       };

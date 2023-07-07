@@ -1,8 +1,8 @@
 import { REGISTER_USER } from "../../../utils/constants";
 
-export function registerUser(field, value) {
+export function registerUser(data) {
   return {
     type: REGISTER_USER,
-    payload: { field, value },
+    payload: { data },
   };
 }

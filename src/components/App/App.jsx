@@ -28,7 +28,11 @@ import { getCookie } from "../../utils/cookiesFunction";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import ModalPageSwitch from "../../services/hocs/ModalPageFunc";
-import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
+import {
+  OnlyUnAuth,
+  OnlyAuth,
+  ProtectedRouteElement,
+} from "../ProtectedRouteElement/ProtectedRouteElement";
 
 import { openModal } from "../../services/actions/user/openModal";
 import { closeModal } from "../../services/actions/user/closeModal";
@@ -66,6 +70,10 @@ const App = () => {
     }
   }, [cookie, userRefreshToken]);
 
+  useEffect(() => {
+    //dispatch(checkUserAuth());
+  });
+
   function closePopups() {
     setIsIngredientDetailsOpened(false);
     navigate(-1);
@@ -83,10 +91,7 @@ const App = () => {
           <Route path="ingredients/:id" element={<IngredientPage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route
-            path="profile"
-            element={<ProtectedRouteElement element={<ProfilePage />} />}
-          />
+          <Route path="profile" element={<ProfilePage />} />
           <Route path="profile/orders" element={<ProfileOrdersPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
