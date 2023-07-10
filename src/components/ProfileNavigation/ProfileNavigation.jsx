@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { logoutUser } from "../../services/actions/user/server-actions-user";
+import { userLogout } from "../../services/actions/user/server-actions-user";
 import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
 export const ProfileNavigation = (props) => {
@@ -8,8 +8,9 @@ export const ProfileNavigation = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const clickLogout = () => {
-    dispatch(logoutUser());
+  const clickLogout = (e) => {
+    e.preventDefault();
+    dispatch(userLogout());
 
     <Navigate to="/login" replace state={{ from: location.pathname }} />;
   };
@@ -43,7 +44,7 @@ export const ProfileNavigation = (props) => {
       </li>
       <li>
         <NavLink
-          to={"/login"}
+          to={"/"}
           className={profileNavigationStyles.navLink}
           onClick={clickLogout}
         >

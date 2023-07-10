@@ -1,5 +1,9 @@
-import { checkResponse, apiBurger } from "../../../utils/server";
-import { setCookie, getCookie } from "../../../utils/cookiesFunction";
+import {
+  checkResponse,
+  apiBurger,
+  apiGetIngredients,
+  apiSendOrder,
+} from "../../../utils/server";
 
 import { SEND_REQUEST_INGREDIENTS } from "../../../utils/constants";
 import { RESPOND_SUCCESS_INGREDIENTS } from "../../../utils/constants";
@@ -54,12 +58,7 @@ export function getIngredients() {
   return function (dispatch) {
     dispatch(sendRequestIngredients(true));
 
-    fetch(`${apiBurger}ingredients`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then(checkResponse)
+    apiGetIngredients()
       .then((data) => {
         data.data.forEach((item) => {
           item.counter = 0;
@@ -76,17 +75,9 @@ export function getOrderNumber(ingredientsIds) {
   return function (dispatch) {
     dispatch(sendRequestOrder(true));
 
-    fetch(`${apiBurger}orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ingredients: ingredientsIds,
-      }),
-    })
-      .then(checkResponse)
+    apiSendOrder(ingredientsIds)
       .then((data) => {
+        console.log(data);
         dispatch(respondSuccessOrder(data.order.number));
       })
       .catch((err) => {

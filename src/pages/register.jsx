@@ -5,7 +5,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { registerUser } from "../services/actions/user/registerUser";
 import { registerNewUser } from "../services/actions/user/server-actions-user";
 import { useForm } from "../hooks/useForm";
@@ -14,7 +14,7 @@ import registerStyles from "./register-styles.module.css";
 
 export const RegistrationPage = () => {
   const dispatch = useDispatch();
-  const newUser = useSelector((state) => state.userReducer.user);
+  const isAuth = useSelector((state) => state.userReducer.userIsAuthorized);
 
   const navigate = useNavigate();
 
@@ -25,7 +25,6 @@ export const RegistrationPage = () => {
       password: "",
     },
     () => {
-      dispatch(registerUser(formData));
       dispatch(registerNewUser(formData));
     }
   );
@@ -34,16 +33,7 @@ export const RegistrationPage = () => {
     navigate("/login");
   };
 
-  const handleChange = (e) => {
-    dispatch(registerUser(e.target.name, e.target.value));
-  };
-
-  const submitReg = (e) => {
-    e.preventDefault();
-    dispatch(registerNewUser(newUser));
-
-    navigate("/profile");
-  };
+  if (isAuth) return <Navigate to={"/"} replace />;
 
   return (
     <div className={registerStyles.registerContainer}>

@@ -1,5 +1,23 @@
-import { checkResponse, apiBurger } from "../../../utils/server";
-import { setCookie, getCookie } from "../../../utils/cookiesFunction";
+import {
+  refreshUserToken,
+  apiRegisterUser,
+  apiAuthUser,
+  formatToken,
+  fetchWithRefresh,
+  apiGetUser,
+  apiLogoutUser,
+  apiUpdateUserInfo,
+  apiForgotPassword,
+  apiResetPassword,
+} from "../../../utils/server";
+import {
+  setCookie,
+  getCookie,
+  saveToLocalStorage,
+  getFromLocalStorage,
+  deleteCookie,
+  deleteFromLocalStorage,
+} from "../../../utils/cookies-storage";
 
 import { SEND_REQUEST_REGISTER } from "../../../utils/constants";
 import { RESPOND_SUCCESS_REGISTER } from "../../../utils/constants";
@@ -32,7 +50,10 @@ import { RESPOND_ERROR_RESET_PASSWORD } from "../../../utils/constants";
 import { SEND_REQUEST_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_ERROR_REFRESH_TOKEN } from "../../../utils/constants";
-import { setAuthChecked } from "./setAuthChecked";
+
+import { SET_AUTH_CHECKED } from "../../../utils/constants";
+import { SET_USER } from "../../../utils/constants";
+import { loginUser } from "./loginUser";
 
 export function sendRequestRegister(sendRequest) {
   return {
@@ -41,10 +62,10 @@ export function sendRequestRegister(sendRequest) {
   };
 }
 
-export function respondSuccessRegister(data, accessToken, refreshToken) {
+export function respondSuccessRegister(data) {
   return {
     type: RESPOND_SUCCESS_REGISTER,
-    payload: { data, accessToken, refreshToken },
+    payload: { data },
   };
 }
 
@@ -125,10 +146,10 @@ export function sendRequestLogout(user) {
   };
 }
 
-export function respondSuccessLogout(user, accessToken, refreshToken) {
+export function respondSuccessLogout(user) {
   return {
     type: RESPOND_SUCCESS_LOGOUT,
-    payload: { user, accessToken, refreshToken },
+    payload: { user },
   };
 }
 
@@ -202,257 +223,147 @@ export function respondErrorRefreshToken(respondError) {
   };
 }
 
-//REGISTRATION
+export const setAuthChecked = (value) => ({
+  type: SET_AUTH_CHECKED,
+  payload: value,
+});
 
-export function registerNewUser(info) {
-  return function (dispatch) {
-    dispatch(sendRequestRegister(true));
+export const setUser = (user) => ({
+  type: SET_USER,
+  payload: user,
+});
 
-    fetch(`${apiBurger}auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: info.email,
-        password: info.password,
-        name: info.name,
-      }),
+//////////////////////////////////////////REGISTRATION
+
+export const registerNewUser = (info) => (dispatch) => {
+  dispatch(sendRequestRegister(true));
+
+  apiRegisterUser(info)
+    .then((data) => {
+      console.log(data);
+      dispatch(respondSuccessRegister(data.user));
     })
-      .then(checkResponse)
-      .then((data) => {
-        setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
-        setCookie("refreshToken", data.refreshToken);
-        dispatch(
-          respondSuccessRegister(data.user, data.accessToken, data.refreshToken)
-        );
-      })
-      .catch((err) => {
-        dispatch(respondErrorRegister(true));
-      });
-  };
-}
-
-//LOG IN
-
-export function authUser(info) {
-  return function (dispatch) {
-    dispatch(sendRequestLogin(true));
-
-    fetch(`${apiBurger}auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: info.email,
-        password: info.password,
-      }),
-    })
-      .then(checkResponse)
-      .then((res) => {
-        console.log(res);
-        localStorage.setItem("accessToken", res.accessToken);
-        localStorage.setItem("refreshToken", res.refreshToken);
-        dispatch(respondSuccessLogin(res.user));
-        dispatch(setAuthChecked(true));
-      })
-      .catch((err) => {
-        dispatch(respondErrorLogin(true));
-      });
-  };
-}
-
-// LOG OUT
-
-export function logoutUser() {
-  return function (dispatch) {
-    dispatch(sendRequestLogout(true));
-
-    fetch(`${apiBurger}auth/logout`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: getCookie("refreshToken"),
-      }),
-    })
-      .then(checkResponse)
-      .then(() => {
-        setCookie("accessToken", "");
-        setCookie("refreshToken", "");
-        dispatch(respondSuccessLogout({}, "", ""));
-      })
-      .catch((err) => {
-        dispatch(respondErrorLogout(true));
-      });
-  };
-}
-
-// GET USER PROFILE
-
-function getUser() {
-  return fetch(`${apiBurger}auth/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + getCookie("accessToken"),
-    },
-  }).then((res) => checkResponse(res));
-}
-
-export function getUserProfile() {
-  return function (dispatch) {
-    dispatch(sendRequestUser(true));
-
-    getUser()
-      .then((res) => {
-        if (res && res.success) {
-          dispatch(respondSuccessUser(res.user));
-        } else {
-          dispatch(respondErrorUser(true));
-        }
-      })
-      .catch((err) => {
-        if (localStorage.getItem("refreshToken")) {
-          dispatch(refreshUserToken());
-        } else {
-          dispatch(respondErrorUser(true));
-        }
-      });
-  };
-}
-
-//CHANGE USER INFO
-
-export function changeUserInfo(info) {
-  return function (dispatch) {
-    dispatch(sendRequestChangeUser(true));
-
-    fetch(`${apiBurger}auth/user`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + getCookie("accessToken"),
-      },
-      body: JSON.stringify({
-        name: info.name,
-        email: info.email,
-        password: info.password,
-      }),
-    })
-      .then(checkResponse)
-      .then((data) => {
-        dispatch(respondSuccessChangeUser(data.user));
-      })
-      .catch((err) => {
-        dispatch(respondErrorChangeUser(true));
-      });
-  };
-}
-
-//FORGOT PASSWORD
-
-export function forgotPasswordSendEmail(email) {
-  return function (dispatch) {
-    dispatch(sendRequestForgotPass(true));
-
-    fetch(`${apiBurger}password-reset`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-      }),
-    })
-      .then(checkResponse)
-      .then((data) => {
-        dispatch(respondSuccessForgotPass(email));
-      })
-      .catch((err) => {
-        dispatch(respondErrorForgotPass(true));
-      });
-  };
-}
-
-// RESET PASSWORD
-
-export function resetUserPassword(data) {
-  return function (dispatch) {
-    dispatch(sendRequestResetPass(true));
-
-    fetch(`${apiBurger}password-reset/reset`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password: data.password,
-        token: data.code,
-      }),
-    })
-      .then(checkResponse)
-      .then((data) => {
-        dispatch(respondSuccessResetPass(true));
-      })
-      .catch((err) => {
-        dispatch(respondErrorResetPass(true));
-      });
-  };
-}
-
-//REFRESH USER TOKEN
-
-function updateUserToken() {
-  return fetch(`${apiBurger}auth/token`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      token: localStorage.getItem("refreshToken"),
-    }),
-  }).then((res) => checkResponse(res));
-}
-
-export function refreshUserToken() {
-  return function (dispatch) {
-    dispatch(sendRequestRefreshToken(true));
-
-    updateUserToken()
-      .then((res) => {
-        if (res && res.success) {
-          console.log(res.accessToken);
-          setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
-          localStorage.setItem("refreshToken", res.refreshToken);
-          dispatch(respondSuccessRefreshToken(true));
-        } else {
-          console.log("error refresh token");
-          dispatch(respondErrorRefreshToken(true));
-        }
-      })
-      .catch((err) => {
-        dispatch(respondErrorRefreshToken(true));
-      });
-  };
-}
-
-/*
-export const checkUserAuth = () => {
-  return (dispatch) => {
-    if (localStorage.getItem("accessToken")) {
-      dispatch(getUser())
-        .catch(() => {
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          dispatch(respondSuccessUser(null));
-        })
-        .finally(() => dispatch(setAuthChecked(true)));
-    } else {
-      dispatch(setAuthChecked(true));
-    }
-  };
+    .catch((err) => {
+      dispatch(respondErrorRegister(true));
+    });
 };
-*/
+
+//////////////////////////////////////////LOG IN
+
+export const authUser = (info) => (dispatch) => {
+  dispatch(sendRequestLogin(true));
+
+  apiAuthUser(info)
+    .then((data) => {
+      console.log(data);
+      setCookie("accessToken", formatToken(data.accessToken), {
+        expires: 60 * 15,
+        path: "/",
+      });
+      saveToLocalStorage("refreshToken", data.refreshToken);
+      dispatch(respondSuccessLogin(data.user));
+      dispatch(loginUser(data.user));
+    })
+    .catch((err) => {
+      dispatch(respondErrorLogin(true));
+    });
+};
+
+////////////////////////////////////// LOG OUT
+
+export const userLogout = () => (dispatch) => {
+  dispatch(sendRequestLogout(true));
+  fetchWithRefresh({ responce: apiLogoutUser, data: null })
+    .then((res) => {
+      console.log(res);
+      deleteCookie("accessToken");
+      deleteFromLocalStorage("refreshToken");
+      dispatch(respondSuccessLogout(res.user));
+    })
+    .catch((err) => {
+      dispatch(respondErrorLogout(true));
+    });
+};
+
+///////////////////////////////////////// RELOGIN
+
+export const reloginUser = () => (dispatch) => {
+  const localStorageToken = getFromLocalStorage("refreshToken");
+  const accessCookie = getCookie("accessToken");
+
+  if (localStorageToken && !accessCookie) {
+    refreshUserToken();
+
+    fetchWithRefresh({ responce: apiGetUser, data: null })
+      .then((res) => {
+        dispatch(respondSuccessLogin(res.user));
+      })
+      .catch((err) => {
+        console.log("No user", err);
+      });
+  }
+
+  if (localStorageToken && accessCookie) {
+    fetchWithRefresh({ responce: apiGetUser, data: null })
+      .then((res) => {
+        dispatch(respondSuccessLogin(res.user));
+      })
+      .catch((err) => {
+        console.log("No user", err);
+      });
+  }
+};
+
+/////////////////////////////////////// GET USER PROFILE
+
+export const getUser = () => (dispatch) => {
+  dispatch(sendRequestUser(true));
+  fetchWithRefresh({ responce: apiGetUser, data: null })
+    .then((res) => {
+      dispatch(respondSuccessLogin(res.user));
+    })
+    .catch((err) => {
+      dispatch(respondErrorUser(true));
+    });
+};
+
+////////////////////////////////////// CHANGE USER INFO
+
+export const changeUserInfo = (info) => (dispatch) => {
+  dispatch(sendRequestChangeUser(true));
+  fetchWithRefresh({ responce: apiUpdateUserInfo, data: info })
+    .then((res) => {
+      dispatch(respondSuccessChangeUser(res.user));
+    })
+    .catch((err) => {
+      dispatch(respondErrorChangeUser(true));
+    });
+};
+
+//////////////////////////////////// FORGOT PASSWORD
+
+//dispatch(respondSuccessForgotPass(email));
+
+export const forgotPasswordSendEmail = (email) => (dispatch) => {
+  dispatch(sendRequestForgotPass(true));
+  apiForgotPassword(email)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      dispatch(respondErrorForgotPass(true));
+    });
+};
+
+/////////////////////////////////// RESET PASSWORD
+
+export const resetUserPassword = (data) => (dispatch) => {
+  dispatch(sendRequestResetPass(true));
+  apiResetPassword(data)
+    .then((res) => {
+      dispatch(respondSuccessResetPass(true));
+    })
+    .catch((err) => {
+      dispatch(respondErrorResetPass(true));
+    });
+};

@@ -9,7 +9,7 @@ import profileStyles from "./profile-styles.module.css";
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getUserProfile,
+  getUser,
   changeUserInfo,
 } from "../services/actions/user/server-actions-user";
 import { changeUser } from "../services/actions/user/changeUser";
@@ -27,7 +27,6 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getUserProfile());
       setFormData({ name: user.name, email: user.email, password: "" });
     }
   }, []);
@@ -37,7 +36,7 @@ export const ProfilePage = () => {
   };
 
   const cancelChanges = () => {
-    dispatch(getUserProfile());
+    dispatch(getUser());
   };
 
   const submitChange = (e) => {

@@ -1,3 +1,5 @@
+// Cookies
+
 export function setCookie(name, value, props) {
   props = props || {};
   let exp = props.expires;
@@ -31,3 +33,22 @@ export function getCookie(name) {
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
+
+export const deleteCookie = (name) => {
+  setCookie(name, null, { expires: -1, path: "/" });
+};
+
+// LocalStorage
+
+export const saveToLocalStorage = (name, data) => {
+  localStorage.setItem(name, JSON.stringify(data));
+};
+
+export const getFromLocalStorage = (name) => {
+  const myData = JSON.parse(localStorage.getItem(name));
+  return myData;
+};
+
+export const deleteFromLocalStorage = (name) => {
+  localStorage.removeItem(name);
+};

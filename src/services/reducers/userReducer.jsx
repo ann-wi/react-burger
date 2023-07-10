@@ -40,8 +40,6 @@ import { RESPOND_ERROR_REFRESH_TOKEN } from "../../utils/constants";
 
 const initialState = {
   user: null,
-  accessToken: "",
-  refreshToken: "",
   isAuthChecked: false,
   userIsAuthorized: false,
   newPassSuccess: false,
@@ -109,8 +107,6 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.data,
-        accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
         userIsAuthorized: true,
         sendRequestRegister: false,
         respondErrorRegister: false,
@@ -130,7 +126,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
-        isAuthChecked: true,
+        userIsAuthorized: true,
         sendRequestLogin: false,
         respondErrorLogin: false,
       };
@@ -146,14 +142,7 @@ export const userReducer = (state = initialState, action) => {
         sendRequestLogout: true,
       };
     case RESPOND_SUCCESS_LOGOUT:
-      return {
-        ...state,
-        user: action.payload.user,
-        accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
-        sendRequestLogout: false,
-        respondErrorLogout: false,
-      };
+      return initialState;
     case RESPOND_ERROR_LOGOUT:
       return {
         ...state,

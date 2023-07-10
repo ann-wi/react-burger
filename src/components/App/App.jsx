@@ -24,18 +24,14 @@ import { getIngredientDetails } from "../../services/actions/constructor/ingredi
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
 import {
   checkUserAuth,
-  getUserProfile,
+  getUser,
 } from "../../services/actions/user/server-actions-user";
 import { refreshUserToken } from "../../services/actions/user/server-actions-user";
-import { getCookie } from "../../utils/cookiesFunction";
+import { getCookie } from "../../utils/cookies-storage";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 import ModalPageSwitch from "../../services/hocs/ModalPageFunc";
-import {
-  OnlyUnAuth,
-  OnlyAuth,
-  ProtectedRouteElement,
-} from "../ProtectedRouteElement/ProtectedRouteElement";
+import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 
 import { openModal } from "../../services/actions/user/openModal";
 import { closeModal } from "../../services/actions/user/closeModal";
@@ -49,8 +45,6 @@ const App = () => {
   const currentIngredient = useSelector(
     (state) => state.constructorReducer.currentIngredient
   );
-
-  const user = useSelector((state) => state.userReducer.user);
 
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
@@ -84,8 +78,14 @@ const App = () => {
           <Route path="ingredients/:id" element={<IngredientPage />} />
           <Route path="register" element={<RegistrationPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="profile" element={<ProfilePage />} />
-          <Route path="profile/orders" element={<ProfileOrdersPage />} />
+          <Route
+            path="profile"
+            element={<ProtectedRouteElement element={<ProfilePage />} />}
+          />
+          <Route
+            path="profile/orders"
+            element={<ProtectedRouteElement element={<ProfileOrdersPage />} />}
+          />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
           <Route path="reset-password" element={<ResetPasswordPage />} />
           <Route path="*" element={<NotFoundPage />} />
