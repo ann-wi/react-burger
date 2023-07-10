@@ -22,7 +22,10 @@ import Order from "../Order/Order";
 
 import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
-import { getUserProfile } from "../../services/actions/user/server-actions-user";
+import {
+  checkUserAuth,
+  getUserProfile,
+} from "../../services/actions/user/server-actions-user";
 import { refreshUserToken } from "../../services/actions/user/server-actions-user";
 import { getCookie } from "../../utils/cookiesFunction";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
@@ -47,6 +50,8 @@ const App = () => {
     (state) => state.constructorReducer.currentIngredient
   );
 
+  const user = useSelector((state) => state.userReducer.user);
+
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
@@ -61,18 +66,6 @@ const App = () => {
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
-
-  useEffect(() => {
-    if (!cookie && userRefreshToken) {
-      dispatch(refreshUserToken());
-    } else if (cookie && userRefreshToken) {
-      dispatch(getUserProfile());
-    }
-  }, [cookie, userRefreshToken]);
-
-  useEffect(() => {
-    //dispatch(checkUserAuth());
-  });
 
   function closePopups() {
     setIsIngredientDetailsOpened(false);

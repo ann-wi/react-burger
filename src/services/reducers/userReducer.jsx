@@ -34,6 +34,10 @@ import { SEND_REQUEST_RESET_PASSWORD } from "../../utils/constants";
 import { RESPOND_SUCCESS_RESET_PASSWORD } from "../../utils/constants";
 import { RESPOND_ERROR_RESET_PASSWORD } from "../../utils/constants";
 
+import { SEND_REQUEST_REFRESH_TOKEN } from "../../utils/constants";
+import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../utils/constants";
+import { RESPOND_ERROR_REFRESH_TOKEN } from "../../utils/constants";
+
 const initialState = {
   user: null,
   accessToken: "",
@@ -55,6 +59,8 @@ const initialState = {
   respondErrorForgotPass: false,
   sendRequestResetPass: false,
   respondErrorResetPass: false,
+  sendRequestUpdateToken: false,
+  respondErrorUpdateToken: false,
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -67,7 +73,7 @@ export const userReducer = (state = initialState, action) => {
     case LOGIN_USER:
       return {
         ...state,
-        user: action.payload.data,
+        user: action.payload.user,
       };
     case CHANGE_USER:
       return {
@@ -124,9 +130,7 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload.user,
-        accessToken: action.payload.accessToken,
-        refreshToken: action.payload.refreshToken,
-        userIsAuthorized: true,
+        isAuthChecked: true,
         sendRequestLogin: false,
         respondErrorLogin: false,
       };
@@ -229,6 +233,23 @@ export const userReducer = (state = initialState, action) => {
         ...state,
         sendRequestResetPass: false,
         respondErrorResetPass: true,
+      };
+    case SEND_REQUEST_REFRESH_TOKEN:
+      return {
+        ...state,
+        sendRequestUpdateToken: true,
+      };
+    case RESPOND_SUCCESS_REFRESH_TOKEN:
+      return {
+        ...state,
+        sendRequestUpdateToken: false,
+        respondErrorUpdateToken: false,
+      };
+    case RESPOND_ERROR_REFRESH_TOKEN:
+      return {
+        ...state,
+        sendRequestUpdateToken: false,
+        respondErrorUpdateToken: true,
       };
     default:
       return state;

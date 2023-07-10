@@ -62,10 +62,10 @@ export function sendRequestLogin(sendRequest) {
   };
 }
 
-export function respondSuccessLogin(user, accessToken, refreshToken) {
+export function respondSuccessLogin(user) {
   return {
     type: RESPOND_SUCCESS_LOGIN,
-    payload: { user, accessToken, refreshToken },
+    payload: { user },
   };
 }
 
@@ -188,10 +188,10 @@ export function sendRequestRefreshToken(sendRequest) {
   };
 }
 
-export function respondSuccessRefreshToken(access, refresh) {
+export function respondSuccessRefreshToken(success) {
   return {
     type: RESPOND_SUCCESS_REFRESH_TOKEN,
-    payload: { access, refresh },
+    payload: { success },
   };
 }
 
@@ -250,13 +250,12 @@ export function authUser(info) {
       }),
     })
       .then(checkResponse)
-      .then((data) => {
-        setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
-        setCookie("refreshToken", data.refreshToken);
-        dispatch(
-          respondSuccessLogin(data.user, data.accessToken, data.refreshToken)
-        );
-        //dispatch(setAuthChecked(true));
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("accessToken", res.accessToken);
+        localStorage.setItem("refreshToken", res.refreshToken);
+        dispatch(respondSuccessLogin(res.user));
+        dispatch(setAuthChecked(true));
       })
       .catch((err) => {
         dispatch(respondErrorLogin(true));
@@ -293,24 +292,34 @@ export function logoutUser() {
 
 // GET USER PROFILE
 
+function getUser() {
+  return fetch(`${apiBurger}auth/user`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + getCookie("accessToken"),
+    },
+  }).then((res) => checkResponse(res));
+}
+
 export function getUserProfile() {
   return function (dispatch) {
     dispatch(sendRequestUser(true));
 
-    fetch(`${apiBurger}auth/user`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + getCookie("accessToken"),
-      },
-    })
-      .then(checkResponse)
-      .then((data) => {
-        dispatch(respondSuccessUser(data.user));
-        console.log(data);
+    getUser()
+      .then((res) => {
+        if (res && res.success) {
+          dispatch(respondSuccessUser(res.user));
+        } else {
+          dispatch(respondErrorUser(true));
+        }
       })
       .catch((err) => {
-        dispatch(respondErrorUser(true));
+        if (localStorage.getItem("refreshToken")) {
+          dispatch(refreshUserToken());
+        } else {
+          dispatch(respondErrorUser(true));
+        }
       });
   };
 }
@@ -396,26 +405,33 @@ export function resetUserPassword(data) {
 
 //REFRESH USER TOKEN
 
+function updateUserToken() {
+  return fetch(`${apiBurger}auth/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      token: localStorage.getItem("refreshToken"),
+    }),
+  }).then((res) => checkResponse(res));
+}
+
 export function refreshUserToken() {
   return function (dispatch) {
     dispatch(sendRequestRefreshToken(true));
 
-    fetch(`${apiBurger}auth/token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        token: getCookie("refreshToken"),
-      }),
-    })
-      .then(checkResponse)
-      .then((data) => {
-        setCookie("accessToken", data.accessToken.split("Bearer ")[1]);
-        setCookie("refreshToken", data.refreshToken);
-        dispatch(
-          respondSuccessRefreshToken(data.accessToken, data.refreshToken)
-        );
+    updateUserToken()
+      .then((res) => {
+        if (res && res.success) {
+          console.log(res.accessToken);
+          setCookie("accessToken", res.accessToken.split("Bearer ")[1]);
+          localStorage.setItem("refreshToken", res.refreshToken);
+          dispatch(respondSuccessRefreshToken(true));
+        } else {
+          console.log("error refresh token");
+          dispatch(respondErrorRefreshToken(true));
+        }
       })
       .catch((err) => {
         dispatch(respondErrorRefreshToken(true));
@@ -426,12 +442,11 @@ export function refreshUserToken() {
 /*
 export const checkUserAuth = () => {
   return (dispatch) => {
-    if (getCookie("accessToken")) {
-      dispatch(getUserProfile())
+    if (localStorage.getItem("accessToken")) {
+      dispatch(getUser())
         .catch(() => {
-          setCookie("accessToken", "");
-          setCookie("refreshToken", "");
-          console.log(getCookie("accessToken"));
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
           dispatch(respondSuccessUser(null));
         })
         .finally(() => dispatch(setAuthChecked(true)));
