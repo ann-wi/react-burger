@@ -1,11 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
-import { Navigate, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Navigate, NavLink, useLocation } from "react-router-dom";
 import { userLogout } from "../../services/actions/user/server-actions-user";
 import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
-export const ProfileNavigation = (props) => {
+export const ProfileNavigation = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const clickLogout = (e) => {
@@ -18,44 +17,28 @@ export const ProfileNavigation = (props) => {
   return (
     <ul className={profileNavigationStyles.navList}>
       <li>
-        <NavLink to={"/profile"} className={profileNavigationStyles.navLink}>
-          <p
-            className={`${profileNavigationStyles.text} ${
-              props.active && profileNavigationStyles.active
-            }`}
-          >
-            Профиль
-          </p>
+        <NavLink to="/profile" className={profileNavigationStyles.navLink}>
+          <p className={`${profileNavigationStyles.text}`}>Профиль</p>
         </NavLink>
       </li>
       <li>
         <NavLink
-          to={"/profile/orders"}
+          to="/profile/orders"
           className={profileNavigationStyles.navLink}
         >
-          <p
-            className={`${profileNavigationStyles.text} ${
-              props.isActive && profileNavigationStyles.active
-            }`}
-          >
-            История заказов
-          </p>
+          <p className={`${profileNavigationStyles.text}`}>История заказов</p>
         </NavLink>
       </li>
       <li>
         <NavLink
-          to={"/"}
+          to="/"
           className={profileNavigationStyles.navLink}
           onClick={clickLogout}
         >
-          <p className={profileNavigationStyles.text}>Выход</p>
+          <p className={`${profileNavigationStyles.text}`}>Выход</p>
         </NavLink>
       </li>
-      <p
-        className={`${profileNavigationStyles.about} ${
-          props.isActive && profileNavigationStyles.disabled
-        }`}
-      >
+      <p className={`${profileNavigationStyles.about}`}>
         В этом разделе вы можете изменить свои персональные данные
       </p>
     </ul>

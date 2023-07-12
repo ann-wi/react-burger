@@ -6,7 +6,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import { registerUser } from "../services/actions/user/registerUser";
 import { registerNewUser } from "../services/actions/user/server-actions-user";
 import { useForm } from "../hooks/useForm";
 
@@ -14,7 +13,9 @@ import registerStyles from "./register-styles.module.css";
 
 export const RegistrationPage = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.userReducer.userIsAuthorized);
+  const isAuthorized = useSelector(
+    (state) => state.userReducer.userIsAuthorized
+  );
 
   const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ export const RegistrationPage = () => {
     navigate("/login");
   };
 
-  if (isAuth) return <Navigate to={"/"} replace />;
+  if (isAuthorized) return <Navigate to="/profile" />;
 
   return (
     <div className={registerStyles.registerContainer}>

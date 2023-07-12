@@ -8,7 +8,7 @@ import uuid from "react-uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 
-const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
+export const Ingredient = ({ ingredient, ingrType }) => {
   const { _id, name, price, image, type, counter } = ingredient;
   ingredient.uuid = uuid();
   const addedIngredients = useSelector(
@@ -124,8 +124,5 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
 
 Ingredient.propTypes = {
   ingredient: PropTypes.object,
-  onClickPopup: PropTypes.func,
   ingrType: PropTypes.string,
 };
-
-export default Ingredient;

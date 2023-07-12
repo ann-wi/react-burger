@@ -1,12 +1,5 @@
-import {
-  Routes,
-  Route,
-  useLocation,
-  useParams,
-  useNavigate,
-} from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppHeader } from "../AppHeader/AppHeader";
 import { HomePage } from "../../pages/homepage";
@@ -18,23 +11,13 @@ import { NotFoundPage } from "../../pages/not-found-404";
 import { ProfilePage } from "../../pages/profile";
 import { ProfileOrdersPage } from "../../pages/profile-orders";
 import { IngredientPage } from "../../pages/ingredient-page";
-import Order from "../Order/Order";
+import { Order } from "../Order/Order";
 
-import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
-import {
-  checkUserAuth,
-  getUser,
-} from "../../services/actions/user/server-actions-user";
-import { refreshUserToken } from "../../services/actions/user/server-actions-user";
-import { getCookie } from "../../utils/cookies-storage";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import Modal from "../Modal/Modal";
-import ModalPageSwitch from "../../services/hocs/ModalPageFunc";
+import { getUser } from "../../services/actions/user/server-actions-user";
+import { IngredientDetails } from "../IngredientDetails/IngredientDetails";
+import { Modal } from "../Modal/Modal";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
-
-import { openModal } from "../../services/actions/user/openModal";
-import { closeModal } from "../../services/actions/user/closeModal";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,27 +25,17 @@ const App = () => {
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
-  const currentIngredient = useSelector(
-    (state) => state.constructorReducer.currentIngredient
-  );
-
-  const ingredients = useSelector(
-    (state) => state.constructorReducer.ingredients
-  );
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] =
-    useState(false);
-
   const visible = useSelector((state) => state.constructorReducer.modalVisible);
-
-  const cookie = getCookie("accessToken");
-  const userRefreshToken = getCookie("refreshToken");
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
   function closePopups() {
-    setIsIngredientDetailsOpened(false);
     navigate(-1);
   }
 
@@ -76,18 +49,57 @@ const App = () => {
         <Route path="/" element={<AppHeader active={true} isActive={false} />}>
           <Route index element={<HomePage />} />
           <Route path="ingredients/:id" element={<IngredientPage />} />
-          <Route path="register" element={<RegistrationPage />} />
-          <Route path="login" element={<LoginPage />} />
+          <Route
+            path="register"
+            element={
+              <ProtectedRouteElement
+                onlyAuth={false}
+                element={<RegistrationPage />}
+              />
+            }
+          />
+          <Route
+            path="login"
+            element={
+              <ProtectedRouteElement onlyAuth={false} element={<LoginPage />} />
+            }
+          />
           <Route
             path="profile"
-            element={<ProtectedRouteElement element={<ProfilePage />} />}
+            element={
+              <ProtectedRouteElement
+                onlyAuth={true}
+                element={<ProfilePage />}
+              />
+            }
           />
           <Route
             path="profile/orders"
-            element={<ProtectedRouteElement element={<ProfileOrdersPage />} />}
+            element={
+              <ProtectedRouteElement
+                onlyAuth={true}
+                element={<ProfileOrdersPage />}
+              />
+            }
           />
-          <Route path="forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="reset-password" element={<ResetPasswordPage />} />
+          <Route
+            path="forgot-password"
+            element={
+              <ProtectedRouteElement
+                onlyAuth={false}
+                element={<ForgotPasswordPage />}
+              />
+            }
+          />
+          <Route
+            path="reset-password"
+            element={
+              <ProtectedRouteElement
+                onlyAuth={false}
+                element={<ResetPasswordPage />}
+              />
+            }
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
@@ -107,6 +119,7 @@ const App = () => {
             path="order"
             element={
               <ProtectedRouteElement
+                onlyAuth={true}
                 element={
                   visible && (
                     <Modal onCloseClick={closePopups}>
@@ -124,5 +137,3 @@ const App = () => {
 };
 
 export default App;
-
-//<ProtectedRouteElement element={} />

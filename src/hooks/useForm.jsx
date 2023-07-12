@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 
 export const useForm = (data, submitCh) => {
   const [formData, setFormData] = useState(data);
@@ -14,4 +15,9 @@ export const useForm = (data, submitCh) => {
   };
 
   return { formData, setFormData, onChange, onSubmit };
+};
+
+useForm.propTypes = {
+  data: PropTypes.object,
+  submitCh: PropTypes.func,
 };

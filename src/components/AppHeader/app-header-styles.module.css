@@ -37,8 +37,8 @@
   color: #fff;
 }
 
-.active {
-  color: rgba(242, 242, 243, 1);
+.activeLink {
+  color: rgba(76, 76, 255, 1);
 }
 
 .logo {
@@ -51,8 +51,4 @@
 
 .navProfile {
   margin-left: 288px;
-}
-
-.button:hover {
-  transition: all 0.3s ease-in;
 }

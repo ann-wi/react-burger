@@ -51,10 +51,6 @@ import { SEND_REQUEST_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../../utils/constants";
 import { RESPOND_ERROR_REFRESH_TOKEN } from "../../../utils/constants";
 
-import { SET_AUTH_CHECKED } from "../../../utils/constants";
-import { SET_USER } from "../../../utils/constants";
-import { loginUser } from "./loginUser";
-
 export function sendRequestRegister(sendRequest) {
   return {
     type: SEND_REQUEST_REGISTER,
@@ -62,10 +58,10 @@ export function sendRequestRegister(sendRequest) {
   };
 }
 
-export function respondSuccessRegister(data) {
+export function respondSuccessRegister(user) {
   return {
     type: RESPOND_SUCCESS_REGISTER,
-    payload: { data },
+    payload: { user },
   };
 }
 
@@ -167,10 +163,10 @@ export function sendRequestForgotPass(sendRequest) {
   };
 }
 
-export function respondSuccessForgotPass(email) {
+export function respondSuccessForgotPass(success) {
   return {
     type: RESPOND_SUCCESS_FORGOT_PASSWORD,
-    payload: { email },
+    payload: { success },
   };
 }
 
@@ -223,59 +219,46 @@ export function respondErrorRefreshToken(respondError) {
   };
 }
 
-export const setAuthChecked = (value) => ({
-  type: SET_AUTH_CHECKED,
-  payload: value,
-});
-
-export const setUser = (user) => ({
-  type: SET_USER,
-  payload: user,
-});
-
-//////////////////////////////////////////REGISTRATION
+// REGISTRATION
 
 export const registerNewUser = (info) => (dispatch) => {
   dispatch(sendRequestRegister(true));
 
   apiRegisterUser(info)
     .then((data) => {
-      console.log(data);
       dispatch(respondSuccessRegister(data.user));
+      dispatch(respondSuccessLogin(data.user));
     })
     .catch((err) => {
       dispatch(respondErrorRegister(true));
     });
 };
 
-//////////////////////////////////////////LOG IN
+// LOG IN
 
 export const authUser = (info) => (dispatch) => {
   dispatch(sendRequestLogin(true));
 
   apiAuthUser(info)
     .then((data) => {
-      console.log(data);
       setCookie("accessToken", formatToken(data.accessToken), {
         expires: 60 * 15,
         path: "/",
       });
       saveToLocalStorage("refreshToken", data.refreshToken);
       dispatch(respondSuccessLogin(data.user));
-      dispatch(loginUser(data.user));
     })
     .catch((err) => {
       dispatch(respondErrorLogin(true));
     });
 };
 
-////////////////////////////////////// LOG OUT
+// LOG OUT
 
 export const userLogout = () => (dispatch) => {
   dispatch(sendRequestLogout(true));
   fetchWithRefresh({ responce: apiLogoutUser, data: null })
     .then((res) => {
-      console.log(res);
       deleteCookie("accessToken");
       deleteFromLocalStorage("refreshToken");
       dispatch(respondSuccessLogout(res.user));
@@ -285,7 +268,59 @@ export const userLogout = () => (dispatch) => {
     });
 };
 
-///////////////////////////////////////// RELOGIN
+// GET USER PROFILE
+
+export const getUser = () => (dispatch) => {
+  dispatch(sendRequestUser(true));
+  fetchWithRefresh({ responce: apiGetUser, data: null })
+    .then((res) => {
+      dispatch(respondSuccessLogin(res.user));
+    })
+    .catch((err) => {
+      dispatch(respondErrorUser(true));
+    });
+};
+
+// CHANGE USER INFO
+
+export const changeUserInfo = (info) => (dispatch) => {
+  dispatch(sendRequestChangeUser(true));
+  fetchWithRefresh({ responce: apiUpdateUserInfo, data: info })
+    .then((res) => {
+      dispatch(respondSuccessChangeUser(res.user));
+    })
+    .catch((err) => {
+      dispatch(respondErrorChangeUser(true));
+    });
+};
+
+// FORGOT PASSWORD
+
+export const forgotPasswordSendEmail = (email) => (dispatch) => {
+  dispatch(sendRequestForgotPass(true));
+  apiForgotPassword(email)
+    .then((res) => {
+      dispatch(respondSuccessForgotPass(true));
+    })
+    .catch((err) => {
+      dispatch(respondErrorForgotPass(true));
+    });
+};
+
+// RESET PASSWORD
+
+export const resetUserPassword = (data) => (dispatch) => {
+  dispatch(sendRequestResetPass(true));
+  apiResetPassword(data)
+    .then((res) => {
+      dispatch(respondSuccessResetPass(true));
+    })
+    .catch((err) => {
+      dispatch(respondErrorResetPass(true));
+    });
+};
+
+// RELOGIN
 
 export const reloginUser = () => (dispatch) => {
   const localStorageToken = getFromLocalStorage("refreshToken");
@@ -312,58 +347,4 @@ export const reloginUser = () => (dispatch) => {
         console.log("No user", err);
       });
   }
-};
-
-/////////////////////////////////////// GET USER PROFILE
-
-export const getUser = () => (dispatch) => {
-  dispatch(sendRequestUser(true));
-  fetchWithRefresh({ responce: apiGetUser, data: null })
-    .then((res) => {
-      dispatch(respondSuccessLogin(res.user));
-    })
-    .catch((err) => {
-      dispatch(respondErrorUser(true));
-    });
-};
-
-////////////////////////////////////// CHANGE USER INFO
-
-export const changeUserInfo = (info) => (dispatch) => {
-  dispatch(sendRequestChangeUser(true));
-  fetchWithRefresh({ responce: apiUpdateUserInfo, data: info })
-    .then((res) => {
-      dispatch(respondSuccessChangeUser(res.user));
-    })
-    .catch((err) => {
-      dispatch(respondErrorChangeUser(true));
-    });
-};
-
-//////////////////////////////////// FORGOT PASSWORD
-
-//dispatch(respondSuccessForgotPass(email));
-
-export const forgotPasswordSendEmail = (email) => (dispatch) => {
-  dispatch(sendRequestForgotPass(true));
-  apiForgotPassword(email)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((err) => {
-      dispatch(respondErrorForgotPass(true));
-    });
-};
-
-/////////////////////////////////// RESET PASSWORD
-
-export const resetUserPassword = (data) => (dispatch) => {
-  dispatch(sendRequestResetPass(true));
-  apiResetPassword(data)
-    .then((res) => {
-      dispatch(respondSuccessResetPass(true));
-    })
-    .catch((err) => {
-      dispatch(respondErrorResetPass(true));
-    });
 };

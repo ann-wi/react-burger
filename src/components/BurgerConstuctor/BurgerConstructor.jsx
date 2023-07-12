@@ -1,21 +1,20 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ConstructorContainer from "../ConstructorContainer/ConstructorContainer";
+import { ConstructorContainer } from "../ConstructorContainer/ConstructorContainer";
 import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
-import OrderPrice from "../OrderPrice/OrderPrice";
+import { OrderPrice } from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
-import PropTypes from "prop-types";
 
 import { sumOrder } from "../../services/actions/constructor/sumOrder";
 import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
 import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const BurgerConstructor = ({ onClickPopup }) => {
+export const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -96,9 +95,3 @@ const BurgerConstructor = ({ onClickPopup }) => {
     </>
   );
 };
-
-BurgerConstructor.propTypes = {
-  onClickPopup: PropTypes.func,
-};
-
-export default BurgerConstructor;

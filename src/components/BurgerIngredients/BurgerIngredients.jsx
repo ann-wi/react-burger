@@ -1,19 +1,13 @@
 import { useRef, useState } from "react";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import Ingredient from "../Ingredient/Ingredient";
-import { Link, useLocation } from "react-router-dom";
+import { Ingredient } from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
 import { useSelector } from "react-redux";
 
-const BurgerIngredients = () => {
-  const location = useLocation();
-
+export const BurgerIngredients = () => {
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
-  );
-  const currentIngredient = useSelector(
-    (state) => state.constructorReducer.currentIngredient
   );
 
   const tabBuns = useRef(null);
@@ -121,5 +115,3 @@ const BurgerIngredients = () => {
     </>
   );
 };
-
-export default BurgerIngredients;

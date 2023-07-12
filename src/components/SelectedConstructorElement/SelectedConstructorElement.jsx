@@ -9,7 +9,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-const SelectedConstructorElement = ({
+export const SelectedConstructorElement = ({
   ingredient,
   elemType,
   deleteItem,
@@ -122,5 +122,3 @@ SelectedConstructorElement.propTypes = {
   deleteItem: PropTypes.func,
   index: PropTypes.number,
 };
-
-export default SelectedConstructorElement;

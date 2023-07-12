@@ -77,7 +77,6 @@ export function getOrderNumber(ingredientsIds) {
 
     apiSendOrder(ingredientsIds)
       .then((data) => {
-        console.log(data);
         dispatch(respondSuccessOrder(data.order.number));
       })
       .catch((err) => {
