@@ -300,6 +300,7 @@ export const forgotPasswordSendEmail = (email) => (dispatch) => {
   dispatch(sendRequestForgotPass(true));
   apiForgotPassword(email)
     .then((res) => {
+      console.log(email);
       dispatch(respondSuccessForgotPass(true));
     })
     .catch((err) => {

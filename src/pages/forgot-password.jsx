@@ -20,7 +20,8 @@ export const ForgotPasswordPage = () => {
     { email: "" },
     () => {
       navigate("/reset-password");
-      dispatch(forgotPasswordSendEmail(formData));
+      console.log(formData);
+      dispatch(forgotPasswordSendEmail(formData.email));
     }
   );
 

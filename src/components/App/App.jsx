@@ -14,7 +14,10 @@ import { IngredientPage } from "../../pages/ingredient-page";
 import { Order } from "../Order/Order";
 
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
-import { getUser } from "../../services/actions/user/server-actions-user";
+import {
+  getUser,
+  reloginUser,
+} from "../../services/actions/user/server-actions-user";
 import { IngredientDetails } from "../IngredientDetails/IngredientDetails";
 import { Modal } from "../Modal/Modal";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
@@ -32,7 +35,7 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(reloginUser());
   }, [dispatch]);
 
   function closePopups() {

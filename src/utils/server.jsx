@@ -174,7 +174,7 @@ export async function apiResetPassword(data) {
 export const fetchWithRefresh = async ({ responce, data }) => {
   try {
     const res = await responce(data ? data : null);
-    return Promise.resolve(res);
+    return await checkResponse(res);
   } catch (err) {
     if (err.message === "jwt expired" || err.message === "jwt malformed") {
       await apiUpdateAccessToken().then((res) => {
