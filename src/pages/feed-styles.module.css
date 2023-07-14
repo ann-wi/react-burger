@@ -1,0 +1,125 @@
+.box {
+  width: 1254px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+
+  /* align-items: flex-start; */
+}
+
+.heading {
+  text-align: left;
+}
+
+.orderLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.statusTable {
+  /* width: 100%; */
+  /* height: 100px; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 36px;
+}
+
+h3,
+p {
+  text-align: left;
+}
+
+.orderNumber {
+  color: #00cccc;
+}
+
+.orderSection {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.ordersDigits {
+  text-shadow: 0 0 30px #262684;
+}
+
+.orderBox {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 24px;
+  overflow-y: scroll;
+  height: calc(100vh - 246px);
+}
+
+.orderBox::-webkit-scrollbar {
+  width: 8px;
+}
+
+.orderBox::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  border-radius: 4px;
+}
+
+.orderBox::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+/* Здесь стили для скролла */
+
+.orderItem {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  background-color: #1c1c21;
+  border-radius: 30px;
+  padding: 24px;
+  cursor: pointer;
+  border: 1px solid #4c4cff00;
+  transition: border 0.5s ease-in-out;
+}
+
+.orderItem:hover {
+  border: 1px solid #4c4cff;
+}
+
+.itemTopString {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderIngredients {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  transform-style: preserve-3d;
+}
+
+.ingredientsTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sumTotal {
+  display: flex;
+  justify-content: space-between;
+}
+
+.sum {
+  padding-right: 10px;
+}
+
+.ordersRibbon {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(10, 10%);
+  height: 300px;
+  grid-auto-flow: column;
+  overflow: hidden;
+}

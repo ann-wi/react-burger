@@ -27,16 +27,20 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state && location.state.background;
+  const user = useSelector((state) => state.userReducer.user);
 
   const visible = useSelector((state) => state.constructorReducer.modalVisible);
 
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(reloginUser());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(reloginUser());
-  }, [dispatch]);
+    if (user) {
+      dispatch(reloginUser());
+    }
+  }, [user]);
 
   function closePopups() {
     navigate(-1);
