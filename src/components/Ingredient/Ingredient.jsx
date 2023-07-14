@@ -5,13 +5,26 @@ import ingredientStyles from "./ingredient-styles.module.css";
 
 import PropTypes from "prop-types";
 import uuid from "react-uuid";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 
-const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
+export const Ingredient = ({ ingredient, ingrType }) => {
   const { _id, name, price, image, type, counter } = ingredient;
   ingredient.uuid = uuid();
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const clickHandler = () => {
+    dispatch(getIngredientDetails(ingredient));
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location },
+    });
+  };
 
   const [, ingrDragRef] = useDrag({
     type: "ingredient",
@@ -63,7 +76,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
         {ingredient.counter}
       </p>
       <img
-        onClick={() => onClickPopup(ingredient)}
+        onClick={clickHandler}
         src={ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
         alt={ingredient.name}
@@ -89,7 +102,7 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
         {ingredient.counter}
       </p>
       <img
-        onClick={() => onClickPopup(ingredient)}
+        onClick={clickHandler}
         src={ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
         alt={ingredient.name}
@@ -111,8 +124,5 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
 
 Ingredient.propTypes = {
   ingredient: PropTypes.object,
-  onClickPopup: PropTypes.func,
   ingrType: PropTypes.string,
 };
-
-export default Ingredient;

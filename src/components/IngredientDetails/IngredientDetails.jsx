@@ -1,7 +1,22 @@
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import IngredientDetailsStyles from "./ingredients-details-styles.module.css";
+import { useParams } from "react-router-dom";
 
-const IngredientDetails = ({ ingredient }) => {
+export const IngredientDetails = () => {
+  const ingredients = useSelector(
+    (state) => state.constructorReducer.ingredients
+  );
+  const { id } = useParams();
+
+  const findIngr = (id) => {
+    const elem = ingredients.find((i) => i._id === id);
+    return elem;
+  };
+
+  const theIngr = findIngr(id);
+
+  if (!theIngr) return null;
+
   return (
     <div className={IngredientDetailsStyles.container}>
       <h2
@@ -11,13 +26,13 @@ const IngredientDetails = ({ ingredient }) => {
       </h2>
       <img
         className={`${IngredientDetailsStyles.image} mb-4`}
-        src={ingredient.image}
-        alt={ingredient.name}
+        src={theIngr.image}
+        alt={theIngr.name}
       ></img>
       <h2
         className={`${IngredientDetailsStyles.name} text text_type_main-medium`}
       >
-        {ingredient.name}
+        {theIngr.name}
       </h2>
       <ul className={`${IngredientDetailsStyles.list} mt-8 mb-15`}>
         <li className={`${IngredientDetailsStyles.listItem} mr-5`}>
@@ -29,7 +44,7 @@ const IngredientDetails = ({ ingredient }) => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {ingredient.calories}
+            {theIngr.calories}
           </span>
         </li>
         <li className={`${IngredientDetailsStyles.listItem} mr-5`}>
@@ -41,7 +56,7 @@ const IngredientDetails = ({ ingredient }) => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {ingredient.proteins}
+            {theIngr.proteins}
           </span>
         </li>
         <li className={`${IngredientDetailsStyles.listItem} mr-5`}>
@@ -53,7 +68,7 @@ const IngredientDetails = ({ ingredient }) => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {ingredient.fat}
+            {theIngr.fat}
           </span>
         </li>
         <li className={IngredientDetailsStyles.listItem}>
@@ -65,16 +80,10 @@ const IngredientDetails = ({ ingredient }) => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {ingredient.carbohydrates}
+            {theIngr.carbohydrates}
           </span>
         </li>
       </ul>
     </div>
   );
 };
-
-IngredientDetails.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-};
-
-export default IngredientDetails;

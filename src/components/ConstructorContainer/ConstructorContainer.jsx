@@ -2,20 +2,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDrop } from "react-dnd";
 import constructorContainerStyles from "./constructor-container-styles.module.css";
 import PropTypes from "prop-types";
-import SelectedConstructorElement from "../SelectedConstructorElement/SelectedConstructorElement";
+import { SelectedConstructorElement } from "../SelectedConstructorElement/SelectedConstructorElement";
 
-import { decreaseIngredient } from "../../services/actions/decreaseIngredient";
-import { increaseIngredient } from "../../services/actions/increaseIngredient";
-import { addIngredient } from "../../services/actions/addIngredient";
-import { deleteIngredient } from "../../services/actions/deleteIngredient";
+import { decreaseIngredient } from "../../services/actions/constructor/decreaseIngredient";
+import { increaseIngredient } from "../../services/actions/constructor/increaseIngredient";
+import { addIngredient } from "../../services/actions/constructor/addIngredient";
+import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
 
-const ConstructorContainer = ({ containerType }) => {
+export const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();
   const ingredientsData = useSelector(
-    (state) => state.reactBurgerReducer.ingredients
+    (state) => state.constructorReducer.ingredients
   );
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
 
   const handleDrop = (item, id) => {
@@ -114,5 +114,3 @@ const ConstructorContainer = ({ containerType }) => {
 ConstructorContainer.propTypes = {
   containerType: PropTypes.string,
 };
-
-export default ConstructorContainer;

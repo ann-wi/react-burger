@@ -2,14 +2,14 @@ import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SelectedConstructorElementStyles from "./selected-constructor-element-styles.module.css";
-import { setNewIngrs } from "../../services/actions/setIngredients";
+import { setNewIngrs } from "../../services/actions/constructor/setIngredients";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 
-const SelectedConstructorElement = ({
+export const SelectedConstructorElement = ({
   ingredient,
   elemType,
   deleteItem,
@@ -20,7 +20,7 @@ const SelectedConstructorElement = ({
   const { name, price, image } = ingredient;
 
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
 
   const [, dragRef] = useDrag({
@@ -122,5 +122,3 @@ SelectedConstructorElement.propTypes = {
   deleteItem: PropTypes.func,
   index: PropTypes.number,
 };
-
-export default SelectedConstructorElement;

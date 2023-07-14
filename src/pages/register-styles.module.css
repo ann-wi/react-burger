@@ -1,0 +1,37 @@
+.registerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 180px;
+  margin-bottom: 314px;
+}
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.registerInput > .input_size_default {
+  width: 480px;
+}
+
+.buttonText {
+  padding: 0;
+  margin: 0;
+}
+
+.linkText {
+  color: #8585ad;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}

@@ -19,11 +19,11 @@
   border: none;
   width: 178px;
   height: 56px;
-  color: #fff;
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: center;
+  text-decoration-line: none;
 }
 
 .buttonText {
@@ -35,6 +35,10 @@
 .buttonTextConstr {
   composes: buttonText;
   color: #fff;
+}
+
+.activeLink {
+  color: rgba(76, 76, 255, 1);
 }
 
 .logo {

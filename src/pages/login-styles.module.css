@@ -1,0 +1,33 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 180px;
+  margin-bottom: 362px;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.buttonText {
+  padding: 0;
+  margin: 0;
+}
+
+.buttonText {
+  color: #8585ad;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+}

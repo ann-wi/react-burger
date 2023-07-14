@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
-import { reactBurgerReducer } from "./burgerConstructorReducer";
+import { constructorReducer } from "./constructorReducer";
+import { userReducer } from "./userReducer";
 
 export const rootReducer = combineReducers({
-  reactBurgerReducer,
+  constructorReducer,
+  userReducer,
 });

@@ -1,21 +1,22 @@
-import { ADD_INGREDIENT } from "../actions/constants";
-import { DELETE_INGREDIENT } from "../actions/constants";
-import { GET_INGREDIENT_DETAILS } from "../actions/constants";
-import { SET_INGREDIENTS } from "../actions/constants";
-import { SUM_ORDER } from "../actions/constants";
-import { INCREASE_INGREDIENT } from "../actions/constants";
-import { DECREASE_INGREDIENT } from "../actions/constants";
-import { SEND_REQUEST_INGREDIENTS } from "../actions/constants";
-import { RESPOND_SUCCESS_INGREDIENTS } from "../actions/constants";
-import { RESPOND_ERROR_INGREDIENTS } from "../actions/constants";
-import { SEND_REQUEST_ORDER } from "../actions/constants";
-import { RESPOND_SUCCESS_ORDER } from "../actions/constants";
-import { RESPOND_ERROR_ORDER } from "../actions/constants";
+import { ADD_INGREDIENT } from "../../utils/constants";
+import { DELETE_INGREDIENT } from "../../utils/constants";
+import { GET_INGREDIENT_DETAILS } from "../../utils/constants";
+import { SET_INGREDIENTS } from "../../utils/constants";
+import { SUM_ORDER } from "../../utils/constants";
+import { INCREASE_INGREDIENT } from "../../utils/constants";
+import { DECREASE_INGREDIENT } from "../../utils/constants";
+import { SEND_REQUEST_INGREDIENTS } from "../../utils/constants";
+import { RESPOND_SUCCESS_INGREDIENTS } from "../../utils/constants";
+import { RESPOND_ERROR_INGREDIENTS } from "../../utils/constants";
+import { SEND_REQUEST_ORDER } from "../../utils/constants";
+import { RESPOND_SUCCESS_ORDER } from "../../utils/constants";
+import { RESPOND_ERROR_ORDER } from "../../utils/constants";
 
 const initialState = {
   ingredients: [],
   addedIngredients: [],
   currentIngredient: {},
+  modalVisible: false,
   orderSum: 0,
   orderNumber: 0,
   sendRequestOrder: false,
@@ -24,7 +25,7 @@ const initialState = {
   respondErrorIngredients: false,
 };
 
-export const reactBurgerReducer = (state = initialState, action) => {
+export const constructorReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_INGREDIENT:
       return {
@@ -81,6 +82,7 @@ export const reactBurgerReducer = (state = initialState, action) => {
       return {
         ...state,
         currentIngredient: action.payload.ingredient,
+        modalVisible: true,
       };
     case SEND_REQUEST_INGREDIENTS:
       return {
@@ -111,6 +113,7 @@ export const reactBurgerReducer = (state = initialState, action) => {
         orderNumber: action.payload.number,
         sendRequestOrder: false,
         respondErrorOrder: false,
+        modalVisible: true,
       };
     case RESPOND_ERROR_ORDER:
       return {

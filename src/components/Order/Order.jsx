@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import OrderStyles from "./order-styles.module.css";
 import doneLogo from "../../images/done.png";
 
-const Order = ({ orderNumber }) => {
+export const Order = ({ orderNumber }) => {
   return (
     <div className={OrderStyles.container}>
       <h2 className={`${OrderStyles.number} mt-30 text text_type_digits-large`}>
@@ -31,5 +31,3 @@ const Order = ({ orderNumber }) => {
 Order.propTypes = {
   orderNumber: PropTypes.number,
 };
-
-export default Order;
