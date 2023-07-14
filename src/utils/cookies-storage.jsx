@@ -1,7 +1,10 @@
 // Cookies
 
 export function setCookie(name, value, props) {
-  props = props || {};
+  props = {
+    path: "/",
+    ...props,
+  };
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
     const d = new Date();
@@ -41,11 +44,11 @@ export const deleteCookie = (name) => {
 // LocalStorage
 
 export const saveToLocalStorage = (name, data) => {
-  localStorage.setItem(name, JSON.stringify(data));
+  localStorage.setItem(name, data);
 };
 
 export const getFromLocalStorage = (name) => {
-  const myData = JSON.parse(localStorage.getItem(name));
+  const myData = localStorage.getItem(name);
   return myData;
 };
 

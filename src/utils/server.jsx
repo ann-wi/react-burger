@@ -16,7 +16,7 @@ export function checkResponse(res) {
   if (res.ok) {
     return res.json();
   }
-  return Promise.reject(`Ошибка ${res.status}`);
+  return res.json().then((err) => Promise.reject(err));
 }
 
 export async function apiGetIngredients() {
@@ -173,10 +173,14 @@ export async function apiResetPassword(data) {
 
 export const fetchWithRefresh = async ({ responce, data }) => {
   try {
-    const res = await responce(data ? data : null);
-    return await checkResponse(res);
+    return await responce(data);
   } catch (err) {
-    if (err.message === "jwt expired" || err.message === "jwt malformed") {
+    if (err.message === "jwt expired") {
+      console.log(err);
+      return Promise.reject(err);
+    }
+
+    try {
       await apiUpdateAccessToken().then((res) => {
         setCookie("accessToken", formatToken(res.accessToken), {
           expires: 60 * 15,
@@ -185,9 +189,8 @@ export const fetchWithRefresh = async ({ responce, data }) => {
         saveToLocalStorage("refreshToken", res.refreshToken);
       });
 
-      const try2 = responce(data ? data : null);
-      return try2;
-    } else {
+      return await responce(data);
+    } catch (err) {
       return Promise.reject(err);
     }
   }
