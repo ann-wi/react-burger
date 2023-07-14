@@ -44,13 +44,11 @@ export const deleteCookie = (name) => {
 // LocalStorage
 
 export const saveToLocalStorage = (name, data) => {
-  console.log(data);
   localStorage.setItem(name, data);
 };
 
 export const getFromLocalStorage = (name) => {
   const myData = localStorage.getItem(name);
-  console.log(myData);
   return myData;
 };
 
