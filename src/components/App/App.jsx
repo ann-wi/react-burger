@@ -11,6 +11,7 @@ import { NotFoundPage } from "../../pages/not-found-404";
 import { ProfilePage } from "../../pages/profile";
 import { ProfileOrdersPage } from "../../pages/profile-orders";
 import { IngredientPage } from "../../pages/ingredient-page";
+import { FeedPage } from "../../pages/feed";
 import { Order } from "../Order/Order";
 
 import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
@@ -33,14 +34,11 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getIngredients());
-    dispatch(reloginUser());
   }, [dispatch]);
 
   useEffect(() => {
-    if (user) {
-      dispatch(reloginUser());
-    }
-  }, [user]);
+    dispatch(reloginUser());
+  }, [dispatch]);
 
   function closePopups() {
     navigate(-1);
@@ -107,6 +105,7 @@ const App = () => {
               />
             }
           />
+          <Route path="feed" element={<FeedPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
