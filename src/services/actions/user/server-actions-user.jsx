@@ -47,10 +47,6 @@ import { SEND_REQUEST_RESET_PASSWORD } from "../../../utils/constants";
 import { RESPOND_SUCCESS_RESET_PASSWORD } from "../../../utils/constants";
 import { RESPOND_ERROR_RESET_PASSWORD } from "../../../utils/constants";
 
-import { SEND_REQUEST_REFRESH_TOKEN } from "../../../utils/constants";
-import { RESPOND_SUCCESS_REFRESH_TOKEN } from "../../../utils/constants";
-import { RESPOND_ERROR_REFRESH_TOKEN } from "../../../utils/constants";
-
 export function sendRequestRegister(sendRequest) {
   return {
     type: SEND_REQUEST_REGISTER,
@@ -194,27 +190,6 @@ export function respondSuccessResetPass(success) {
 export function respondErrorResetPass(respondError) {
   return {
     type: RESPOND_ERROR_RESET_PASSWORD,
-    payload: { respondError },
-  };
-}
-
-export function sendRequestRefreshToken(sendRequest) {
-  return {
-    type: SEND_REQUEST_REFRESH_TOKEN,
-    payload: { sendRequest },
-  };
-}
-
-export function respondSuccessRefreshToken(success) {
-  return {
-    type: RESPOND_SUCCESS_REFRESH_TOKEN,
-    payload: { success },
-  };
-}
-
-export function respondErrorRefreshToken(respondError) {
-  return {
-    type: RESPOND_ERROR_REFRESH_TOKEN,
     payload: { respondError },
   };
 }

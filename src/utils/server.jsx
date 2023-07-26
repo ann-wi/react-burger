@@ -29,10 +29,12 @@ export async function apiSendOrder(data) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      authorization: "Bearer " + getCookie("accessToken"),
     },
     body: JSON.stringify({ ingredients: data }),
   });
 
+  console.log(data);
   return checkResponse(res);
 }
 

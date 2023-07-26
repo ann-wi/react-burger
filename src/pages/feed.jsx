@@ -1,101 +1,39 @@
-import feedStyles from "./feed-styles.css";
+import feedStyles from "./feed-styles.module.css";
+
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startConnection } from "../services/actions/ws/wsConnectionStart";
+import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
+import { OrderList } from "../components/OrdersLIst/OrderList";
+import { OrdersInfo } from "../components/OrdersInfo/OrdersInfo";
 
 export const FeedPage = () => {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.wsReducer.data);
+
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+      payload: {
+        url: "wss://norma.nomoreparties.space/orders/all",
+        isAuth: true,
+      },
+    });
+    // WHY STOP ?????
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_STOP,
+      });
+    };
+  }, [dispatch]);
+
   return (
     <>
-      <main className={feedStyles.box}>
-        <div className={feedStyles.orderLayout}>
-          <section>
-            <h2
-              className={`${feedStyles.heading} text text_type_main-large pt-10 pb-5`}
-            >
-              Лента заказов
-            </h2>
-            <ul className={feedStyles.orderBox}>
-              {orders.map((order) => (
-                <OrderItem key={uuidv4()} order={order} />
-              ))}
-            </ul>
-          </section>
-          <section className={`${feedStyles.orderSection} pt-25`}>
-            <div className={feedStyles.statusTable}>
-              <div>
-                <h3 className="text text_type_main-medium pb-6">Готовы:</h3>
-                <div className={feedStyles.ordersRibbon}>
-                  {doneOrders.map((doneOrder, index) => {
-                    if (index < 19) {
-                      return (
-                        <p
-                          key={uuidv4()}
-                          className={`${feedStyles.orderNumber} text text_type_digits-default pb-2`}
-                        >
-                          {doneOrder.number}
-                        </p>
-                      );
-                    } else if (index === 20) {
-                      return (
-                        <p
-                          key={uuidv4()}
-                          className={`${feedStyles.orderNumber} text text_type_digits-default pb-2`}
-                        >
-                          ...
-                        </p>
-                      );
-                    }
-                  })}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text text_type_main-medium pb-6">В работе:</h3>
-                <div className={feedStyles.ordersRibbon}>
-                  {undoneOrders.map((doneOrder, index) => {
-                    if (index < 19) {
-                      return (
-                        <p
-                          key={uuidv4()}
-                          className={`text text_type_digits-default pb-2`}
-                        >
-                          {doneOrder.number}
-                        </p>
-                      );
-                    } else if (index === 20) {
-                      return (
-                        <p
-                          key={uuidv4()}
-                          className={`${feedStyles.orderNumber} text text_type_digits-default pb-2`}
-                        >
-                          ...
-                        </p>
-                      );
-                    }
-                  })}
-                </div>
-              </div>
-            </div>
-            <div>
-              <h3 className="text text_type_main-medium">
-                Выполнено за все время:
-              </h3>
-              <p
-                className={`${feedStyles.ordersDigits} text text_type_digits-large`}
-              >
-                {total}
-              </p>
-            </div>
-            <div>
-              <h3 className="text text_type_main-medium">
-                Выполнено за сегодня:
-              </h3>
-              <p
-                className={`${feedStyles.ordersDigits} text text_type_digits-large`}
-              >
-                {totalToday}
-              </p>
-            </div>
-          </section>
-        </div>
-      </main>
+      <h1 className={feedStyles.title}>Лента заказов</h1>
+      <div className={feedStyles.container}>
+        <OrderList orders={data.orders} />
+        <OrdersInfo />
+      </div>
     </>
   );
 };

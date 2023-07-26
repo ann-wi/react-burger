@@ -13,6 +13,11 @@ import { sumOrder } from "../../services/actions/constructor/sumOrder";
 import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
 import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  sendOrder,
+  sendOrderDataApi,
+} from "../../services/actions/constructor/sendOrder";
+import { Ingredient } from "../Ingredient/Ingredient";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -55,13 +60,24 @@ export const BurgerConstructor = () => {
     dispatch(sumOrder(total));
   }, [addedIngredients]);
 
-  const ingredientsIds = addedIngredients.map((ingredient) => ingredient.id);
+  //const ingredientsIds = addedIngredients.map((ingredient) => ingredient.id);
+
+  const ingredientsIds = addedIngredients.map((ingredient) => {
+    if (ingredient._id) {
+      return ingredient._id;
+    } else if (ingredient.id) {
+      return ingredient.id;
+    }
+  });
 
   const handleMakeOrderClick = () => {
     dispatch(getOrderNumber(ingredientsIds));
     navigate(`/order`, {
       state: { background: location },
     });
+    console.log(ingredientsIds);
+    console.log(addedIngredients);
+    dispatch(sendOrder(addedIngredients));
   };
 
   return (

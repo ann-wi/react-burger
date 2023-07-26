@@ -28,7 +28,6 @@ const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const background = location.state && location.state.background;
-  const user = useSelector((state) => state.userReducer.user);
 
   const visible = useSelector((state) => state.constructorReducer.modalVisible);
 
