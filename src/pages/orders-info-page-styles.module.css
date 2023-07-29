@@ -1,0 +1,156 @@
+.box {
+  width: 640px;
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c21;
+}
+
+.wrapper {
+  width: 720px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 40px;
+  margin: 137px auto;
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  cursor: default;
+  align-items: center;
+}
+
+.heading {
+  text-align: left;
+}
+
+.orderLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.statusTable {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 36px;
+}
+
+h3,
+p {
+  text-align: left;
+}
+
+.orderNumber {
+  text-align: center;
+}
+
+.orderSection {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+.ordersDigits {
+  text-shadow: 0 0 30px #262684;
+}
+
+.orderItem {
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+}
+
+.ingredientsList {
+  list-style: none;
+  margin: 0 0 40px;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-start;
+  overflow-y: scroll;
+}
+
+.ingredientsList::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ingredientsList::-webkit-scrollbar-track {
+  background-color: #2f2f37;
+  border-radius: 4px;
+}
+
+.ingredientsList::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.itemTopString {
+  display: flex;
+  justify-content: space-between;
+}
+
+.orderIngredients {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  transform-style: preserve-3d;
+}
+
+.imgContainer {
+  margin: 0 16px 0 0;
+  padding: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(90deg, #801ab2, #4c4cff);
+  transform: rotateY(-0.1deg);
+  overflow: hidden;
+}
+
+.imgIngredient {
+  border-radius: 100%;
+  width: 92%;
+  height: 92%;
+  object-fit: cover;
+  background-color: #000000;
+}
+
+.ingredienDetail {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.descriptionTotal {
+  display: flex;
+  justify-content: space-between;
+}
+
+.countAndPrice {
+  display: flex;
+  margin-left: auto;
+}
+
+.sum {
+  padding-right: 10px;
+}
+
+.status {
+  color: #00cccc;
+}
+
+.totalSum {
+  display: flex;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 40px;
+  right: 43px;
+  cursor: pointer;
+}

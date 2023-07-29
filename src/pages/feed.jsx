@@ -1,11 +1,11 @@
-import feedStyles from "./feed-styles.module.css";
+import FeedStyles from "./feed-styles.module.css";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { startConnection } from "../services/actions/ws/wsConnectionStart";
 import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
 import { OrderList } from "../components/OrdersLIst/OrderList";
-import { OrdersInfo } from "../components/OrdersInfo/OrdersInfo";
+import { OrdersInfoPanel } from "../components/OrdersInfo/OrdersInfoPanel";
 
 export const FeedPage = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ export const FeedPage = () => {
         isAuth: true,
       },
     });
-    // WHY STOP ?????
     return () => {
       dispatch({
         type: WS_CONNECTION_STOP,
@@ -29,10 +28,10 @@ export const FeedPage = () => {
 
   return (
     <>
-      <h1 className={feedStyles.title}>Лента заказов</h1>
-      <div className={feedStyles.container}>
+      <h1 className={FeedStyles.title}>Лента заказов</h1>
+      <div className={FeedStyles.container}>
         <OrderList orders={data.orders} />
-        <OrdersInfo />
+        <OrdersInfoPanel />
       </div>
     </>
   );

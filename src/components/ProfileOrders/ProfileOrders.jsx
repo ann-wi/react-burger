@@ -15,7 +15,6 @@ export const ProfileOrders = () => {
         isAuth: true,
       },
     });
-    // WHY STOP ?????
     return () => {
       dispatch({
         type: WS_CONNECTION_STOP,

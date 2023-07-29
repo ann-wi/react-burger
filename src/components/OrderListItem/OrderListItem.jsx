@@ -3,6 +3,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { useSelector } from "react-redux";
 import { useMemo } from "react";
 import uuid from "react-uuid";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const OrderListItem = (props) => {
   const ingredients = useSelector(
@@ -13,6 +14,9 @@ export const OrderListItem = (props) => {
   const ingredientsLength = orderMaxLength - 6;
   const currentDay = new Date().getDate();
   const orderDay = createdAt.includes(`${currentDay}`);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const orderIngredients = useMemo(() => {
     return props.order?.ingredients.map((id) => {
@@ -29,6 +33,12 @@ export const OrderListItem = (props) => {
         : sum + (item ? item.price : 0);
     }, 0);
   }, [orderIngredients]);
+
+  const clickHandler = () => {
+    navigate(`/${props.order.id}`, {
+      state: { background: location },
+    });
+  };
 
   return (
     <div className={OrderListItemStyles.container}>
@@ -59,7 +69,11 @@ export const OrderListItem = (props) => {
             orderMaxLength <= 5 &&
             orderIngredients.map((item) => {
               return (
-                <li className={OrderListItemStyles.listItem} key={uuid()}>
+                <li
+                  className={OrderListItemStyles.listItem}
+                  key={uuid()}
+                  onClick={clickHandler}
+                >
                   {item && (
                     <div className={OrderListItemStyles.imageBorder}>
                       <div className={OrderListItemStyles.image}>
@@ -78,7 +92,11 @@ export const OrderListItem = (props) => {
             orderMaxLength >= 6 &&
             orderIngredients.slice(0, 5).map((item) => {
               return (
-                <li className={OrderListItemStyles.listItem} key={uuid()}>
+                <li
+                  className={OrderListItemStyles.listItem}
+                  key={uuid()}
+                  onClick={clickHandler}
+                >
                   {item && (
                     <div className={OrderListItemStyles.imageBorder}>
                       <div className={OrderListItemStyles.image}>
@@ -97,7 +115,11 @@ export const OrderListItem = (props) => {
             orderMaxLength > 6 &&
             orderIngredients.slice(5, 6).map((item) => {
               return (
-                <li className={OrderListItemStyles.listItem} key={uuid()}>
+                <li
+                  className={OrderListItemStyles.listItem}
+                  key={uuid()}
+                  onClick={clickHandler}
+                >
                   {item && (
                     <>
                       <p

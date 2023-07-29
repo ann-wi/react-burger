@@ -18,7 +18,7 @@ const initialState = {
   isLoad: false,
 };
 
-export const getOrderData = (state = initialState, action) => {
+export const sendOrderReducer = (state = initialState, action) => {
   switch (action.type) {
     case SEND_ORDER: {
       return {

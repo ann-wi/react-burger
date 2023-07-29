@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   sendOrder,
   sendOrderDataApi,
-} from "../../services/actions/constructor/sendOrder";
+} from "../../services/actions/constructor/sendGetOrder";
 import { Ingredient } from "../Ingredient/Ingredient";
 
 export const BurgerConstructor = () => {
