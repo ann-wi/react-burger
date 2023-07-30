@@ -17,7 +17,6 @@ import {
   sendOrder,
   sendOrderDataApi,
 } from "../../services/actions/constructor/sendGetOrder";
-import { Ingredient } from "../Ingredient/Ingredient";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();

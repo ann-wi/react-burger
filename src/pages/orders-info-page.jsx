@@ -15,7 +15,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 export const OrderInfoPage = (props) => {
+  const data = useSelector((state) => state.wsReducer.data.orders);
+  const ingredientsData = useSelector(
+    (state) => state.constructorReducer.ingredients
+  );
+  const dispatch = useDispatch();
   const { id } = useParams();
+  const location = useLocation();
 
   const selectedOrderData = useMemo(() => {
     return props.order?.ingredients.map((id) => {
@@ -48,7 +54,7 @@ export const OrderInfoPage = (props) => {
               <p className="text text_type_main-medium pb-3">
                 {props.order.name}
               </p>
-              {!!props.order.status && (
+              {props.order.status && (
                 <p className={OrderInfoStyles.status}>
                   {props.order.status === "done"
                     ? "Выполнен"

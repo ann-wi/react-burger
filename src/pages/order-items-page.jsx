@@ -1,13 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
+import { RenderOrderInfo } from "../components/RenderOrderInfo/RenderOrderInfo";
 import {
   getAuthOrders,
   getOrders,
-} from "../../services/actions/constructor/sendGetOrder";
-import { OrderInfoPage } from "../../pages/orders-info-page";
+} from "../services/actions/constructor/sendGetOrder";
+import { OrderInfoPage } from "./orders-info-page";
 
-export const RenderOrderInfo = () => {
+export const OrderItemsPage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const location = useLocation();
@@ -23,7 +24,18 @@ export const RenderOrderInfo = () => {
       : dispatch(getOrders());
   }, [dispatch]);
 
-  let order = data.find((order) => order._id === id);
+  const findOrder = (id) => {
+    const elem = data.find((i) => i._id === id);
+    return elem;
+  };
 
-  return <OrderInfoPage order={order} ingredients={ingredientsData} />;
+  const theOrder = findOrder(id);
+
+  if (!theOrder) return null;
+
+  return (
+    <div>
+      <OrderInfoPage order={theOrder} ingredients={ingredientsData} />
+    </div>
+  );
 };

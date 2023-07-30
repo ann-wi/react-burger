@@ -1,19 +1,26 @@
-import { OrderListItem } from "../OrderListItem/OrderListItem";
 import orderListStyles from "./order-list-styles.module.css";
-import { useEffect } from "react";
-import uuid from "react-uuid";
 
-export const OrderList = (props) => {
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+export const OrderList = ({ reverse }) => {
+  const data = useSelector((state) => state.wsReducer.data.orders);
+  const ingredients = useSelector(
+    (state) => state.constructorReducer.ingredients
+  );
+
   return (
-    <div className={orderListStyles.list}>
-      {props.orders &&
-        props.orders.map((item) => {
-          return (
-            <div className={orderListStyles.link}>
-              <OrderListItem order={item} key={item._id} />
-            </div>
-          );
-        })}
-    </div>
+    <>
+      {ingredients && data && (
+        <main className={orderListStyles.box}>
+          <div className={orderListStyles.orderLayout}>
+            <section>
+              <ul className={orderListStyles.orderBox}></ul>
+            </section>
+          </div>
+        </main>
+      )}
+    </>
   );
 };

@@ -34,7 +34,6 @@ export async function apiSendOrder(data) {
     body: JSON.stringify({ ingredients: data }),
   });
 
-  console.log(data);
   return checkResponse(res);
 }
 

@@ -24,6 +24,7 @@ import { Modal } from "../Modal/Modal";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 import { OrderInfoPage } from "../../pages/orders-info-page";
 import { RenderOrderInfo } from "../RenderOrderInfo/RenderOrderInfo";
+import { OrderItemsPage } from "../../pages/order-items-page";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -111,11 +112,12 @@ const App = () => {
             element={
               <ProtectedRouteElement
                 onlyAuth={true}
-                element={<RenderOrderInfo />}
+                element={<OrderItemsPage />}
               />
             }
           />
-          <Route path="feed/:id" element={<RenderOrderInfo />} />
+          <Route path="feed/:id" element={<OrderItemsPage />} />
+
           <Route path="feed" element={<FeedPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
@@ -132,6 +134,8 @@ const App = () => {
               )
             }
           />
+          <Route path="feed/:id" element={<OrderItemsPage />} />
+          <Route path="profile/orders/:id" element={<OrderItemsPage />} />
           <Route
             path="order"
             element={

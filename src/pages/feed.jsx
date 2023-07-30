@@ -6,10 +6,15 @@ import { startConnection } from "../services/actions/ws/wsConnectionStart";
 import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
 import { OrderList } from "../components/OrdersLIst/OrderList";
 import { OrdersInfoPanel } from "../components/OrdersInfo/OrdersInfoPanel";
+import { useNavigate } from "react-router-dom";
+import { FeedOrderItem } from "../components/FeedOrderItem/FeedOrderItem";
 
 export const FeedPage = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.wsReducer.data);
+  const data = useSelector((state) => state.wsReducer.data.orders);
+  const ingredients = useSelector(
+    (state) => state.constructorReducer.ingredients
+  );
 
   useEffect(() => {
     dispatch({
@@ -30,7 +35,19 @@ export const FeedPage = () => {
     <>
       <h1 className={FeedStyles.title}>Лента заказов</h1>
       <div className={FeedStyles.container}>
-        <OrderList orders={data.orders} />
+        {ingredients && data && (
+          <main className={FeedStyles.box}>
+            <div className={FeedStyles.orderLayout}>
+              <section>
+                <ul className={FeedStyles.orderBox}>
+                  {data.map((order) => (
+                    <FeedOrderItem key={order._id} order={order} />
+                  ))}
+                </ul>
+              </section>
+            </div>
+          </main>
+        )}
         <OrdersInfoPanel />
       </div>
     </>
