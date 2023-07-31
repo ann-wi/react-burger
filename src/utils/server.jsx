@@ -38,7 +38,7 @@ export async function apiSendOrder(data) {
 }
 
 export function getOrderNumber(number) {
-  return fetch(`${apiBurger}/orders/${number}`);
+  return fetch(`${apiBurger}orders/${number}`);
 }
 
 // USER

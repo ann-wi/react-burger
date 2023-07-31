@@ -37,14 +37,14 @@ export const OrderInfoPage = () => {
     };
   }, [dispatch]);
 
-  const order = useSelector((store) => {
-    let order = store.wsReducer.data.orders?.find(
+  const order = useSelector((state) => {
+    let order = state.wsReducer.data.orders?.find(
       (elem) => String(elem.number) === number
     );
     if (order) {
       return order;
     }
-    order = store.orderNumberReducer.orders?.find(
+    order = state.ordersReducer.orders?.find(
       (elem) => String(elem.number) === number
     );
     if (order) {
@@ -54,30 +54,10 @@ export const OrderInfoPage = () => {
   });
 
   useEffect(() => {
-    console.log(data);
     if (!order) {
       dispatch(getOrderInfo(number));
     }
-  }, [dispatch]);
-
-  /*
-  const selectedOrderData = useMemo(() => {
-    return props.order?.ingredients.map((id) => {
-      return props.ingredients?.find((item) => {
-        return id === item._id;
-      });
-    });
-  }, [props.order?.ingredients, props.ingredients]);
-
-  const orderTotalPrice = useMemo(() => {
-    return selectedOrderData?.reduce((sum, item) => {
-      if (item?.type === "bun") {
-        return (sum += item.price * 2);
-      }
-      return (sum += item ? item.price : 0);
-    }, 0);
-  }, [selectedOrderData]);
-  */
+  }, [dispatch, order]);
 
   return (
     <>
@@ -104,7 +84,7 @@ export const OrderInfoPage = () => {
               )}
               <p className="text text_type_main-medium pb-6">Состав:</p>
               <ul className={`${OrderInfoStyles.ingredientsList} pr-6`}>
-                List
+                list
               </ul>
               <div className={OrderInfoStyles.descriptionTotal}>
                 <p className="text text_type_main-default text_color_inactive">
