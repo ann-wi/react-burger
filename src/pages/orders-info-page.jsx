@@ -7,22 +7,60 @@ import {
   getAuthOrders,
   getOrders,
 } from "../services/actions/constructor/sendGetOrder";
-import { WS_CONNECTION_CLOSED, WS_CONNECTION_START } from "../utils/constants";
+import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
 import { OrderIngredientsInfo } from "../components/OrderIngredientsInfo/OrderIngredientsInfo";
 import {
   CloseIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { getOrderInfo } from "../services/actions/constructor/getOrderItemsInfo";
 
-export const OrderInfoPage = (props) => {
-  const data = useSelector((state) => state.wsReducer.data.orders);
-  const ingredientsData = useSelector(
-    (state) => state.constructorReducer.ingredients
-  );
+export const OrderInfoPage = () => {
+  const data = useSelector((state) => state.ordersReducer.orders);
+
   const dispatch = useDispatch();
-  const { id } = useParams();
+  const { number } = useParams();
   const location = useLocation();
 
+  useEffect(() => {
+    dispatch({
+      type: WS_CONNECTION_START,
+      payload: {
+        url: "wss://norma.nomoreparties.space/orders/all",
+        isAuth: true,
+      },
+    });
+    return () => {
+      dispatch({
+        type: WS_CONNECTION_STOP,
+      });
+    };
+  }, [dispatch]);
+
+  const order = useSelector((store) => {
+    let order = store.wsReducer.data.orders?.find(
+      (elem) => String(elem.number) === number
+    );
+    if (order) {
+      return order;
+    }
+    order = store.orderNumberReducer.orders?.find(
+      (elem) => String(elem.number) === number
+    );
+    if (order) {
+      return order;
+    }
+    return null;
+  });
+
+  useEffect(() => {
+    console.log(data);
+    if (!order) {
+      dispatch(getOrderInfo(number));
+    }
+  }, [dispatch]);
+
+  /*
   const selectedOrderData = useMemo(() => {
     return props.order?.ingredients.map((id) => {
       return props.ingredients?.find((item) => {
@@ -39,35 +77,89 @@ export const OrderInfoPage = (props) => {
       return (sum += item ? item.price : 0);
     }, 0);
   }, [selectedOrderData]);
+  */
 
   return (
     <>
-      {props.order && (
+      {
         <div className={OrderInfoStyles.wrapper}>
           <div className={OrderInfoStyles.box}>
             <div className={OrderInfoStyles.orderItem}>
               <p
                 className={`${OrderInfoStyles.orderNumber} text text_type_digits-default pb-10`}
               >
-                #{props.order.number}
+                #{order.number}
               </p>
-              <p className="text text_type_main-medium pb-3">
-                {props.order.name}
-              </p>
-              {props.order.status && (
+              <p className="text text_type_main-medium pb-3">{order.name}</p>
+              {order.status && (
                 <p className={OrderInfoStyles.status}>
-                  {props.order.status === "done"
+                  {order.status === "done"
                     ? "Выполнен"
-                    : props.order.status === "pending"
+                    : order.status === "pending"
                     ? "Готовится"
-                    : props.order.status === "created"
+                    : order.status === "created"
                     ? "Создан"
                     : "Выполнен"}
                 </p>
               )}
               <p className="text text_type_main-medium pb-6">Состав:</p>
               <ul className={`${OrderInfoStyles.ingredientsList} pr-6`}>
-                <OrderIngredientsInfo data={selectedOrderData} key={id} />
+                List
+              </ul>
+              <div className={OrderInfoStyles.descriptionTotal}>
+                <p className="text text_type_main-default text_color_inactive">
+                  gfgd
+                </p>
+                <div className={OrderInfoStyles.totalSum}>
+                  <p
+                    className={`${OrderInfoStyles.sum} text text_type_digits-default`}
+                  >
+                    00000
+                  </p>
+                  <CurrencyIcon type="primary" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={OrderInfoStyles.closeIcon}>
+            <CloseIcon type="primary" />
+          </div>
+        </div>
+      }
+    </>
+  );
+};
+
+/*
+return (
+    <>
+      {
+        <div className={OrderInfoStyles.wrapper}>
+          <div className={OrderInfoStyles.box}>
+            <div className={OrderInfoStyles.orderItem}>
+              <p
+                className={`${OrderInfoStyles.orderNumber} text text_type_digits-default pb-10`}
+              >
+                #{order.number}
+              </p>
+              <p className="text text_type_main-medium pb-3">{order.name}</p>
+              {order.status && (
+                <p className={OrderInfoStyles.status}>
+                  {order.status === "done"
+                    ? "Выполнен"
+                    : order.status === "pending"
+                    ? "Готовится"
+                    : order.status === "created"
+                    ? "Создан"
+                    : "Выполнен"}
+                </p>
+              )}
+              <p className="text text_type_main-medium pb-6">Состав:</p>
+              <ul className={`${OrderInfoStyles.ingredientsList} pr-6`}>
+                <OrderIngredientsInfo
+                  data={selectedOrderData}
+                  key={order._id}
+                />
               </ul>
               <div className={OrderInfoStyles.descriptionTotal}>
                 <p className="text text_type_main-default text_color_inactive">
@@ -88,7 +180,7 @@ export const OrderInfoPage = (props) => {
             <CloseIcon type="primary" />
           </div>
         </div>
-      )}
+      }
     </>
   );
-};
+*/

@@ -43,7 +43,7 @@ export const ProfileOrderItem = ({ order }) => {
   }, [orderIngredients]);
 
   const clickHandler = () => {
-    navigate(`/profile/orders/${order._id}`, { background: location });
+    navigate(`/profile/orders/${order.number}`, { background: location });
   };
 
   return (

@@ -42,7 +42,7 @@ export const sendOrder = (ingredients) => {
   };
 };
 
-export const getOrders = () => {
+export const getOrders = (number) => {
   return (dispatch) => {
     dispatch({
       type: GET_ORDER,
@@ -54,12 +54,13 @@ export const getOrders = () => {
         Authorization: "Bearer " + getCookie("accessToken"),
       },
     };
-    fetchRequest(`orders/all`, getOptions)
+    fetchRequest(`orders/${number}`, getOptions)
       .then((res) => {
         if (res.success) {
+          console.log(res);
           dispatch({
             type: GET_ORDER_SUCCESS,
-            orderList: res.orders,
+            orders: res.orders,
           });
         }
       })
@@ -71,6 +72,7 @@ export const getOrders = () => {
       });
   };
 };
+
 export const getAuthOrders = () => {
   return (dispatch) => {
     dispatch({
@@ -86,9 +88,10 @@ export const getAuthOrders = () => {
     fetchRequest(`orders/`, authOptions)
       .then((res) => {
         if (res.success) {
+          console.log(res);
           dispatch({
             type: GET_ORDER_SUCCESS,
-            orderList: res.orders,
+            orders: res,
           });
         }
       })

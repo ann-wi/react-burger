@@ -59,7 +59,7 @@ export const getOrderReducer = (state = initialState, action) => {
       return {
         ...state,
         orderRequestLoading: false,
-        orderList: action.orderList,
+        orderList: action.orders,
       };
     }
     case GET_ORDER_ERROR: {

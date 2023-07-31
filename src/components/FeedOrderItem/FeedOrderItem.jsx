@@ -42,13 +42,9 @@ export const FeedOrderItem = ({ order }) => {
     }, 0);
   }, [orderIngredients]);
 
-  const clickHandler = () => {
-    navigate(`/feed/${order._id}`, { background: location });
-  };
-
   return (
     order && (
-      <div className={FeedOrderItemStyles.container} onClick={clickHandler}>
+      <div className={FeedOrderItemStyles.container}>
         <div className={FeedOrderItemStyles.head}>
           <p className={`text text_type_digits-default`}>#{order.number}</p>
           <p className={`text text_type_main-default text_color_inactive`}>

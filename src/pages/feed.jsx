@@ -8,6 +8,7 @@ import { OrderList } from "../components/OrdersLIst/OrderList";
 import { OrdersInfoPanel } from "../components/OrdersInfo/OrdersInfoPanel";
 import { useNavigate } from "react-router-dom";
 import { FeedOrderItem } from "../components/FeedOrderItem/FeedOrderItem";
+import { LinkOrderInfo } from "../components/LinkOrderInfo/LinkOrderInfo";
 
 export const FeedPage = () => {
   const dispatch = useDispatch();
@@ -35,19 +36,7 @@ export const FeedPage = () => {
     <>
       <h1 className={FeedStyles.title}>Лента заказов</h1>
       <div className={FeedStyles.container}>
-        {ingredients && data && (
-          <main className={FeedStyles.box}>
-            <div className={FeedStyles.orderLayout}>
-              <section>
-                <ul className={FeedStyles.orderBox}>
-                  {data.map((order) => (
-                    <FeedOrderItem key={order._id} order={order} />
-                  ))}
-                </ul>
-              </section>
-            </div>
-          </main>
-        )}
+        {ingredients && data && <LinkOrderInfo orders={data} />}
         <OrdersInfoPanel />
       </div>
     </>
