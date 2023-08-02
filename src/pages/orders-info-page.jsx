@@ -16,26 +16,11 @@ import {
 import { getOrderInfo } from "../services/actions/constructor/getOrderItemsInfo";
 
 export const OrderInfoPage = () => {
-  const data = useSelector((state) => state.ordersReducer.orders);
-
   const dispatch = useDispatch();
   const { number } = useParams();
-  const location = useLocation();
-
-  useEffect(() => {
-    dispatch({
-      type: WS_CONNECTION_START,
-      payload: {
-        url: "wss://norma.nomoreparties.space/orders/all",
-        isAuth: true,
-      },
-    });
-    return () => {
-      dispatch({
-        type: WS_CONNECTION_STOP,
-      });
-    };
-  }, [dispatch]);
+  const ingredients = useSelector(
+    (state) => state.constructorReducer.ingredients
+  );
 
   const order = useSelector((state) => {
     let order = state.wsReducer.data.orders?.find(
@@ -53,11 +38,36 @@ export const OrderInfoPage = () => {
     return null;
   });
 
+  const selectedOrderData = useMemo(() => {
+    return order?.ingredients.map((id) => {
+      return ingredients?.find((item) => {
+        return id === item._id;
+      });
+    });
+  }, [order?.ingredients, ingredients]);
+
+  const orderTotalPrice = useMemo(() => {
+    return selectedOrderData?.reduce((sum, item) => {
+      if (item?.type === "bun") {
+        return (sum += item.price * 2);
+      }
+      return (sum += item ? item.price : 0);
+    }, 0);
+  }, [selectedOrderData]);
+
   useEffect(() => {
     if (!order) {
       dispatch(getOrderInfo(number));
     }
-  }, [dispatch, order]);
+  }, [dispatch, order, number]);
+
+  if (!order) {
+    return null;
+  }
+
+  const currentDay = new Date().getDate();
+  const createdAt = order.createdAt;
+  const orderDay = createdAt.includes(`${currentDay}`);
 
   return (
     <>
@@ -84,66 +94,12 @@ export const OrderInfoPage = () => {
               )}
               <p className="text text_type_main-medium pb-6">Состав:</p>
               <ul className={`${OrderInfoStyles.ingredientsList} pr-6`}>
-                list
+                <OrderIngredientsInfo data={selectedOrderData} key={number} />
               </ul>
               <div className={OrderInfoStyles.descriptionTotal}>
                 <p className="text text_type_main-default text_color_inactive">
-                  gfgd
-                </p>
-                <div className={OrderInfoStyles.totalSum}>
-                  <p
-                    className={`${OrderInfoStyles.sum} text text_type_digits-default`}
-                  >
-                    00000
-                  </p>
-                  <CurrencyIcon type="primary" />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className={OrderInfoStyles.closeIcon}>
-            <CloseIcon type="primary" />
-          </div>
-        </div>
-      }
-    </>
-  );
-};
-
-/*
-return (
-    <>
-      {
-        <div className={OrderInfoStyles.wrapper}>
-          <div className={OrderInfoStyles.box}>
-            <div className={OrderInfoStyles.orderItem}>
-              <p
-                className={`${OrderInfoStyles.orderNumber} text text_type_digits-default pb-10`}
-              >
-                #{order.number}
-              </p>
-              <p className="text text_type_main-medium pb-3">{order.name}</p>
-              {order.status && (
-                <p className={OrderInfoStyles.status}>
-                  {order.status === "done"
-                    ? "Выполнен"
-                    : order.status === "pending"
-                    ? "Готовится"
-                    : order.status === "created"
-                    ? "Создан"
-                    : "Выполнен"}
-                </p>
-              )}
-              <p className="text text_type_main-medium pb-6">Состав:</p>
-              <ul className={`${OrderInfoStyles.ingredientsList} pr-6`}>
-                <OrderIngredientsInfo
-                  data={selectedOrderData}
-                  key={order._id}
-                />
-              </ul>
-              <div className={OrderInfoStyles.descriptionTotal}>
-                <p className="text text_type_main-default text_color_inactive">
-                  gfgd
+                  {orderDay ? "Сегодня" : "Вчера"}, {createdAt.slice(11, 16)}{" "}
+                  {`i-GMT+3`}
                 </p>
                 <div className={OrderInfoStyles.totalSum}>
                   <p
@@ -156,11 +112,8 @@ return (
               </div>
             </div>
           </div>
-          <div className={OrderInfoStyles.closeIcon}>
-            <CloseIcon type="primary" />
-          </div>
         </div>
       }
     </>
   );
-*/
+};

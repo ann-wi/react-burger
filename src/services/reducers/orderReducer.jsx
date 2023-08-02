@@ -15,7 +15,6 @@ const initialState = {
   user: {},
   order: {},
   orderList: [],
-  isLoad: false,
 };
 
 export const sendOrderReducer = (state = initialState, action) => {
@@ -30,8 +29,8 @@ export const sendOrderReducer = (state = initialState, action) => {
       return {
         ...state,
         orderRequestLoading: false,
-        order: action.order,
-        isLoad: true,
+        order: action.payload.order,
+        orderList: action.payload.ingredients,
       };
     }
     case SEND_ORDER_ERROR: {

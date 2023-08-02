@@ -1,21 +1,23 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import IngredientDetailsStyles from "./ingredients-details-styles.module.css";
 import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 
 export const IngredientDetails = () => {
-  const ingredients = useSelector(
-    (state) => state.constructorReducer.ingredients
-  );
   const { id } = useParams();
 
-  const findIngr = (id) => {
-    const elem = ingredients.find((i) => i._id === id);
-    return elem;
-  };
+  const ingr = useSelector((state) => {
+    let ingr = state.constructorReducer.ingredients?.find(
+      (elem) => elem._id === id
+    );
+    if (ingr) {
+      return ingr;
+    }
+    return null;
+  });
 
-  const theIngr = findIngr(id);
-
-  if (!theIngr) return null;
+  if (!ingr) return null;
 
   return (
     <div className={IngredientDetailsStyles.container}>
@@ -26,13 +28,13 @@ export const IngredientDetails = () => {
       </h2>
       <img
         className={`${IngredientDetailsStyles.image} mb-4`}
-        src={theIngr.image}
-        alt={theIngr.name}
+        src={ingr.image}
+        alt={ingr.name}
       ></img>
       <h2
         className={`${IngredientDetailsStyles.name} text text_type_main-medium`}
       >
-        {theIngr.name}
+        {ingr.name}
       </h2>
       <ul className={`${IngredientDetailsStyles.list} mt-8 mb-15`}>
         <li className={`${IngredientDetailsStyles.listItem} mr-5`}>
@@ -44,7 +46,7 @@ export const IngredientDetails = () => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {theIngr.calories}
+            {ingr.calories}
           </span>
         </li>
         <li className={`${IngredientDetailsStyles.listItem} mr-5`}>
@@ -56,7 +58,7 @@ export const IngredientDetails = () => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {theIngr.proteins}
+            {ingr.proteins}
           </span>
         </li>
         <li className={`${IngredientDetailsStyles.listItem} mr-5`}>
@@ -68,7 +70,7 @@ export const IngredientDetails = () => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {theIngr.fat}
+            {ingr.fat}
           </span>
         </li>
         <li className={IngredientDetailsStyles.listItem}>
@@ -80,7 +82,7 @@ export const IngredientDetails = () => {
           <span
             className={`${IngredientDetailsStyles.number} mt-2 text text_type_digits-medium`}
           >
-            {theIngr.carbohydrates}
+            {ingr.carbohydrates}
           </span>
         </li>
       </ul>

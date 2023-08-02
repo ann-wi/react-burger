@@ -17,6 +17,7 @@ const initialState = {
   addedIngredients: [],
   currentIngredient: {},
   modalVisible: false,
+  isLoading: false,
   orderSum: 0,
   orderNumber: 0,
   sendRequestOrder: false,
@@ -106,6 +107,7 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         sendRequestOrder: true,
+        isLoading: true,
       };
     case RESPOND_SUCCESS_ORDER:
       return {
@@ -114,12 +116,14 @@ export const constructorReducer = (state = initialState, action) => {
         sendRequestOrder: false,
         respondErrorOrder: false,
         modalVisible: true,
+        isLoading: false,
       };
     case RESPOND_ERROR_ORDER:
       return {
         ...state,
         sendRequestOrder: false,
         respondErrorOrder: true,
+        isLoading: false,
       };
     default:
       return state;

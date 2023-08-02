@@ -126,14 +126,19 @@ const App = () => {
           <Route
             path="ingredients/:id"
             element={
-              visible && (
-                <Modal onCloseClick={closePopups}>
-                  <IngredientDetails />
-                </Modal>
-              )
+              <Modal onCloseClick={closePopups}>
+                <IngredientDetails />
+              </Modal>
             }
           />
-          <Route path="feed/:number" element={<OrderInfoPage />} />
+          <Route
+            path="feed/:number"
+            element={
+              <Modal onCloseClick={closePopups}>
+                <OrderInfoPage />
+              </Modal>
+            }
+          />
           <Route path="profile/orders/:number" element={<OrderInfoPage />} />
           <Route
             path="order"

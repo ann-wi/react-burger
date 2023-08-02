@@ -13,7 +13,6 @@ export function getOrderInfo(number) {
       .then((res) => checkResponse(res))
       .then((res) => {
         if (res && res.success) {
-          console.log(res);
           dispatch({
             type: GET_ORDER_INFO_SUCCESS,
             orders: res.orders,

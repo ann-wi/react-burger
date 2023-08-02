@@ -19,7 +19,7 @@ export const LinkOrderInfo = ({ orders }) => {
       location.pathname.startsWith("/profile")
         ? `/profile/orders/${order.number}`
         : `/feed/${order.number}`,
-      { background: location }
+      { state: { background: location } }
     );
   };
 

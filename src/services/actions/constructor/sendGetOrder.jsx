@@ -30,7 +30,8 @@ export const sendOrder = (ingredients) => {
       .then((res) => {
         dispatch({
           type: SEND_ORDER_SUCCESS,
-          order: res.order.number,
+          order: res.order,
+          orderList: ingredients,
         });
       })
       .catch((err) => {
@@ -57,7 +58,6 @@ export const getOrders = (number) => {
     fetchRequest(`orders/${number}`, getOptions)
       .then((res) => {
         if (res.success) {
-          console.log(res);
           dispatch({
             type: GET_ORDER_SUCCESS,
             orders: res.orders,
@@ -88,7 +88,6 @@ export const getAuthOrders = () => {
     fetchRequest(`orders/`, authOptions)
       .then((res) => {
         if (res.success) {
-          console.log(res);
           dispatch({
             type: GET_ORDER_SUCCESS,
             orders: res,

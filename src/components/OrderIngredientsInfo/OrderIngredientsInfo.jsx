@@ -29,27 +29,31 @@ export const OrderIngredientsInfo = (props) => {
   return (
     <div className={OrderIngredientsInfoStyles.container}>
       {orderIngredient &&
-        orderIngredient.map((item) => {
+        orderIngredient.map((item, index) => {
           return (
-            <div key={item._id} className={OrderIngredientsInfoStyles.info}>
-              <div className={OrderIngredientsInfoStyles.about}>
-                <div className={OrderIngredientsInfoStyles.imageBorder}>
-                  <img
-                    className={OrderIngredientsInfoStyles.pic}
-                    src={item.image}
-                    alt={item.name}
-                  />
-                </div>
-                <p className={`text text_type_main-default`}>{item.name}</p>
+            <li
+              key={index}
+              className={OrderIngredientsInfoStyles.ingredienDetail}
+            >
+              <div className={OrderIngredientsInfoStyles.imgContainer}>
+                <img
+                  className={OrderIngredientsInfoStyles.imgIngredient}
+                  src={item.image}
+                  alt={item.name}
+                />
               </div>
-              <div className={OrderIngredientsInfoStyles.price}>
-                <p className={`text text_type_digits-default`}>
-                  {item.type === "bun" ? count(item) * 2 : count(item)} х{" "}
+              <p className="text text_type_main-default">{item.name}</p>
+              <div className={OrderIngredientsInfoStyles.countAndPrice}>
+                <p
+                  className={`${OrderIngredientsInfoStyles.sum} text text_type_digits-default`}
+                >
+                  {item.type === "bun" ? count(item) * 2 : count(item)}
+                  <span className="text_type_main-small"> х </span>
                   {item.price}
                 </p>
                 <CurrencyIcon type="primary" />
               </div>
-            </div>
+            </li>
           );
         })}
     </div>

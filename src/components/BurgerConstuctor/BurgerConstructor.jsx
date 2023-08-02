@@ -13,10 +13,7 @@ import { sumOrder } from "../../services/actions/constructor/sumOrder";
 import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
 import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  sendOrder,
-  sendOrderDataApi,
-} from "../../services/actions/constructor/sendGetOrder";
+import { sendOrder } from "../../services/actions/constructor/sendGetOrder";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -26,6 +23,9 @@ export const BurgerConstructor = () => {
   const addedIngredients = useSelector(
     (state) => state.constructorReducer.addedIngredients
   );
+  const loading = useSelector((state) => state.constructorReducer.isLoading);
+  const isEmpty = useSelector((state) => state.constructorReducer.sum);
+  const loggedIn = useSelector((state) => state.userReducer.userIsAuthorized);
 
   useEffect(() => {
     let total = 0;
@@ -71,12 +71,10 @@ export const BurgerConstructor = () => {
 
   const handleMakeOrderClick = () => {
     dispatch(getOrderNumber(ingredientsIds));
+    dispatch(sendOrder(addedIngredients));
     navigate(`/order`, {
       state: { background: location },
     });
-    console.log(ingredientsIds);
-    console.log(addedIngredients);
-    dispatch(sendOrder(addedIngredients));
   };
 
   return (
@@ -102,8 +100,9 @@ export const BurgerConstructor = () => {
             onClick={() => {
               handleMakeOrderClick();
             }}
+            disabled={!loggedIn || addedIngredients.length === 0 ? true : false}
           >
-            Оформить заказ
+            {loading ? "Отправляем заказ..." : "Оформить заказ"}
           </Button>
         </div>
       </section>
