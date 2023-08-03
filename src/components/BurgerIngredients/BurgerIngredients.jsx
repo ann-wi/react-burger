@@ -18,6 +18,7 @@ export const BurgerIngredients = () => {
   const [currentTabMain, setCurrentTabMain] = useState(false);
 
   const handleScrollTabs = () => {
+    if (!tabBuns.current || !tabSauces.current || !tabMain.current) return;
     if (tabBuns.current.getBoundingClientRect().top >= 284) {
       setCurrentTabBuns(true);
       setCurrentTabSauces(false);

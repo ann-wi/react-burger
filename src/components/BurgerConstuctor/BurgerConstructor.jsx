@@ -70,11 +70,15 @@ export const BurgerConstructor = () => {
   });
 
   const handleMakeOrderClick = () => {
-    dispatch(getOrderNumber(ingredientsIds));
-    dispatch(sendOrder(addedIngredients));
-    navigate(`/order`, {
-      state: { background: location },
-    });
+    if (!loggedIn) {
+      navigate(`/login`);
+    } else {
+      dispatch(getOrderNumber(ingredientsIds));
+      dispatch(sendOrder(ingredientsIds));
+      navigate(`/order`, {
+        state: { background: location },
+      });
+    }
   };
 
   return (
@@ -100,7 +104,7 @@ export const BurgerConstructor = () => {
             onClick={() => {
               handleMakeOrderClick();
             }}
-            disabled={!loggedIn || addedIngredients.length === 0 ? true : false}
+            disabled={addedIngredients.length === 0 ? true : false}
           >
             {loading ? "Отправляем заказ..." : "Оформить заказ"}
           </Button>

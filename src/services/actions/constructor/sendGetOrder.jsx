@@ -9,11 +9,13 @@ import {
 import { getCookie } from "../../../utils/cookies-storage";
 import { apiBurger, checkResponse } from "../../../utils/server";
 
-function fetchRequest(url, options) {
-  return fetch(`${apiBurger}${url}`, options).then(checkResponse);
+async function fetchRequest(url, options) {
+  const res = await fetch(apiBurger + url, options);
+  console.log(options);
+  return checkResponse(res);
 }
 
-export const sendOrder = (ingredients) => {
+export const sendOrder = (data) => {
   return (dispatch) => {
     dispatch({
       type: SEND_ORDER,
@@ -24,14 +26,14 @@ export const sendOrder = (ingredients) => {
         "Content-Type": "application/json",
         Authorization: "Bearer " + getCookie("accessToken"),
       },
-      body: JSON.stringify({ ingredients: ingredients }),
+      body: JSON.stringify({ ingredients: data }),
     };
     fetchRequest(`orders`, sendOptions)
       .then((res) => {
         dispatch({
           type: SEND_ORDER_SUCCESS,
           order: res.order,
-          orderList: ingredients,
+          orderList: data,
         });
       })
       .catch((err) => {

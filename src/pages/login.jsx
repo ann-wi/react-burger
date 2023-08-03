@@ -3,7 +3,7 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { authUser } from "../services/actions/user/server-actions-user";
 import { useForm } from "../hooks/useForm";
@@ -16,6 +16,7 @@ export const LoginPage = () => {
     (state) => state.userReducer.userIsAuthorized
   );
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { formData, onChange, setFormData, onSubmit } = useForm(
     {
@@ -35,7 +36,8 @@ export const LoginPage = () => {
     navigate("/forgot-password");
   };
 
-  if (isAuthorized) return <Navigate to="/profile" />;
+  if (isAuthorized)
+    return <Navigate to={`${location?.state?.from || "/"}`} replace />;
 
   return (
     <div className={loginStyles.loginContainer}>

@@ -6,13 +6,11 @@ import { BurgerConstructor } from "../components/BurgerConstuctor/BurgerConstruc
 
 export const HomePage = () => {
   return (
-    <>
-      <main className={homepageStyles.app}>
-        <DndProvider backend={HTML5Backend}>
-          <BurgerIngredients />
-          <BurgerConstructor />
-        </DndProvider>
-      </main>
-    </>
+    <main className={homepageStyles.app}>
+      <DndProvider backend={HTML5Backend}>
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </DndProvider>
+    </main>
   );
 };
