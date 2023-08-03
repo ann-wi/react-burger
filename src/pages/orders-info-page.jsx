@@ -2,7 +2,12 @@ import OrderInfoStyles from "./orders-info-page-styles.module.css";
 
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  useLocation,
+  useMatch,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import {
   getAuthOrders,
   getOrders,
@@ -18,6 +23,7 @@ import { getOrderInfo } from "../services/actions/constructor/getOrderItemsInfo"
 export const OrderInfoPage = () => {
   const dispatch = useDispatch();
   const { number } = useParams();
+  const location = useLocation();
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
@@ -65,6 +71,8 @@ export const OrderInfoPage = () => {
     return null;
   }
 
+  const isModal = location.pathname.startsWith("/feed/");
+
   const currentDay = new Date().getDate();
   const createdAt = order.createdAt;
   const orderDay = createdAt.includes(`${currentDay}`);
@@ -72,7 +80,11 @@ export const OrderInfoPage = () => {
   return (
     <>
       {
-        <div className={OrderInfoStyles.wrapper}>
+        <div
+          className={
+            isModal ? OrderInfoStyles.isModal : OrderInfoStyles.wrapper
+          }
+        >
           <div className={OrderInfoStyles.box}>
             <div className={OrderInfoStyles.orderItem}>
               <p
