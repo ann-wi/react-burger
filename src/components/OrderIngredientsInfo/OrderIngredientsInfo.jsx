@@ -3,8 +3,6 @@ import OrderIngredientsInfoStyles from "./order-ingredients-info-styles.module.c
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import uuid from "react-uuid";
-import { useParams } from "react-router-dom";
 
 export const OrderIngredientsInfo = (props) => {
   const ingredients = useSelector(
@@ -18,7 +16,7 @@ export const OrderIngredientsInfo = (props) => {
     return count;
   };
 
-  const orderIngredient = useMemo(() => {
+  const orderIngredients = useMemo(() => {
     return props.data?.map((elem) => {
       return ingredients?.find((item) => {
         return elem._id === item._id;
@@ -26,10 +24,14 @@ export const OrderIngredientsInfo = (props) => {
     });
   }, [props.data, ingredients]);
 
+  const noDuplicates = orderIngredients.filter((item, index, items) => {
+    return !items.some((i, idx) => i._id === item._id && idx > index);
+  });
+
   return (
     <div className={OrderIngredientsInfoStyles.container}>
-      {orderIngredient &&
-        orderIngredient.map((item, index) => {
+      {noDuplicates &&
+        noDuplicates.map((item, index) => {
           return (
             <li
               key={index}

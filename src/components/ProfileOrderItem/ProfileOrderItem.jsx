@@ -48,7 +48,7 @@ export const ProfileOrderItem = ({ order }) => {
 
   return (
     order && (
-      <div className={ProfileOrderItemStyles.container} onClick={clickHandler}>
+      <div className={ProfileOrderItemStyles.container}>
         <div className={ProfileOrderItemStyles.head}>
           <p className={`text text_type_digits-default`}>#{order.number}</p>
           <p className={`text text_type_main-default text_color_inactive`}>

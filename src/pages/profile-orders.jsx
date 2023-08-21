@@ -5,6 +5,8 @@ import { ProfileOrderItem } from "../components/ProfileOrderItem/ProfileOrderIte
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
 import { WS_CONNECTION_START, WS_CONNECTION_STOP } from "../utils/constants";
 import profileOrdersStyles from "./profile-orders-styles.module.css";
+import { LinkOrderInfo } from "../components/LinkOrderInfo/LinkOrderInfo";
+import { reloginUser } from "../services/actions/user/server-actions-user";
 
 export const ProfileOrdersPage = () => {
   const dispatch = useDispatch();
@@ -15,6 +17,7 @@ export const ProfileOrdersPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(reloginUser());
     dispatch({
       type: WS_CONNECTION_START,
       payload: {
@@ -34,19 +37,7 @@ export const ProfileOrdersPage = () => {
       <ProfileNavigation isActive={true} active={false} />
       <div className={profileOrdersStyles.listContainer}>
         {ingredients && data && (
-          <main className={profileOrdersStyles.box}>
-            <div className={profileOrdersStyles.orderLayout}>
-              <section>
-                <ul className={profileOrdersStyles.orderBox}>
-                  {data
-                    .map((order) => (
-                      <ProfileOrderItem key={order._id} order={order} />
-                    ))
-                    .reverse()}
-                </ul>
-              </section>
-            </div>
-          </main>
+          <LinkOrderInfo orders={data} isReversed={true} />
         )}
       </div>
     </div>

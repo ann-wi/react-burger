@@ -19,6 +19,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getOrderInfo } from "../services/actions/constructor/getOrderItemsInfo";
+import { reloginUser } from "../services/actions/user/server-actions-user";
 
 export const OrderInfoPage = () => {
   const dispatch = useDispatch();
@@ -71,8 +72,6 @@ export const OrderInfoPage = () => {
     return null;
   }
 
-  const isModal = location.pathname.startsWith("/feed/");
-
   const currentDay = new Date().getDate();
   const createdAt = order.createdAt;
   const orderDay = createdAt.includes(`${currentDay}`);
@@ -80,11 +79,7 @@ export const OrderInfoPage = () => {
   return (
     <>
       {
-        <div
-          className={
-            isModal ? OrderInfoStyles.isModal : OrderInfoStyles.wrapper
-          }
-        >
+        <div className={OrderInfoStyles.isModal}>
           <div className={OrderInfoStyles.box}>
             <div className={OrderInfoStyles.orderItem}>
               <p

@@ -1,6 +1,9 @@
 import { useDrag } from "react-dnd";
 import { useSelector, useDispatch } from "react-redux";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-styles.module.css";
 
 import PropTypes from "prop-types";
@@ -57,24 +60,17 @@ export const Ingredient = ({ ingredient, ingrType }) => {
       item.type === "bun" &&
       item.id === ingredient._id &&
       ingredient.counter !== 0
-  )
-    ? "flex"
-    : "none";
+  );
 
   const counterVisibilityMain = addedIngredients.find(
     (item) => item.id === ingredient.id && ingredient.counter !== 0
-  )
-    ? "flex"
-    : "none";
+  );
 
   return ingrType === "ingredient" ? (
     <div className={ingredientStyles.card} ref={ingrDragRef} draggable>
-      <p
-        className={ingredientStyles.addedIngrNum}
-        style={{ display: counterVisibilityMain }}
-      >
-        {ingredient.counter}
-      </p>
+      {counterVisibilityMain && (
+        <Counter count={ingredient.counter} size="default" />
+      )}
       <img
         onClick={clickHandler}
         src={ingredient.image}
@@ -95,12 +91,9 @@ export const Ingredient = ({ ingredient, ingrType }) => {
     </div>
   ) : (
     <div className={ingredientStyles.card} ref={bunDragRef} draggable>
-      <p
-        className={ingredientStyles.addedIngrNum}
-        style={{ display: counterVisibilityBuns }}
-      >
-        {ingredient.counter}
-      </p>
+      {counterVisibilityBuns && (
+        <Counter count={ingredient.counter} size="default" />
+      )}
       <img
         onClick={clickHandler}
         src={ingredient.image}

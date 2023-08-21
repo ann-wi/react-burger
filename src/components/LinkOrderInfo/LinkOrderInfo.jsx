@@ -9,7 +9,7 @@ import { WS_CONNECTION_STOP } from "../../utils/constants";
 import { FeedOrderItem } from "../FeedOrderItem/FeedOrderItem";
 import LinkOrderInfoStyles from "./link-order-info-styles.module.css";
 
-export const LinkOrderInfo = ({ orders }) => {
+export const LinkOrderInfo = ({ orders, isReversed }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +43,18 @@ export const LinkOrderInfo = ({ orders }) => {
         <div className={LinkOrderInfoStyles.orderLayout}>
           <section>
             <ul className={LinkOrderInfoStyles.orderBox}>
-              {orders
+              {orders && isReversed
+                ? orders
+                    .map((order) => (
+                      <li
+                        key={order.number}
+                        onClick={() => clickHandler(order)}
+                      >
+                        <FeedOrderItem order={order} />
+                      </li>
+                    ))
+                    .reverse()
+                : orders && !isReversed
                 ? orders.map((order) => (
                     <li key={order.number} onClick={() => clickHandler(order)}>
                       <FeedOrderItem order={order} />

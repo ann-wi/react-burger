@@ -36,7 +36,9 @@ export const FeedPage = () => {
     <>
       <h1 className={FeedStyles.title}>Лента заказов</h1>
       <div className={FeedStyles.container}>
-        {ingredients && data && <LinkOrderInfo orders={data} />}
+        {ingredients && data && (
+          <LinkOrderInfo orders={data} isReversed={false} />
+        )}
         <OrdersInfoPanel />
       </div>
     </>

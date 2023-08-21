@@ -9,10 +9,6 @@ export const FeedOrderItem = ({ order }) => {
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
-  //const data = useSelector((state) => state.wsReducer.data.orders);
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const orderMaxLength = order.ingredients.length;
   const ingredientsLength = orderMaxLength - 6;
@@ -42,6 +38,10 @@ export const FeedOrderItem = ({ order }) => {
     }, 0);
   }, [orderIngredients]);
 
+  const noDuplicates = order?.ingredients.filter((item, index, items) => {
+    return !items.some((i, idx) => i === item && idx > index);
+  });
+
   return (
     order && (
       <div className={FeedOrderItemStyles.container}>
@@ -70,9 +70,9 @@ export const FeedOrderItem = ({ order }) => {
         </p>
         <div className={FeedOrderItemStyles.about}>
           <ul className={FeedOrderItemStyles.ingredientsList}>
-            {order.ingredients &&
+            {noDuplicates &&
               orderMaxLength <= 5 &&
-              order.ingredients.map((item, index) => {
+              noDuplicates.map((item, index) => {
                 return (
                   <li className={FeedOrderItemStyles.listItem} key={index}>
                     {item && (
@@ -89,9 +89,9 @@ export const FeedOrderItem = ({ order }) => {
                   </li>
                 );
               })}
-            {order.ingredients &&
+            {noDuplicates &&
               orderMaxLength >= 6 &&
-              order.ingredients.slice(0, 5).map((item, index) => {
+              noDuplicates.slice(0, 5).map((item, index) => {
                 return (
                   <li className={FeedOrderItemStyles.listItem} key={index}>
                     {item && (
@@ -108,9 +108,9 @@ export const FeedOrderItem = ({ order }) => {
                   </li>
                 );
               })}
-            {order.ingredients &&
+            {noDuplicates &&
               orderMaxLength > 6 &&
-              order.ingredients.slice(5, 6).map((item, index) => {
+              noDuplicates.slice(5, 6).map((item, index) => {
                 return (
                   <li className={FeedOrderItemStyles.listItem} key={index}>
                     {item && (
@@ -152,5 +152,3 @@ export const FeedOrderItem = ({ order }) => {
     )
   );
 };
-
-//{countTotalPrice(ingredients, order.ingredients)}

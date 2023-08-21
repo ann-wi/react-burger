@@ -11,7 +11,6 @@ import { apiBurger, checkResponse } from "../../../utils/server";
 
 async function fetchRequest(url, options) {
   const res = await fetch(apiBurger + url, options);
-  console.log(options);
   return checkResponse(res);
 }
 
