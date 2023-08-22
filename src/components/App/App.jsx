@@ -106,6 +106,14 @@ const App = () => {
               />
             }
           />
+          <Route
+            path="feed/:number"
+            element={
+              <Modal onCloseClick={closePopups}>
+                <OrderInfoPage />
+              </Modal>
+            }
+          />
           <Route path="feed" element={<FeedPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

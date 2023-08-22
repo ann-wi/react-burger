@@ -76,10 +76,18 @@ export const OrderInfoPage = () => {
   const createdAt = order.createdAt;
   const orderDay = createdAt.includes(`${currentDay}`);
 
+  const isModal =
+    location.pathname.startsWith("/feed/") ||
+    location.pathname.startsWith("/profile/");
+
   return (
     <>
       {
-        <div className={OrderInfoStyles.isModal}>
+        <div
+          className={
+            isModal ? OrderInfoStyles.isModal : OrderInfoStyles.wrapper
+          }
+        >
           <div className={OrderInfoStyles.box}>
             <div className={OrderInfoStyles.orderItem}>
               <p
