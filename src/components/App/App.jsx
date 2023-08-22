@@ -106,12 +106,14 @@ const App = () => {
               />
             }
           />
+          <Route path="feed/:number" element={<OrderInfoPage />} />
           <Route
-            path="feed/:number"
+            path="profile/orders/:number"
             element={
-              <Modal onCloseClick={closePopups}>
-                <OrderInfoPage />
-              </Modal>
+              <ProtectedRouteElement
+                onlyAuth={true}
+                element={<OrderInfoPage />}
+              />
             }
           />
           <Route path="feed" element={<FeedPage />} />
@@ -139,9 +141,14 @@ const App = () => {
           <Route
             path="profile/orders/:number"
             element={
-              <Modal onCloseClick={closePopups}>
-                <OrderInfoPage />
-              </Modal>
+              <ProtectedRouteElement
+                onlyAuth={true}
+                element={
+                  <Modal onCloseClick={closePopups}>
+                    <OrderInfoPage />
+                  </Modal>
+                }
+              />
             }
           />
           <Route
