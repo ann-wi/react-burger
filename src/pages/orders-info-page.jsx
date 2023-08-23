@@ -21,7 +21,7 @@ import {
 import { getOrderInfo } from "../services/actions/constructor/getOrderItemsInfo";
 import { reloginUser } from "../services/actions/user/server-actions-user";
 
-export const OrderInfoPage = () => {
+export const OrderInfoPage = ({ isModal }) => {
   const dispatch = useDispatch();
   const { number } = useParams();
   const location = useLocation();
@@ -79,7 +79,11 @@ export const OrderInfoPage = () => {
   return (
     <>
       {
-        <div className={OrderInfoStyles.wrapper}>
+        <div
+          className={
+            isModal ? OrderInfoStyles.isModal : OrderInfoStyles.wrapper
+          }
+        >
           <div className={OrderInfoStyles.box}>
             <div className={OrderInfoStyles.orderItem}>
               <p

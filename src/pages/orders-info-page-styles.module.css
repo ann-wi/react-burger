@@ -19,6 +19,19 @@
   align-items: center;
 }
 
+.isModal {
+  width: 720px;
+  box-sizing: border-box;
+  position: relative;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c21;
+  border-radius: 40px;
+  cursor: default;
+  align-items: center;
+}
+
 .heading {
   text-align: left;
 }
