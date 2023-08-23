@@ -1,6 +1,14 @@
 import { combineReducers } from "redux";
-import { reactBurgerReducer } from "./burgerConstructorReducer";
+import { constructorReducer } from "./constructorReducer";
+import { ordersReducer } from "./orderNumberReducer";
+import { sendOrderReducer, getOrderReducer } from "./orderReducer";
+import { userReducer } from "./userReducer";
+import { wsReducer } from "./wsReducer";
 
 export const rootReducer = combineReducers({
-  reactBurgerReducer,
+  constructorReducer,
+  userReducer,
+  wsReducer,
+  sendOrderReducer,
+  ordersReducer,
 });

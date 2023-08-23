@@ -1,21 +1,31 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ConstructorContainer from "../ConstructorContainer/ConstructorContainer";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ConstructorContainer } from "../ConstructorContainer/ConstructorContainer";
+import {
+  CurrencyIcon,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import constructorStyles from "./burger-constructor-styles.module.css";
-import OrderPrice from "../OrderPrice/OrderPrice";
+import { OrderPrice } from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
-import PropTypes from "prop-types";
 
-import { sumOrder } from "../../services/actions/sumOrder";
-import { getOrderNumber } from "../../services/actions/server-actions";
-import { deleteIngredient } from "../../services/actions/deleteIngredient";
+import { sumOrder } from "../../services/actions/constructor/sumOrder";
+import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
+import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
+import { useLocation, useNavigate } from "react-router-dom";
+import { sendOrder } from "../../services/actions/constructor/sendGetOrder";
 
-const BurgerConstructor = ({ onClickPopup }) => {
+export const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
+  const loading = useSelector((state) => state.constructorReducer.isLoading);
+  const isEmpty = useSelector((state) => state.constructorReducer.sum);
+  const loggedIn = useSelector((state) => state.userReducer.userIsAuthorized);
 
   useEffect(() => {
     let total = 0;
@@ -49,10 +59,26 @@ const BurgerConstructor = ({ onClickPopup }) => {
     dispatch(sumOrder(total));
   }, [addedIngredients]);
 
-  const ingredientsIds = addedIngredients.map((ingredient) => ingredient.id);
+  //const ingredientsIds = addedIngredients.map((ingredient) => ingredient.id);
+
+  const ingredientsIds = addedIngredients.map((ingredient) => {
+    if (ingredient._id) {
+      return ingredient._id;
+    } else if (ingredient.id) {
+      return ingredient.id;
+    }
+  });
 
   const handleMakeOrderClick = () => {
-    dispatch(getOrderNumber(ingredientsIds));
+    if (!loggedIn) {
+      navigate(`/login`);
+    } else {
+      dispatch(getOrderNumber(ingredientsIds));
+      dispatch(sendOrder(ingredientsIds));
+      navigate(`/order`, {
+        state: { background: location },
+      });
+    }
   };
 
   return (
@@ -70,27 +96,20 @@ const BurgerConstructor = ({ onClickPopup }) => {
             <OrderPrice />
             <CurrencyIcon type="primary"></CurrencyIcon>
           </div>
-          <button
+          <Button
+            type={"primary"}
+            size={"medium"}
+            htmlType={"button"}
+            extraClass="ml-10"
             onClick={() => {
               handleMakeOrderClick();
-              onClickPopup();
             }}
-            className={`${constructorStyles.button} ml-10`}
+            disabled={addedIngredients.length === 0 ? true : false}
           >
-            <p
-              className={`${constructorStyles.buttonText} text text_type_main-default`}
-            >
-              Оформить заказ
-            </p>
-          </button>
+            {loading ? "Отправляем заказ..." : "Оформить заказ"}
+          </Button>
         </div>
       </section>
     </>
   );
 };
-
-BurgerConstructor.propTypes = {
-  onClickPopup: PropTypes.func,
-};
-
-export default BurgerConstructor;

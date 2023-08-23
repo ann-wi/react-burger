@@ -1,17 +1,33 @@
 import { useDrag } from "react-dnd";
 import { useSelector, useDispatch } from "react-redux";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-styles.module.css";
 
 import PropTypes from "prop-types";
 import uuid from "react-uuid";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
 
-const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
+export const Ingredient = ({ ingredient, ingrType }) => {
   const { _id, name, price, image, type, counter } = ingredient;
   ingredient.uuid = uuid();
   const addedIngredients = useSelector(
-    (state) => state.reactBurgerReducer.addedIngredients
+    (state) => state.constructorReducer.addedIngredients
   );
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const clickHandler = () => {
+    dispatch(getIngredientDetails(ingredient));
+    navigate(`/ingredients/${ingredient._id}`, {
+      state: { background: location },
+    });
+  };
 
   const [, ingrDragRef] = useDrag({
     type: "ingredient",
@@ -44,26 +60,19 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
       item.type === "bun" &&
       item.id === ingredient._id &&
       ingredient.counter !== 0
-  )
-    ? "flex"
-    : "none";
+  );
 
   const counterVisibilityMain = addedIngredients.find(
     (item) => item.id === ingredient.id && ingredient.counter !== 0
-  )
-    ? "flex"
-    : "none";
+  );
 
   return ingrType === "ingredient" ? (
     <div className={ingredientStyles.card} ref={ingrDragRef} draggable>
-      <p
-        className={ingredientStyles.addedIngrNum}
-        style={{ display: counterVisibilityMain }}
-      >
-        {ingredient.counter}
-      </p>
+      {counterVisibilityMain && (
+        <Counter count={ingredient.counter} size="default" />
+      )}
       <img
-        onClick={() => onClickPopup(ingredient)}
+        onClick={clickHandler}
         src={ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
         alt={ingredient.name}
@@ -82,14 +91,11 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
     </div>
   ) : (
     <div className={ingredientStyles.card} ref={bunDragRef} draggable>
-      <p
-        className={ingredientStyles.addedIngrNum}
-        style={{ display: counterVisibilityBuns }}
-      >
-        {ingredient.counter}
-      </p>
+      {counterVisibilityBuns && (
+        <Counter count={ingredient.counter} size="default" />
+      )}
       <img
-        onClick={() => onClickPopup(ingredient)}
+        onClick={clickHandler}
         src={ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
         alt={ingredient.name}
@@ -111,8 +117,5 @@ const Ingredient = ({ ingredient, onClickPopup, ingrType }) => {
 
 Ingredient.propTypes = {
   ingredient: PropTypes.object,
-  onClickPopup: PropTypes.func,
   ingrType: PropTypes.string,
 };
-
-export default Ingredient;

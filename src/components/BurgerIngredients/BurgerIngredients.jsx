@@ -1,14 +1,13 @@
 import { useRef, useState } from "react";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import Ingredient from "../Ingredient/Ingredient";
+import { Ingredient } from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
-const BurgerIngredients = ({ onClickPopup }) => {
+export const BurgerIngredients = () => {
   const ingredients = useSelector(
-    (state) => state.reactBurgerReducer.ingredients
+    (state) => state.constructorReducer.ingredients
   );
 
   const tabBuns = useRef(null);
@@ -19,6 +18,7 @@ const BurgerIngredients = ({ onClickPopup }) => {
   const [currentTabMain, setCurrentTabMain] = useState(false);
 
   const handleScrollTabs = () => {
+    if (!tabBuns.current || !tabSauces.current || !tabMain.current) return;
     if (tabBuns.current.getBoundingClientRect().top >= 284) {
       setCurrentTabBuns(true);
       setCurrentTabSauces(false);
@@ -67,7 +67,6 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"burgerBun"}
                       key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
-                      onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />
                   ))}
@@ -87,7 +86,6 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"ingredient"}
                       key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
-                      onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />
                   ))}
@@ -107,7 +105,6 @@ const BurgerIngredients = ({ onClickPopup }) => {
                       ingrType={"ingredient"}
                       key={ingredient._id}
                       idx={ingredients.indexOf(ingredient)}
-                      onClickPopup={onClickPopup}
                       ingredient={ingredient}
                     />
                   ))}
@@ -119,9 +116,3 @@ const BurgerIngredients = ({ onClickPopup }) => {
     </>
   );
 };
-
-BurgerIngredients.propTypes = {
-  onClickPopup: PropTypes.func,
-};
-
-export default BurgerIngredients;
