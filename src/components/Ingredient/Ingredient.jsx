@@ -9,7 +9,7 @@ import ingredientStyles from "./ingredient-styles.module.css";
 import PropTypes from "prop-types";
 import uuid from "react-uuid";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
+import { getIngredientDetails } from "../../services/actions/constructorActions";
 
 export const Ingredient = ({ ingredient, ingrType }) => {
   const { _id, name, price, image, type, counter } = ingredient;
@@ -24,6 +24,7 @@ export const Ingredient = ({ ingredient, ingrType }) => {
 
   const clickHandler = () => {
     dispatch(getIngredientDetails(ingredient));
+    console.log(ingredient);
     navigate(`/ingredients/${ingredient._id}`, {
       state: { background: location },
     });

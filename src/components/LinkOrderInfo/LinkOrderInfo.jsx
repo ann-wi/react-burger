@@ -48,7 +48,10 @@ export const LinkOrderInfo = ({ orders, isReversed }) => {
                     .map((order) => (
                       <li
                         key={order.number}
-                        onClick={() => clickHandler(order)}
+                        onClick={() => {
+                          console.log(order);
+                          clickHandler(order);
+                        }}
                       >
                         <FeedOrderItem order={order} />
                       </li>

@@ -11,11 +11,27 @@ import { RESPOND_ERROR_INGREDIENTS } from "../../utils/constants";
 import { SEND_REQUEST_ORDER } from "../../utils/constants";
 import { RESPOND_SUCCESS_ORDER } from "../../utils/constants";
 import { RESPOND_ERROR_ORDER } from "../../utils/constants";
+import { TIngredient } from "../../utils/types";
+import { TConstructorActions } from "../actions/constructorActions";
 
-const initialState = {
+type TConstructorState = {
+  ingredients: Array<TIngredient> | [];
+  addedIngredients: Array<TIngredient>;
+  currentIngredient: TIngredient | null;
+  modalVisible: boolean;
+  isLoading: boolean;
+  orderSum: number;
+  orderNumber: number;
+  sendRequestOrder: boolean;
+  respondErrorOrder: boolean;
+  sendRequestIngredients: boolean;
+  respondErrorIngredients: boolean;
+};
+
+const initialState: TConstructorState = {
   ingredients: [],
   addedIngredients: [],
-  currentIngredient: {},
+  currentIngredient: null,
   modalVisible: false,
   isLoading: false,
   orderSum: 0,
@@ -26,7 +42,10 @@ const initialState = {
   respondErrorIngredients: false,
 };
 
-export const constructorReducer = (state = initialState, action) => {
+export const constructorReducer = (
+  state = initialState,
+  action: TConstructorActions
+): TConstructorState => {
   switch (action.type) {
     case ADD_INGREDIENT:
       return {
@@ -37,33 +56,33 @@ export const constructorReducer = (state = initialState, action) => {
               ? !items.some((i, idx) => i.type === item.type && idx > index)
               : item.price * 2;
           }),
-          action.payload.ingredient,
+          action.ingredient,
         ],
       };
     case SUM_ORDER:
       return {
         ...state,
-        orderSum: action.payload.total,
+        orderSum: action.total,
       };
     case DELETE_INGREDIENT:
       return {
         ...state,
         addedIngredients: state.addedIngredients.filter(
-          (item) => item !== action.payload.ingredient
+          (item) => item !== action.ingredient
         ),
       };
     case SET_INGREDIENTS:
       return {
         ...state,
-        addedIngredients: action.payload.sortedIngrs,
+        addedIngredients: action.sortedIngrs,
       };
     case INCREASE_INGREDIENT:
       return {
         ...state,
         ingredients: [...state.ingredients].map((item) =>
-          item._id === action.payload.id && item.type !== "bun"
+          item._id === action.id && item.type !== "bun"
             ? { ...item, counter: ++item.counter }
-            : item._id === action.payload.id && item.type === "bun"
+            : item._id === action.id && item.type === "bun"
             ? { ...item, counter: (item.counter = 2) }
             : item
         ),
@@ -72,9 +91,9 @@ export const constructorReducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: [...state.ingredients].map((item) =>
-          item._id === action.payload.id && item.type !== "bun"
+          item._id === action.id && item.type !== "bun"
             ? { ...item, counter: --item.counter }
-            : item._id === action.payload.id && item.type === "bun"
+            : item._id === action.id && item.type === "bun"
             ? { ...item, counter: (item.counter = 0) }
             : item
         ),
@@ -82,7 +101,7 @@ export const constructorReducer = (state = initialState, action) => {
     case GET_INGREDIENT_DETAILS:
       return {
         ...state,
-        currentIngredient: action.payload.ingredient,
+        currentIngredient: action.ingredient,
         modalVisible: true,
       };
     case SEND_REQUEST_INGREDIENTS:
@@ -93,7 +112,7 @@ export const constructorReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_INGREDIENTS:
       return {
         ...state,
-        ingredients: action.payload.ingredients,
+        ingredients: action.ingredients,
         sendRequestIngredients: false,
         respondErrorIngredients: false,
       };
@@ -112,7 +131,7 @@ export const constructorReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_ORDER:
       return {
         ...state,
-        orderNumber: action.payload.number,
+        orderNumber: action.number,
         sendRequestOrder: false,
         respondErrorOrder: false,
         modalVisible: true,

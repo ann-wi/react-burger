@@ -4,10 +4,12 @@ import constructorContainerStyles from "./constructor-container-styles.module.cs
 import PropTypes from "prop-types";
 import { SelectedConstructorElement } from "../SelectedConstructorElement/SelectedConstructorElement";
 
-import { decreaseIngredient } from "../../services/actions/constructor/decreaseIngredient";
-import { increaseIngredient } from "../../services/actions/constructor/increaseIngredient";
-import { addIngredient } from "../../services/actions/constructor/addIngredient";
-import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
+import {
+  addIngredient,
+  deleteIngredient,
+  decreaseIngredient,
+  increaseIngredient,
+} from "../../services/actions/constructorActions";
 
 export const ConstructorContainer = ({ containerType }) => {
   const dispatch = useDispatch();

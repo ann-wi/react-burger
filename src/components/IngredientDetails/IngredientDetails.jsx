@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import IngredientDetailsStyles from "./ingredients-details-styles.module.css";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
-import { getIngredientDetails } from "../../services/actions/constructor/ingredientDetails";
+import { FC } from "react";
 
 export const IngredientDetails = () => {
   const { id } = useParams();

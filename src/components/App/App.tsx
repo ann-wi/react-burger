@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect } from "react";
+//import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../utils/storeTypes";
 import { AppHeader } from "../AppHeader/AppHeader";
 import { HomePage } from "../../pages/homepage";
 import { LoginPage } from "../../pages/login";
@@ -14,7 +15,7 @@ import { IngredientPage } from "../../pages/ingredient-page";
 import { FeedPage } from "../../pages/feed";
 import { Order } from "../Order/Order";
 
-import { getIngredients } from "../../services/actions/constructor/server-actions-constructor";
+import { getIngredients } from "../../services/actions/constructorActions";
 import {
   getUser,
   reloginUser,
@@ -25,7 +26,7 @@ import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteEl
 import { OrderInfoPage } from "../../pages/orders-info-page";
 import { RenderOrderInfo } from "../RenderOrderInfo/RenderOrderInfo";
 
-const App = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const App = () => {
   return (
     <>
       <Routes location={background || location}>
-        <Route path="/" element={<AppHeader active={true} isActive={false} />}>
+        <Route path="/" element={<AppHeader />}>
           <Route index element={<HomePage />} />
           <Route path="ingredients/:id" element={<IngredientPage />} />
           <Route

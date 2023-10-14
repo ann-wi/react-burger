@@ -2,7 +2,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SelectedConstructorElementStyles from "./selected-constructor-element-styles.module.css";
-import { setNewIngrs } from "../../services/actions/constructor/setIngredients";
+import { setNewIngrs } from "../../services/actions/constructorActions";
 import {
   ConstructorElement,
   DragIcon,

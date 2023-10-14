@@ -1,3 +1,4 @@
+/*
 import {
   checkResponse,
   apiBurger,
@@ -84,3 +85,4 @@ export function getOrderNumber(ingredientsIds) {
       });
   };
 }
+*/

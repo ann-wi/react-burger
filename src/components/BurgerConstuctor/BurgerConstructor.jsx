@@ -9,9 +9,9 @@ import constructorStyles from "./burger-constructor-styles.module.css";
 import { OrderPrice } from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 
-import { sumOrder } from "../../services/actions/constructor/sumOrder";
+import { sumOrder } from "../../services/actions/constructorActions";
 import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
-import { deleteIngredient } from "../../services/actions/constructor/deleteIngredient";
+import { deleteIngredient } from "../../services/actions/constructorActions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sendOrder } from "../../services/actions/constructor/sendGetOrder";
 
