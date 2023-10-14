@@ -18,7 +18,7 @@ import {
   CloseIcon,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getOrderInfo } from "../services/actions/constructor/getOrderItemsInfo";
+import { getOrderInfo } from "../services/actions/getOrderItemsInfo";
 import { reloginUser } from "../services/actions/user/server-actions-user";
 
 export const OrderInfoPage = ({ isModal }) => {

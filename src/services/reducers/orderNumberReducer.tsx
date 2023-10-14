@@ -1,18 +1,29 @@
 import {
-  GET_ORDER_INFO,
+  SEND_REQUEST_ORDER_INFO,
   GET_ORDER_INFO_SUCCESS,
   GET_ORDER_INFO_ERROR,
-} from "../actions/constructor/getOrderItemsInfo";
+} from "../../utils/constants";
+import { TOrder } from "../../utils/types";
+import { TOrderInfoActions } from "../actions/getOrderItemsInfo";
 
-let initialState = {
+type TOrdersState = {
+  orderDetailsRequest: boolean;
+  orderDetailsFailed: boolean;
+  orders: Array<TOrder> | [];
+};
+
+const initialState: TOrdersState = {
   orderDetailsRequest: false,
   orderDetailsFailed: false,
   orders: [],
 };
 
-export const ordersReducer = (state = initialState, action) => {
+export const ordersReducer = (
+  state = initialState,
+  action: TOrderInfoActions
+): TOrdersState => {
   switch (action.type) {
-    case GET_ORDER_INFO: {
+    case SEND_REQUEST_ORDER_INFO: {
       return {
         ...state,
         orderDetailsRequest: true,

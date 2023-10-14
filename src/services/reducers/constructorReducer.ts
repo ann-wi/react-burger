@@ -1,16 +1,18 @@
-import { ADD_INGREDIENT } from "../../utils/constants";
-import { DELETE_INGREDIENT } from "../../utils/constants";
-import { GET_INGREDIENT_DETAILS } from "../../utils/constants";
-import { SET_INGREDIENTS } from "../../utils/constants";
-import { SUM_ORDER } from "../../utils/constants";
-import { INCREASE_INGREDIENT } from "../../utils/constants";
-import { DECREASE_INGREDIENT } from "../../utils/constants";
-import { SEND_REQUEST_INGREDIENTS } from "../../utils/constants";
-import { RESPOND_SUCCESS_INGREDIENTS } from "../../utils/constants";
-import { RESPOND_ERROR_INGREDIENTS } from "../../utils/constants";
-import { SEND_REQUEST_ORDER } from "../../utils/constants";
-import { RESPOND_SUCCESS_ORDER } from "../../utils/constants";
-import { RESPOND_ERROR_ORDER } from "../../utils/constants";
+import {
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  GET_INGREDIENT_DETAILS,
+  SET_INGREDIENTS,
+  SUM_ORDER,
+  INCREASE_INGREDIENT,
+  DECREASE_INGREDIENT,
+  SEND_REQUEST_INGREDIENTS,
+  RESPOND_SUCCESS_INGREDIENTS,
+  RESPOND_ERROR_INGREDIENTS,
+  SEND_REQUEST_ORDER,
+  RESPOND_SUCCESS_ORDER,
+  RESPOND_ERROR_ORDER,
+} from "../../utils/constants";
 import { TIngredient } from "../../utils/types";
 import { TConstructorActions } from "../actions/constructorActions";
 
