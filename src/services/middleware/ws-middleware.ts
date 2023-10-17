@@ -1,11 +1,14 @@
 import { getCookie } from "../../utils/cookies-storage";
 import { refreshUserToken } from "../../utils/server";
+import { TWSocketActions } from "../actions/ws/ws-actions";
+import { Middleware, MiddlewareAPI } from "redux";
+import { AppDispatch, RootState } from "../../utils/storeTypes";
 
-export const socketMiddleware = (wsActions) => {
-  return (store) => {
-    let socket = null;
+export const socketMiddleware = (wsActions: TWSocketActions): Middleware => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
+    let socket: WebSocket | null = null;
 
-    return (next) => (action) => {
+    return (next: any) => (action: any) => {
       const { dispatch } = store;
       const { type, payload } = action;
       const {
@@ -28,7 +31,7 @@ export const socketMiddleware = (wsActions) => {
       }
 
       if (type === wsClosed) {
-        socket.close("1000", "socket is closed");
+        socket?.close(1000, "socket is closed");
       }
 
       if (socket) {

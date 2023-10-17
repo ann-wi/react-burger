@@ -1,10 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import {
-  getAuthOrders,
-  getOrders,
-} from "../../services/actions/constructor/sendGetOrder";
+import { getAuthOrders, getOrders } from "../../services/actions/sendGetOrder";
 import { OrderInfoPage } from "../../pages/orders-info-page";
 
 export const RenderOrderInfo = () => {

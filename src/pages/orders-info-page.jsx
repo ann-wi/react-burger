@@ -8,10 +8,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import {
-  getAuthOrders,
-  getOrders,
-} from "../services/actions/constructor/sendGetOrder";
+import { getAuthOrders, getOrders } from "../services/actions/sendGetOrder";
 import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
 import { OrderIngredientsInfo } from "../components/OrderIngredientsInfo/OrderIngredientsInfo";
 import {

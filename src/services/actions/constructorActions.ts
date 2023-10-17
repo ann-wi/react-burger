@@ -3,7 +3,6 @@ import {
   ADD_INGREDIENT,
   DECREASE_INGREDIENT,
   DELETE_INGREDIENT,
-  GET_INGREDIENTS_LIST,
   GET_INGREDIENT_DETAILS,
   INCREASE_INGREDIENT,
   RESPOND_ERROR_INGREDIENTS,
@@ -208,7 +207,7 @@ export function getIngredients() {
     dispatch(sendRequestIngredients(true));
 
     apiGetIngredients()
-      .then((data) => {
+      .then((data: any) => {
         data.data.forEach((item: TIngredient) => {
           item.counter = 0;
         });
@@ -225,7 +224,7 @@ export function getOrderNumber(ingredientsIds: Array<string>) {
     dispatch(sendRequestOrder(true));
 
     apiSendOrder(ingredientsIds)
-      .then((data) => {
+      .then((data: any) => {
         dispatch(respondSuccessOrder(data.order.number));
       })
       .catch((err) => {

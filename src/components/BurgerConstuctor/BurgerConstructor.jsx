@@ -10,10 +10,10 @@ import { OrderPrice } from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 
 import { sumOrder } from "../../services/actions/constructorActions";
-import { getOrderNumber } from "../../services/actions/constructor/server-actions-constructor";
+import { getOrderNumber } from "../../utils/server";
 import { deleteIngredient } from "../../services/actions/constructorActions";
 import { useLocation, useNavigate } from "react-router-dom";
-import { sendOrder } from "../../services/actions/constructor/sendGetOrder";
+import { sendOrder } from "../../services/actions/sendGetOrder";
 
 export const BurgerConstructor = () => {
   const dispatch = useDispatch();

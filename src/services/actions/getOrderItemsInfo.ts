@@ -57,6 +57,7 @@ export function getOrderInfo(number: number) {
       .then((res) => checkResponse(res))
       .then((res) => {
         if (res && res.success) {
+          console.log(res);
           dispatch(getOrderInfoSuccess(res.orders));
         } else {
           dispatch(getOrderInfoError(true));

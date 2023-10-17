@@ -1,10 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import {
-  getAuthOrders,
-  getOrders,
-} from "../../services/actions/constructor/sendGetOrder";
+import { getAuthOrders, getOrders } from "../../services/actions/sendGetOrder";
 import { WS_CONNECTION_STOP } from "../../utils/constants";
 import { FeedOrderItem } from "../FeedOrderItem/FeedOrderItem";
 import LinkOrderInfoStyles from "./link-order-info-styles.module.css";

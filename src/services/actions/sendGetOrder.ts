@@ -5,17 +5,18 @@ import {
   SEND_ORDER,
   SEND_ORDER_ERROR,
   SEND_ORDER_SUCCESS,
-} from "../../../utils/constants";
-import { getCookie } from "../../../utils/cookies-storage";
-import { apiBurger, checkResponse } from "../../../utils/server";
+} from "../../utils/constants";
+import { getCookie } from "../../utils/cookies-storage";
+import { apiBurger, checkResponse } from "../../utils/server";
+import { AppDispatch } from "../../utils/storeTypes";
 
-async function fetchRequest(url, options) {
+async function fetchRequest(url: string, options?: any) {
   const res = await fetch(apiBurger + url, options);
   return checkResponse(res);
 }
 
-export const sendOrder = (data) => {
-  return (dispatch) => {
+export const sendOrder = (data: any) => {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: SEND_ORDER,
     });
@@ -44,8 +45,8 @@ export const sendOrder = (data) => {
   };
 };
 
-export const getOrders = (number) => {
-  return (dispatch) => {
+export const getOrders = (number: number) => {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: GET_ORDER,
     });
@@ -75,7 +76,7 @@ export const getOrders = (number) => {
 };
 
 export const getAuthOrders = () => {
-  return (dispatch) => {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: GET_ORDER,
     });

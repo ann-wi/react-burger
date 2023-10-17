@@ -4,27 +4,35 @@ import {
   setCookie,
   getFromLocalStorage,
 } from "./cookies-storage";
+import {
+  TGetUser,
+  TLogin,
+  TLoginUser,
+  TOrder,
+  TResetPassword,
+  TUpdateAccessToken,
+} from "./types";
 
 export const apiBurger = "https://norma.nomoreparties.space/api/";
 
-export const formatToken = (accessToken) => {
+export const formatToken = (accessToken: string) => {
   let authToken = accessToken.split("Bearer ")[1];
   return authToken;
 };
 
-export function checkResponse(res) {
+export const checkResponse = (res: any) => {
   if (res.ok) {
     return res.json();
   }
-  return res.json().then((err) => Promise.reject(err));
-}
+  return res.json().then((err: any) => Promise.reject(err));
+};
 
 export async function apiGetIngredients() {
   const res = await fetch(apiBurger + "ingredients");
   return checkResponse(res);
 }
 
-export async function apiSendOrder(data) {
+export async function apiSendOrder(data: Array<string>) {
   const res = await fetch(apiBurger + "orders", {
     method: "POST",
     headers: {
@@ -37,13 +45,13 @@ export async function apiSendOrder(data) {
   return checkResponse(res);
 }
 
-export function getOrderNumber(number) {
+export function getOrderNumber(number: number) {
   return fetch(`${apiBurger}orders/${number}`);
 }
 
 // USER
 
-export async function apiRegisterUser(data) {
+export async function apiRegisterUser(data: TGetUser) {
   const res = await fetch(apiBurger + "auth/register", {
     method: "POST",
     headers: {
@@ -74,7 +82,7 @@ export async function apiUpdateAccessToken() {
   return checkResponse(res);
 }
 
-export async function apiAuthUser(data) {
+export async function apiAuthUser(data: TLoginUser) {
   const res = await fetch(apiBurger + "auth/login", {
     method: "POST",
     headers: {
@@ -130,7 +138,7 @@ export async function apiGetUser() {
   return checkResponse(res);
 }
 
-export async function apiUpdateUserInfo(data) {
+export async function apiUpdateUserInfo(data: TGetUser) {
   const res = await fetch(apiBurger + "auth/user", {
     method: "PATCH",
     headers: {
@@ -147,7 +155,7 @@ export async function apiUpdateUserInfo(data) {
   return checkResponse(res);
 }
 
-export async function apiForgotPassword(email) {
+export async function apiForgotPassword(email: string) {
   const res = await fetch(apiBurger + "password-reset", {
     method: "POST",
     headers: {
@@ -161,7 +169,7 @@ export async function apiForgotPassword(email) {
   return checkResponse(res);
 }
 
-export async function apiResetPassword(data) {
+export async function apiResetPassword(data: TResetPassword) {
   const res = await fetch(apiBurger + "password-reset/reset", {
     method: "POST",
     headers: {
@@ -176,10 +184,10 @@ export async function apiResetPassword(data) {
   return checkResponse(res);
 }
 
-export const fetchWithRefresh = async ({ responce, data }) => {
+export const fetchWithRefresh = async ({ responce, data }: any) => {
   try {
     return await responce(data);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === "jwt expired") {
       console.log(err);
       return Promise.reject(err);

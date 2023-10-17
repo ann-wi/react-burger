@@ -3,8 +3,20 @@ import {
   WS_CONNECTION_ERROR,
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
-  WS_CONNECTION_START,
 } from "../../utils/constants";
+import { TWsActions } from "../actions/ws/ws-actions";
+
+type TWSocketState = {
+  wsConnected: boolean;
+  data:
+    | {
+        orders: [];
+        total: number;
+        totalToday: number;
+      }
+    | any;
+  error?: Event;
+};
 
 const initialState = {
   wsConnected: false,
@@ -13,10 +25,12 @@ const initialState = {
     total: 0,
     totalToday: 0,
   },
-  error: "",
 };
 
-export const wsReducer = (state = initialState, action) => {
+export const wsReducer = (
+  state: TWSocketState = initialState,
+  action: TWsActions
+) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       return {

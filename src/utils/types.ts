@@ -44,4 +44,34 @@ export interface IOrderNumber {
   number: string | undefined;
 }
 
-// IId
+export type TGetUser = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type TLogin = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    name: string;
+    email: string;
+  };
+};
+
+export type TResetPassword = {
+  password: string;
+  code: string;
+};
+
+export type TUpdateAccessToken = {
+  success: boolean;
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type TLoginUser = {
+  email: string;
+  password: string;
+};
