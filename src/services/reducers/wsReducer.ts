@@ -4,7 +4,7 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
 } from "../../utils/constants";
-import { TWsActions } from "../actions/ws/ws-actions";
+import { TWsActions } from "../actions/ws-actions";
 
 type TWSocketState = {
   wsConnected: boolean;

@@ -6,9 +6,10 @@ import { userReducer } from "./userReducer";
 import { wsReducer } from "./wsReducer";
 
 export const rootReducer = combineReducers({
-  constructorReducer,
-  userReducer,
-  wsReducer,
-  sendOrderReducer,
-  ordersReducer,
+  constructorReducer: constructorReducer,
+  userReducer: userReducer,
+  wsReducer: wsReducer,
+  sendOrderReducer: sendOrderReducer,
+  ordersReducer: ordersReducer,
+  getOrderReducer: getOrderReducer,
 });

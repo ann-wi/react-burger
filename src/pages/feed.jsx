@@ -2,7 +2,6 @@ import FeedStyles from "./feed-styles.module.css";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startConnection } from "../services/actions/ws/wsConnectionStart";
 import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
 import { OrderList } from "../components/OrdersLIst/OrderList";
 import { OrdersInfoPanel } from "../components/OrdersInfo/OrdersInfoPanel";

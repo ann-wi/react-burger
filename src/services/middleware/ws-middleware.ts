@@ -1,6 +1,6 @@
 import { getCookie } from "../../utils/cookies-storage";
 import { refreshUserToken } from "../../utils/server";
-import { TWSocketActions } from "../actions/ws/ws-actions";
+import { TWSocketActions } from "../actions/ws-actions";
 import { Middleware, MiddlewareAPI } from "redux";
 import { AppDispatch, RootState } from "../../utils/storeTypes";
 

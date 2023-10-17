@@ -1,32 +1,54 @@
-import { SEND_REQUEST_REGISTER } from "../../utils/constants";
-import { RESPOND_SUCCESS_REGISTER } from "../../utils/constants";
-import { RESPOND_ERROR_REGISTER } from "../../utils/constants";
+import {
+  SEND_REQUEST_REGISTER,
+  RESPOND_SUCCESS_REGISTER,
+  RESPOND_ERROR_REGISTER,
+  SEND_REQUEST_LOGIN,
+  RESPOND_SUCCESS_LOGIN,
+  RESPOND_ERROR_LOGIN,
+  SEND_REQUEST_USER,
+  RESPOND_SUCCESS_USER,
+  RESPOND_ERROR_USER,
+  SEND_REQUEST_CHANGE_USER,
+  RESPOND_SUCCESS_CHANGE_USER,
+  RESPOND_ERROR_CHANGE_USER,
+  SEND_REQUEST_LOGOUT,
+  RESPOND_SUCCESS_LOGOUT,
+  RESPOND_ERROR_LOGOUT,
+  SEND_REQUEST_FORGOT_PASSWORD,
+  RESPOND_SUCCESS_FORGOT_PASSWORD,
+  RESPOND_ERROR_FORGOT_PASSWORD,
+  SEND_REQUEST_RESET_PASSWORD,
+  RESPOND_SUCCESS_RESET_PASSWORD,
+  RESPOND_ERROR_RESET_PASSWORD,
+} from "../../utils/constants";
+import { TUser } from "../../utils/types";
+import { TUserActions } from "../actions/user/server-actions-user";
 
-import { SEND_REQUEST_LOGIN } from "../../utils/constants";
-import { RESPOND_SUCCESS_LOGIN } from "../../utils/constants";
-import { RESPOND_ERROR_LOGIN } from "../../utils/constants";
+type TUserState = {
+  user: TUser | null;
+  userIsAuthorized: boolean;
+  newPassSuccess: boolean;
+  pendingNewPass: boolean;
+  userIsValid: boolean;
+  sendRequestRegister: boolean;
+  respondErrorRegister: boolean;
+  sendRequestLogin: boolean;
+  respondErrorLogin: boolean;
+  sendRequestLogout: boolean;
+  respondErrorLogout: boolean;
+  sendRequestUser: boolean;
+  respondErrorUser: boolean;
+  sendRequestForgotPass: boolean;
+  respondErrorForgotPass: boolean;
+  sendRequestResetPass: boolean;
+  respondErrorResetPass: boolean;
+  sendRequestUpdateToken: boolean;
+  respondErrorUpdateToken: boolean;
+  sendRequestChangeUser: boolean;
+  respondErrorChangeUser: boolean;
+};
 
-import { SEND_REQUEST_USER } from "../../utils/constants";
-import { RESPOND_SUCCESS_USER } from "../../utils/constants";
-import { RESPOND_ERROR_USER } from "../../utils/constants";
-
-import { SEND_REQUEST_CHANGE_USER } from "../../utils/constants";
-import { RESPOND_SUCCESS_CHANGE_USER } from "../../utils/constants";
-import { RESPOND_ERROR_CHANGE_USER } from "../../utils/constants";
-
-import { SEND_REQUEST_LOGOUT } from "../../utils/constants";
-import { RESPOND_SUCCESS_LOGOUT } from "../../utils/constants";
-import { RESPOND_ERROR_LOGOUT } from "../../utils/constants";
-
-import { SEND_REQUEST_FORGOT_PASSWORD } from "../../utils/constants";
-import { RESPOND_SUCCESS_FORGOT_PASSWORD } from "../../utils/constants";
-import { RESPOND_ERROR_FORGOT_PASSWORD } from "../../utils/constants";
-
-import { SEND_REQUEST_RESET_PASSWORD } from "../../utils/constants";
-import { RESPOND_SUCCESS_RESET_PASSWORD } from "../../utils/constants";
-import { RESPOND_ERROR_RESET_PASSWORD } from "../../utils/constants";
-
-const initialState = {
+const initialState: TUserState = {
   user: null,
   userIsAuthorized: false,
   newPassSuccess: false,
@@ -46,9 +68,14 @@ const initialState = {
   respondErrorResetPass: false,
   sendRequestUpdateToken: false,
   respondErrorUpdateToken: false,
+  sendRequestChangeUser: false,
+  respondErrorChangeUser: false,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (
+  state = initialState,
+  action: TUserActions
+): TUserState => {
   switch (action.type) {
     case SEND_REQUEST_REGISTER:
       return {
@@ -58,7 +85,7 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_REGISTER:
       return {
         ...state,
-        user: action.payload.data,
+        user: action.user,
         userIsAuthorized: true,
         sendRequestRegister: false,
         respondErrorRegister: false,
@@ -77,7 +104,7 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_LOGIN:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.user,
         userIsAuthorized: true,
         sendRequestLogin: false,
         respondErrorLogin: false,
@@ -109,7 +136,7 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_USER:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.user,
         sendRequestUser: false,
         respondErrorUser: false,
       };
@@ -127,7 +154,7 @@ export const userReducer = (state = initialState, action) => {
     case RESPOND_SUCCESS_CHANGE_USER:
       return {
         ...state,
-        user: action.payload.user,
+        user: action.user,
         sendRequestChangeUser: false,
         respondErrorChangeUser: false,
       };

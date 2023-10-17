@@ -6,8 +6,8 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS,
   WS_SEND_ORDERS,
-} from "../../../utils/constants";
-import { TOrder } from "../../../utils/types";
+} from "../../utils/constants";
+import { TOrder } from "../../utils/types";
 
 interface IWsConnectionStart {
   readonly type: typeof WS_CONNECTION_START;

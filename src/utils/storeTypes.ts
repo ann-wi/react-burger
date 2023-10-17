@@ -7,7 +7,7 @@ import {
 } from "react-redux";
 import { Dispatch } from "redux";
 
-type TAppActions = TConstructorActions;
+//type TAppActions = TConstructorActions;
 
 export type RootState = ReturnType<typeof store.getState>;
 
