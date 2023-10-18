@@ -9,6 +9,84 @@ import {
 import { getCookie } from "../../utils/cookies-storage";
 import { apiBurger, checkResponse } from "../../utils/server";
 import { AppDispatch } from "../../utils/storeTypes";
+import { TOrder } from "../../utils/types";
+
+export interface ISendOrder {
+  readonly type: typeof SEND_ORDER;
+}
+
+export interface ISendOrderSuccess {
+  readonly type: typeof SEND_ORDER_SUCCESS;
+  readonly order: TOrder;
+  readonly orderList: any;
+}
+
+export interface ISendOrderError {
+  readonly type: typeof SEND_ORDER_ERROR;
+}
+
+export interface IGetOrder {
+  readonly type: typeof GET_ORDER;
+}
+
+export interface IGetOrderSuccess {
+  readonly type: typeof GET_ORDER_SUCCESS;
+  readonly orders: TOrder[];
+}
+
+export interface IGetOrderError {
+  readonly type: typeof GET_ORDER_ERROR;
+}
+
+export type TOrderActions =
+  | ISendOrder
+  | ISendOrderSuccess
+  | ISendOrderError
+  | IGetOrder
+  | IGetOrderSuccess
+  | IGetOrderError;
+
+export function sendOrderRequest(): ISendOrder {
+  return {
+    type: SEND_ORDER,
+  };
+}
+
+export function sendOrderSuccess(
+  order: TOrder,
+  orderList: any
+): ISendOrderSuccess {
+  return {
+    type: SEND_ORDER_SUCCESS,
+    order,
+    orderList,
+  };
+}
+
+export function sendOrderError(): ISendOrderError {
+  return {
+    type: SEND_ORDER_ERROR,
+  };
+}
+
+export function getOrderRequest(): IGetOrder {
+  return {
+    type: GET_ORDER,
+  };
+}
+
+export function getOrderSuccess(orders: TOrder[]): IGetOrderSuccess {
+  return {
+    type: GET_ORDER_SUCCESS,
+    orders,
+  };
+}
+
+export function getOrderError(): IGetOrderError {
+  return {
+    type: GET_ORDER_ERROR,
+  };
+}
 
 async function fetchRequest(url: string, options?: any) {
   const res = await fetch(apiBurger + url, options);
@@ -17,9 +95,7 @@ async function fetchRequest(url: string, options?: any) {
 
 export const sendOrder = (data: any) => {
   return (dispatch: AppDispatch) => {
-    dispatch({
-      type: SEND_ORDER,
-    });
+    dispatch(sendOrderRequest());
     const sendOptions = {
       method: "POST",
       headers: {
@@ -30,26 +106,17 @@ export const sendOrder = (data: any) => {
     };
     fetchRequest(`orders`, sendOptions)
       .then((res) => {
-        dispatch({
-          type: SEND_ORDER_SUCCESS,
-          order: res.order,
-          orderList: data,
-        });
+        dispatch(sendOrderSuccess(res.order, data));
       })
       .catch((err) => {
-        dispatch({
-          type: SEND_ORDER_ERROR,
-          error: err.message,
-        });
+        dispatch(sendOrderError());
       });
   };
 };
 
 export const getOrders = (number: number) => {
   return (dispatch: AppDispatch) => {
-    dispatch({
-      type: GET_ORDER,
-    });
+    dispatch(getOrderRequest());
     const getOptions = {
       method: "GET",
       headers: {
@@ -60,26 +127,18 @@ export const getOrders = (number: number) => {
     fetchRequest(`orders/${number}`, getOptions)
       .then((res) => {
         if (res.success) {
-          dispatch({
-            type: GET_ORDER_SUCCESS,
-            orders: res.orders,
-          });
+          dispatch(getOrderSuccess(res.orders));
         }
       })
       .catch((err) => {
-        dispatch({
-          type: GET_ORDER_ERROR,
-          error: err.message,
-        });
+        dispatch(getOrderError());
       });
   };
 };
 
 export const getAuthOrders = () => {
   return (dispatch: AppDispatch) => {
-    dispatch({
-      type: GET_ORDER,
-    });
+    dispatch(getOrderRequest());
     const authOptions = {
       method: "GET",
       headers: {
@@ -90,17 +149,11 @@ export const getAuthOrders = () => {
     fetchRequest(`orders/`, authOptions)
       .then((res) => {
         if (res.success) {
-          dispatch({
-            type: GET_ORDER_SUCCESS,
-            orders: res,
-          });
+          dispatch(getOrderSuccess(res));
         }
       })
       .catch((err) => {
-        dispatch({
-          type: GET_ORDER_ERROR,
-          error: err.message,
-        });
+        dispatch(getOrderError());
       });
   };
 };

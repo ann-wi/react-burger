@@ -16,7 +16,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getOrderInfo } from "../services/actions/getOrderItemsInfo";
-import { reloginUser } from "../services/actions/user/server-actions-user";
+import { reloginUser } from "../services/actions/server-actions-user";
 
 export const OrderInfoPage = ({ isModal }) => {
   const dispatch = useDispatch();

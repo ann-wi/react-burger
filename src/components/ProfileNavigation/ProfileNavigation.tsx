@@ -1,13 +1,14 @@
-import { useDispatch } from "react-redux";
+import React, { FC } from "react";
+import { useDispatch } from "../../utils/storeTypes";
 import { Navigate, NavLink, useLocation } from "react-router-dom";
-import { userLogout } from "../../services/actions/user/server-actions-user";
+import { userLogout } from "../../services/actions/server-actions-user";
 import profileNavigationStyles from "./profile-navigation-styles.module.css";
 
-export const ProfileNavigation = () => {
+export const ProfileNavigation: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const clickLogout = (e) => {
+  const clickLogout = (e: React.SyntheticEvent) => {
     e.preventDefault();
     dispatch(userLogout());
 

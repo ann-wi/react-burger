@@ -4,7 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
-import { forgotPasswordSendEmail } from "../services/actions/user/server-actions-user";
+import { forgotPasswordSendEmail } from "../services/actions/server-actions-user";
 import { useForm } from "../hooks/useForm";
 
 import forgotPasswordStyles from "./forgot-password-styles.module.css";

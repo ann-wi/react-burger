@@ -9,7 +9,7 @@ import {
   apiUpdateUserInfo,
   apiForgotPassword,
   apiResetPassword,
-} from "../../../utils/server";
+} from "../../utils/server";
 import {
   setCookie,
   getCookie,
@@ -17,7 +17,7 @@ import {
   getFromLocalStorage,
   deleteCookie,
   deleteFromLocalStorage,
-} from "../../../utils/cookies-storage";
+} from "../../utils/cookies-storage";
 
 import {
   SEND_REQUEST_REGISTER,
@@ -41,9 +41,9 @@ import {
   SEND_REQUEST_RESET_PASSWORD,
   RESPOND_SUCCESS_RESET_PASSWORD,
   RESPOND_ERROR_RESET_PASSWORD,
-} from "../../../utils/constants";
-import { TUser, TLoginUser } from "../../../utils/types";
-import { AppDispatch } from "../../../utils/storeTypes";
+} from "../../utils/constants";
+import { TUser } from "../../utils/types";
+import { AppDispatch } from "../../utils/storeTypes";
 
 export interface ISendRequestRegister {
   readonly type: typeof SEND_REQUEST_REGISTER;
@@ -112,7 +112,7 @@ export interface ISendRequestLogout {
 
 export interface IRespondSuccessLogout {
   readonly type: typeof RESPOND_SUCCESS_LOGOUT;
-  readonly user: TUser;
+  readonly user: boolean;
 }
 
 export interface IRespondErrorLogout {
@@ -274,7 +274,7 @@ export function sendRequestLogout(sendRequest: boolean): ISendRequestLogout {
   };
 }
 
-export function respondSuccessLogout(user: TUser): IRespondSuccessLogout {
+export function respondSuccessLogout(user: boolean): IRespondSuccessLogout {
   return {
     type: RESPOND_SUCCESS_LOGOUT,
     user,

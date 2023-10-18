@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, FC } from "react";
+import { useDispatch, useSelector } from "../../utils/storeTypes";
 import { ConstructorContainer } from "../ConstructorContainer/ConstructorContainer";
 import {
   CurrencyIcon,
@@ -10,12 +10,12 @@ import { OrderPrice } from "../OrderPrice/OrderPrice";
 import { Scrollbar } from "smooth-scrollbar-react";
 
 import { sumOrder } from "../../services/actions/constructorActions";
-import { getOrderNumber } from "../../utils/server";
+import { getOrderNumber } from "../../services/actions/constructorActions";
 import { deleteIngredient } from "../../services/actions/constructorActions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { sendOrder } from "../../services/actions/sendGetOrder";
 
-export const BurgerConstructor = () => {
+export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -24,7 +24,7 @@ export const BurgerConstructor = () => {
     (state) => state.constructorReducer.addedIngredients
   );
   const loading = useSelector((state) => state.constructorReducer.isLoading);
-  const isEmpty = useSelector((state) => state.constructorReducer.sum);
+  //const isEmpty = useSelector((state) => state.constructorReducer.sum);
   const loggedIn = useSelector((state) => state.userReducer.userIsAuthorized);
 
   useEffect(() => {

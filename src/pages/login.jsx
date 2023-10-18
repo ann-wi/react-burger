@@ -5,7 +5,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { authUser } from "../services/actions/user/server-actions-user";
+import { authUser } from "../services/actions/server-actions-user";
 import { useForm } from "../hooks/useForm";
 
 import loginStyles from "./login-styles.module.css";

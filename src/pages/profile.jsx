@@ -8,7 +8,7 @@ import {
 import profileStyles from "./profile-styles.module.css";
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
 import { useDispatch, useSelector } from "react-redux";
-import { changeUserInfo } from "../services/actions/user/server-actions-user";
+import { changeUserInfo } from "../services/actions/server-actions-user";
 import { useForm } from "../hooks/useForm";
 
 export const ProfilePage = () => {

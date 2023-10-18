@@ -6,7 +6,7 @@ import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNaviga
 import { WS_CONNECTION_START, WS_CONNECTION_STOP } from "../utils/constants";
 import profileOrdersStyles from "./profile-orders-styles.module.css";
 import { LinkOrderInfo } from "../components/LinkOrderInfo/LinkOrderInfo";
-import { reloginUser } from "../services/actions/user/server-actions-user";
+import { reloginUser } from "../services/actions/server-actions-user";
 
 export const ProfileOrdersPage = () => {
   const dispatch = useDispatch();

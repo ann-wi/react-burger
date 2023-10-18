@@ -32,7 +32,7 @@ export async function apiGetIngredients() {
   return checkResponse(res);
 }
 
-export async function apiSendOrder(data: Array<string>) {
+export async function apiSendOrder(data: (string | undefined)[]) {
   const res = await fetch(apiBurger + "orders", {
     method: "POST",
     headers: {

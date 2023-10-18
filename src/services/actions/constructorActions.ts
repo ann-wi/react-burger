@@ -218,7 +218,7 @@ export function getIngredients() {
   };
 }
 
-export function getOrderNumber(ingredientsIds: Array<string>) {
+export function getOrderNumber(ingredientsIds: (string | undefined)[]) {
   return function (dispatch: AppDispatch) {
     dispatch(sendRequestOrder(true));
 

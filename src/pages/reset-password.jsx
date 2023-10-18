@@ -6,7 +6,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
-import { resetUserPassword } from "../services/actions/user/server-actions-user";
+import { resetUserPassword } from "../services/actions/server-actions-user";
 
 import resetPasswordStyles from "./reset-password-styles.module.css";
 

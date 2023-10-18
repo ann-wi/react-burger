@@ -1,6 +1,5 @@
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { FC, useEffect } from "react";
-//import { useDispatch, useSelector } from "react-redux";
 import { useDispatch, useSelector } from "../../utils/storeTypes";
 import { AppHeader } from "../AppHeader/AppHeader";
 import { HomePage } from "../../pages/homepage";
@@ -19,12 +18,11 @@ import { getIngredients } from "../../services/actions/constructorActions";
 import {
   getUser,
   reloginUser,
-} from "../../services/actions/user/server-actions-user";
+} from "../../services/actions/server-actions-user";
 import { IngredientDetails } from "../IngredientDetails/IngredientDetails";
 import { Modal } from "../Modal/Modal";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
 import { OrderInfoPage } from "../../pages/orders-info-page";
-import { RenderOrderInfo } from "../RenderOrderInfo/RenderOrderInfo";
 
 const App: FC = () => {
   const dispatch = useDispatch();

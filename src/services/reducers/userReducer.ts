@@ -22,7 +22,7 @@ import {
   RESPOND_ERROR_RESET_PASSWORD,
 } from "../../utils/constants";
 import { TUser } from "../../utils/types";
-import { TUserActions } from "../actions/user/server-actions-user";
+import { TUserActions } from "../actions/server-actions-user";
 
 type TUserState = {
   user: TUser | null;

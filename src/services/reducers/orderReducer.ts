@@ -6,31 +6,46 @@ import {
   SEND_ORDER_ERROR,
   SEND_ORDER_SUCCESS,
 } from "../../utils/constants";
+import { TUser, TOrder } from "../../utils/types";
+import { TOrderActions } from "../actions/sendGetOrder";
 
-const initialState = {
+export type TOrderState = {
+  price: number;
+  orderRequestLoading: boolean;
+  orderRequestError: boolean;
+  orderRequestSuccess: boolean;
+  user: TUser | null;
+  order: TOrder | null;
+  orderList: TOrder[];
+};
+
+const initialState: TOrderState = {
   price: 0,
   orderRequestLoading: false,
   orderRequestError: false,
   orderRequestSuccess: false,
-  user: {},
-  order: {},
+  user: null,
+  order: null,
   orderList: [],
 };
 
-export const sendOrderReducer = (state = initialState, action) => {
+export const sendOrderReducer = (
+  state = initialState,
+  action: TOrderActions
+): TOrderState => {
   switch (action.type) {
     case SEND_ORDER: {
       return {
         ...state,
-        ...action.payload,
+        orderRequestLoading: true,
       };
     }
     case SEND_ORDER_SUCCESS: {
       return {
         ...state,
         orderRequestLoading: false,
-        order: action.payload.order,
-        orderList: action.payload.ingredients,
+        order: action.order,
+        orderList: action.orderList,
       };
     }
     case SEND_ORDER_ERROR: {
@@ -46,12 +61,15 @@ export const sendOrderReducer = (state = initialState, action) => {
   }
 };
 
-export const getOrderReducer = (state = initialState, action) => {
+export const getOrderReducer = (
+  state = initialState,
+  action: TOrderActions
+): TOrderState => {
   switch (action.type) {
     case GET_ORDER: {
       return {
         ...state,
-        ...action.payload,
+        orderRequestLoading: true,
       };
     }
     case GET_ORDER_SUCCESS: {
