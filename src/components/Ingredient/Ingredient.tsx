@@ -1,19 +1,24 @@
 import { useDrag } from "react-dnd";
-import { useSelector, useDispatch } from "react-redux";
 import {
   Counter,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import ingredientStyles from "./ingredient-styles.module.css";
-
-import PropTypes from "prop-types";
 import uuid from "react-uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getIngredientDetails } from "../../services/actions/constructorActions";
+import { TIngredient } from "../../utils/types";
+import { FC } from "react";
+import { useDispatch, useSelector } from "../../utils/storeTypes";
 
-export const Ingredient = ({ ingredient, ingrType }) => {
-  const { _id, name, price, image, type, counter } = ingredient;
-  ingredient.uuid = uuid();
+export interface IIngredient {
+  ingredient: TIngredient;
+  ingrType: string;
+}
+
+export const Ingredient: FC<IIngredient> = (props) => {
+  const { _id, name, price, image, type, counter } = props.ingredient;
+  props.ingredient.uuid = uuid();
   const addedIngredients = useSelector(
     (state) => state.constructorReducer.addedIngredients
   );
@@ -23,9 +28,9 @@ export const Ingredient = ({ ingredient, ingrType }) => {
   const location = useLocation();
 
   const clickHandler = () => {
-    dispatch(getIngredientDetails(ingredient));
-    console.log(ingredient);
-    navigate(`/ingredients/${ingredient._id}`, {
+    dispatch(getIngredientDetails(props.ingredient));
+    console.log(props.ingredient);
+    navigate(`/ingredients/${props.ingredient._id}`, {
       state: { background: location },
     });
   };
@@ -39,7 +44,7 @@ export const Ingredient = ({ ingredient, ingrType }) => {
       price: price,
       image: image,
       type: type,
-      uuid: ingredient.uuid,
+      uuid: props.ingredient.uuid,
     },
   });
 
@@ -52,71 +57,66 @@ export const Ingredient = ({ ingredient, ingrType }) => {
       price: price,
       image: image,
       type: type,
-      uuid: ingredient.uuid,
+      uuid: props.ingredient.uuid,
     },
   });
 
   const counterVisibilityBuns = addedIngredients.find(
     (item) =>
       item.type === "bun" &&
-      item.id === ingredient._id &&
-      ingredient.counter !== 0
+      item.id === props.ingredient._id &&
+      props.ingredient.counter !== 0
   );
 
   const counterVisibilityMain = addedIngredients.find(
-    (item) => item.id === ingredient.id && ingredient.counter !== 0
+    (item) => item.id === props.ingredient.id && props.ingredient.counter !== 0
   );
 
-  return ingrType === "ingredient" ? (
+  return props.ingrType === "ingredient" ? (
     <div className={ingredientStyles.card} ref={ingrDragRef} draggable>
       {counterVisibilityMain && (
-        <Counter count={ingredient.counter} size="default" />
+        <Counter count={props.ingredient.counter} size="default" />
       )}
       <img
         onClick={clickHandler}
-        src={ingredient.image}
+        src={props.ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
-        alt={ingredient.name}
+        alt={props.ingredient.name}
       />
       <div
         className={`${ingredientStyles.price} pt-1 pb-1 text text_type_digits-default`}
       >
-        <p className={ingredientStyles.priceNum}>{ingredient.price}</p>
+        <p className={ingredientStyles.priceNum}>{props.ingredient.price}</p>
         <CurrencyIcon type="primary" />
       </div>
       <p
         className={`${ingredientStyles.name} mt-1 text text_type_main-default`}
       >
-        {ingredient.name}
+        {props.ingredient.name}
       </p>
     </div>
   ) : (
     <div className={ingredientStyles.card} ref={bunDragRef} draggable>
       {counterVisibilityBuns && (
-        <Counter count={ingredient.counter} size="default" />
+        <Counter count={props.ingredient.counter} size="default" />
       )}
       <img
         onClick={clickHandler}
-        src={ingredient.image}
+        src={props.ingredient.image}
         className={`${ingredientStyles.image} mr-4 ml-4`}
-        alt={ingredient.name}
+        alt={props.ingredient.name}
       />
       <div
         className={`${ingredientStyles.price} pt-1 pb-1 text text_type_digits-default`}
       >
-        <p className={ingredientStyles.priceNum}>{ingredient.price}</p>
+        <p className={ingredientStyles.priceNum}>{props.ingredient.price}</p>
         <CurrencyIcon type="primary" />
       </div>
       <p
         className={`${ingredientStyles.name} mt-1 text text_type_main-default`}
       >
-        {ingredient.name}
+        {props.ingredient.name}
       </p>
     </div>
   );
-};
-
-Ingredient.propTypes = {
-  ingredient: PropTypes.object,
-  ingrType: PropTypes.string,
 };

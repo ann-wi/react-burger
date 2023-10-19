@@ -1,18 +1,18 @@
-import { useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import ingredientsStyles from "./burger-ingredients-styles.module.css";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Ingredient } from "../Ingredient/Ingredient";
 import { Scrollbar } from "smooth-scrollbar-react";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/storeTypes";
 
-export const BurgerIngredients = () => {
+export const BurgerIngredients: FC = () => {
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
 
-  const tabBuns = useRef(null);
-  const tabSauces = useRef(null);
-  const tabMain = useRef(null);
+  const tabBuns = useRef<HTMLInputElement>(null);
+  const tabSauces = useRef<HTMLInputElement>(null);
+  const tabMain = useRef<HTMLInputElement>(null);
   const [currentTabBuns, setCurrentTabBuns] = useState(false);
   const [currentTabSauces, setCurrentTabSauces] = useState(false);
   const [currentTabMain, setCurrentTabMain] = useState(false);
@@ -41,13 +41,25 @@ export const BurgerIngredients = () => {
           Соберите бургер
         </h1>
         <div className={`${ingredientsStyles.tabs} mt-5 mb-10`}>
-          <Tab value="one" active={currentTabBuns}>
+          <Tab
+            value="one"
+            active={currentTabBuns}
+            onClick={() => console.log("Buns")}
+          >
             Булки
           </Tab>
-          <Tab value="two" active={currentTabSauces}>
+          <Tab
+            value="two"
+            active={currentTabSauces}
+            onClick={() => console.log("Sauces")}
+          >
             Соусы
           </Tab>
-          <Tab value="three" active={currentTabMain}>
+          <Tab
+            value="three"
+            active={currentTabMain}
+            onClick={() => console.log("Main")}
+          >
             Начинки
           </Tab>
         </div>
@@ -61,12 +73,11 @@ export const BurgerIngredients = () => {
               </h3>
               <div className={ingredientsStyles.cards}>
                 {ingredients
-                  .filter((ingredient) => ingredient.type === "bun")
-                  .map((ingredient) => (
+                  .filter((ingredient: any) => ingredient.type === "bun")
+                  .map((ingredient: any) => (
                     <Ingredient
                       ingrType={"burgerBun"}
                       key={ingredient._id}
-                      idx={ingredients.indexOf(ingredient)}
                       ingredient={ingredient}
                     />
                   ))}
@@ -85,7 +96,6 @@ export const BurgerIngredients = () => {
                     <Ingredient
                       ingrType={"ingredient"}
                       key={ingredient._id}
-                      idx={ingredients.indexOf(ingredient)}
                       ingredient={ingredient}
                     />
                   ))}
@@ -104,7 +114,6 @@ export const BurgerIngredients = () => {
                     <Ingredient
                       ingrType={"ingredient"}
                       key={ingredient._id}
-                      idx={ingredients.indexOf(ingredient)}
                       ingredient={ingredient}
                     />
                   ))}
