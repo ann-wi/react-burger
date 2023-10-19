@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { ProfileOrderItem } from "../components/ProfileOrderItem/ProfileOrderItem";
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
 import { WS_CONNECTION_START, WS_CONNECTION_STOP } from "../utils/constants";
 import profileOrdersStyles from "./profile-orders-styles.module.css";
 import { LinkOrderInfo } from "../components/LinkOrderInfo/LinkOrderInfo";
 import { reloginUser } from "../services/actions/server-actions-user";
+import { useDispatch, useSelector } from "../utils/storeTypes";
 
 export const ProfileOrdersPage = () => {
   const dispatch = useDispatch();
@@ -14,7 +12,6 @@ export const ProfileOrdersPage = () => {
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(reloginUser());
@@ -34,7 +31,7 @@ export const ProfileOrdersPage = () => {
 
   return (
     <div className={profileOrdersStyles.container}>
-      <ProfileNavigation isActive={true} active={false} />
+      <ProfileNavigation />
       <div className={profileOrdersStyles.listContainer}>
         {ingredients && data && (
           <LinkOrderInfo orders={data} isReversed={true} />

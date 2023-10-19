@@ -45,7 +45,7 @@ export async function apiSendOrder(data: (string | undefined)[]) {
   return checkResponse(res);
 }
 
-export function getOrderNumber(number: number) {
+export function getOrderNumber(number: string) {
   return fetch(`${apiBurger}orders/${number}`);
 }
 

@@ -1,14 +1,18 @@
-import React from "react";
+import React, { FC, ReactElement } from "react";
 import ReactDOM from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ModalOverlay } from "../ModalOverlay/ModalOverlay";
 import ModalStyles from "./modal-styles.module.css";
-import PropTypes from "prop-types";
 
-const popupContainer = document.querySelector("#popups");
+export interface IModal {
+  onCloseClick: () => void;
+  children: ReactElement;
+}
 
-export const Modal = ({ onCloseClick, children }) => {
-  const handleEscKeydown = (event) => {
+const popupContainer = document.querySelector("#popups") as HTMLInputElement;
+
+export const Modal: FC<IModal> = ({ onCloseClick, children }) => {
+  const handleEscKeydown = (event: KeyboardEvent) => {
     event.key === "Escape" && onCloseClick();
   };
 
@@ -32,8 +36,4 @@ export const Modal = ({ onCloseClick, children }) => {
     </div>,
     popupContainer
   );
-};
-
-Modal.propTypes = {
-  onCloseClick: PropTypes.func,
 };

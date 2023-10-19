@@ -1,15 +1,11 @@
 import FeedStyles from "./feed-styles.module.css";
-
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect } from "react";
 import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
-import { OrderList } from "../components/OrdersLIst/OrderList";
 import { OrdersInfoPanel } from "../components/OrdersInfo/OrdersInfoPanel";
-import { useNavigate } from "react-router-dom";
-import { FeedOrderItem } from "../components/FeedOrderItem/FeedOrderItem";
 import { LinkOrderInfo } from "../components/LinkOrderInfo/LinkOrderInfo";
+import { useDispatch, useSelector } from "../utils/storeTypes";
 
-export const FeedPage = () => {
+export const FeedPage: FC = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.wsReducer.data.orders);
   const ingredients = useSelector(

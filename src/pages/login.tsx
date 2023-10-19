@@ -4,13 +4,14 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { authUser } from "../services/actions/server-actions-user";
 import { useForm } from "../hooks/useForm";
 
 import loginStyles from "./login-styles.module.css";
+import { FC } from "react";
+import { useDispatch, useSelector } from "../utils/storeTypes";
 
-export const LoginPage = () => {
+export const LoginPage: FC = () => {
   const dispatch = useDispatch();
   const isAuthorized = useSelector(
     (state) => state.userReducer.userIsAuthorized

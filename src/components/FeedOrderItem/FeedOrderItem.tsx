@@ -1,25 +1,24 @@
-import ProfileOrderItemStyles from "./profile-order-item-styles.module.css";
+import FeedOrderItemStyles from "./feed-order-item-styles.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
+import { FC, useMemo } from "react";
+import { TOrder, TIngredient } from "../../utils/types";
+import { useSelector } from "../../utils/storeTypes";
 
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useMemo } from "react";
+export interface IFeedOrderItem {
+  order: TOrder;
+}
 
-export const ProfileOrderItem = ({ order }) => {
+export const FeedOrderItem: FC<IFeedOrderItem> = ({ order }) => {
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
-  //const data = useSelector((state) => state.wsReducer.data.orders);
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   const orderMaxLength = order.ingredients.length;
   const ingredientsLength = orderMaxLength - 6;
   const currentDay = new Date().getDate();
   const orderDay = order.createdAt.includes(`${currentDay}`);
 
-  const getElem = ({ data, id }) => {
+  const getElem = ({ data, id }: { data: TIngredient[] | []; id: string }) => {
     const [theElem] = data.filter((element) => {
       return element._id === id;
     });
@@ -42,14 +41,14 @@ export const ProfileOrderItem = ({ order }) => {
     }, 0);
   }, [orderIngredients]);
 
-  const clickHandler = () => {
-    navigate(`/profile/orders/${order.number}`, { background: location });
-  };
+  const noDuplicates = order?.ingredients.filter((item, index, items) => {
+    return !items.some((i, idx) => i === item && idx > index);
+  });
 
   return (
     order && (
-      <div className={ProfileOrderItemStyles.container}>
-        <div className={ProfileOrderItemStyles.head}>
+      <div className={FeedOrderItemStyles.container}>
+        <div className={FeedOrderItemStyles.head}>
           <p className={`text text_type_digits-default`}>#{order.number}</p>
           <p className={`text text_type_main-default text_color_inactive`}>
             {orderDay ? "Сегодня" : "Вчера"}, {order.createdAt.slice(11, 16)}{" "}
@@ -57,12 +56,12 @@ export const ProfileOrderItem = ({ order }) => {
           </p>
         </div>
         <p
-          className={`text text_type_main-medium ${ProfileOrderItemStyles.title}`}
+          className={`text text_type_main-medium ${FeedOrderItemStyles.title}`}
         >
           {order.name}
         </p>
         <p
-          className={`text text_type_main-default ${ProfileOrderItemStyles.status}`}
+          className={`text text_type_main-default ${FeedOrderItemStyles.status}`}
         >
           {order.status === "done"
             ? "Выполнен"
@@ -72,18 +71,18 @@ export const ProfileOrderItem = ({ order }) => {
             ? "Создан"
             : "Выполнен"}
         </p>
-        <div className={ProfileOrderItemStyles.about}>
-          <ul className={ProfileOrderItemStyles.ingredientsList}>
-            {order.ingredients &&
+        <div className={FeedOrderItemStyles.about}>
+          <ul className={FeedOrderItemStyles.ingredientsList}>
+            {noDuplicates &&
               orderMaxLength <= 5 &&
-              order.ingredients.map((item, index) => {
+              noDuplicates.map((item, index) => {
                 return (
-                  <li className={ProfileOrderItemStyles.listItem} key={index}>
+                  <li className={FeedOrderItemStyles.listItem} key={index}>
                     {item && (
-                      <div className={ProfileOrderItemStyles.imageBorder}>
-                        <div className={ProfileOrderItemStyles.image}>
+                      <div className={FeedOrderItemStyles.imageBorder}>
+                        <div className={FeedOrderItemStyles.image}>
                           <img
-                            className={ProfileOrderItemStyles.pic}
+                            className={FeedOrderItemStyles.pic}
                             src={getElem({ data: ingredients, id: item }).image}
                             alt={getElem({ data: ingredients, id: item }).name}
                           />
@@ -93,16 +92,16 @@ export const ProfileOrderItem = ({ order }) => {
                   </li>
                 );
               })}
-            {order.ingredients &&
+            {noDuplicates &&
               orderMaxLength >= 6 &&
-              order.ingredients.slice(0, 5).map((item, index) => {
+              noDuplicates.slice(0, 5).map((item, index) => {
                 return (
-                  <li className={ProfileOrderItemStyles.listItem} key={index}>
+                  <li className={FeedOrderItemStyles.listItem} key={index}>
                     {item && (
-                      <div className={ProfileOrderItemStyles.imageBorder}>
-                        <div className={ProfileOrderItemStyles.image}>
+                      <div className={FeedOrderItemStyles.imageBorder}>
+                        <div className={FeedOrderItemStyles.image}>
                           <img
-                            className={ProfileOrderItemStyles.pic}
+                            className={FeedOrderItemStyles.pic}
                             src={getElem({ data: ingredients, id: item }).image}
                             alt={getElem({ data: ingredients, id: item }).name}
                           />
@@ -112,21 +111,21 @@ export const ProfileOrderItem = ({ order }) => {
                   </li>
                 );
               })}
-            {order.ingredients &&
+            {noDuplicates &&
               orderMaxLength > 6 &&
-              order.ingredients.slice(5, 6).map((item, index) => {
+              noDuplicates.slice(5, 6).map((item, index) => {
                 return (
-                  <li className={ProfileOrderItemStyles.listItem} key={index}>
+                  <li className={FeedOrderItemStyles.listItem} key={index}>
                     {item && (
                       <>
                         <p
-                          className={`text text_type_main-default ${ProfileOrderItemStyles.disabledCount}`}
+                          className={`text text_type_main-default ${FeedOrderItemStyles.disabledCount}`}
                         >{`+${ingredientsLength}`}</p>
-                        <div className={ProfileOrderItemStyles.disabledImage}>
-                          <div className={ProfileOrderItemStyles.imageBorder}>
-                            <div className={ProfileOrderItemStyles.image}>
+                        <div className={FeedOrderItemStyles.disabledImage}>
+                          <div className={FeedOrderItemStyles.imageBorder}>
+                            <div className={FeedOrderItemStyles.image}>
                               <img
-                                className={ProfileOrderItemStyles.pic}
+                                className={FeedOrderItemStyles.pic}
                                 src={
                                   getElem({ data: ingredients, id: item }).image
                                 }
@@ -143,9 +142,9 @@ export const ProfileOrderItem = ({ order }) => {
                 );
               })}
           </ul>
-          <div className={ProfileOrderItemStyles.price}>
+          <div className={FeedOrderItemStyles.price}>
             <p
-              className={`text text_type_digits-default ${ProfileOrderItemStyles.priceScore}`}
+              className={`text text_type_digits-default ${FeedOrderItemStyles.priceScore}`}
             >
               {countTotalPrice}
             </p>
@@ -156,5 +155,3 @@ export const ProfileOrderItem = ({ order }) => {
     )
   );
 };
-
-//{countTotalPrice(ingredients, order.ingredients)}

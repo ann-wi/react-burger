@@ -2,14 +2,14 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { forgotPasswordSendEmail } from "../services/actions/server-actions-user";
 import { useForm } from "../hooks/useForm";
-
 import forgotPasswordStyles from "./forgot-password-styles.module.css";
+import { FC } from "react";
+import { useDispatch, useSelector } from "../utils/storeTypes";
 
-export const ForgotPasswordPage = () => {
+export const ForgotPasswordPage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuthorized = useSelector(

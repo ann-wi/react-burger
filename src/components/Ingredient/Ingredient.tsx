@@ -29,7 +29,6 @@ export const Ingredient: FC<IIngredient> = (props) => {
 
   const clickHandler = () => {
     dispatch(getIngredientDetails(props.ingredient));
-    console.log(props.ingredient);
     navigate(`/ingredients/${props.ingredient._id}`, {
       state: { background: location },
     });

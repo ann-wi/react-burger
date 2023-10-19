@@ -3,14 +3,14 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch } from "react-redux";
+import { FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "../hooks/useForm";
 import { resetUserPassword } from "../services/actions/server-actions-user";
-
+import { useDispatch } from "../utils/storeTypes";
 import resetPasswordStyles from "./reset-password-styles.module.css";
 
-export const ResetPasswordPage = () => {
+export const ResetPasswordPage: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

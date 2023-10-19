@@ -13,12 +13,8 @@ import { ProfileOrdersPage } from "../../pages/profile-orders";
 import { IngredientPage } from "../../pages/ingredient-page";
 import { FeedPage } from "../../pages/feed";
 import { Order } from "../Order/Order";
-
 import { getIngredients } from "../../services/actions/constructorActions";
-import {
-  getUser,
-  reloginUser,
-} from "../../services/actions/server-actions-user";
+import { reloginUser } from "../../services/actions/server-actions-user";
 import { IngredientDetails } from "../IngredientDetails/IngredientDetails";
 import { Modal } from "../Modal/Modal";
 import { ProtectedRouteElement } from "../ProtectedRouteElement/ProtectedRouteElement";
@@ -30,7 +26,7 @@ const App: FC = () => {
   const navigate = useNavigate();
   const background = location.state && location.state.background;
 
-  const visible = useSelector((state) => state.constructorReducer.modalVisible);
+  //const visible = useSelector((state) => state.constructorReducer.modalVisible);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -159,11 +155,9 @@ const App: FC = () => {
               <ProtectedRouteElement
                 onlyAuth={true}
                 element={
-                  visible && (
-                    <Modal onCloseClick={closePopups}>
-                      <Order orderNumber={orderDetails} />
-                    </Modal>
-                  )
+                  <Modal onCloseClick={closePopups}>
+                    <Order orderNumber={orderDetails} />
+                  </Modal>
                 }
               />
             }

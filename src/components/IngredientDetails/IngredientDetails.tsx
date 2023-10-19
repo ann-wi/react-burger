@@ -1,9 +1,9 @@
-import { useDispatch, useSelector } from "react-redux";
 import IngredientDetailsStyles from "./ingredients-details-styles.module.css";
 import { useParams } from "react-router-dom";
 import { FC } from "react";
+import { useSelector } from "../../utils/storeTypes";
 
-export const IngredientDetails = () => {
+export const IngredientDetails: FC = () => {
   const { id } = useParams();
 
   const ingr = useSelector((state) => {

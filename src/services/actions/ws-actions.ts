@@ -11,7 +11,10 @@ import { TOrder } from "../../utils/types";
 
 interface IWsConnectionStart {
   readonly type: typeof WS_CONNECTION_START;
-  readonly url: string;
+  readonly payload: {
+    url: string;
+    isAuth: boolean;
+  };
 }
 
 interface IWsConnectionClosed {
@@ -54,14 +57,6 @@ export type TWsActions =
   | IWsGetOrders
   | IWsSendOrders;
 
-export function startConnection(url: string): IWsConnectionStart {
-  return {
-    type: WS_CONNECTION_START,
-    url,
-  };
-}
-
-//
 export type TWSocketActions = {
   readonly wsInit: typeof WS_CONNECTION_START;
   readonly onError: typeof WS_CONNECTION_ERROR;

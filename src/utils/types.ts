@@ -29,10 +29,6 @@ export type TOrder = {
   _id: string;
 };
 
-export interface IOrder {
-  order: TOrder;
-}
-
 export interface IIngredient {
   ingredient: TIngredient;
 }

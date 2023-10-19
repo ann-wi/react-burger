@@ -50,14 +50,13 @@ export function getOrderInfoError(respondError: boolean): IGetOrderInfoError {
   };
 }
 
-export function getOrderInfo(number: number) {
+export function getOrderInfo(number: string) {
   return function (dispatch: AppDispatch) {
     dispatch(sendRequestOrderInfo(true));
     getOrderNumber(number)
       .then((res) => checkResponse(res))
       .then((res) => {
         if (res && res.success) {
-          console.log(res);
           dispatch(getOrderInfoSuccess(res.orders));
         } else {
           dispatch(getOrderInfoError(true));

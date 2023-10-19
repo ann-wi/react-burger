@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Input,
   EmailInput,
@@ -7,13 +7,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import profileStyles from "./profile-styles.module.css";
 import { ProfileNavigation } from "../components/ProfileNavigation/ProfileNavigation";
-import { useDispatch, useSelector } from "react-redux";
 import { changeUserInfo } from "../services/actions/server-actions-user";
 import { useForm } from "../hooks/useForm";
+import { useDispatch, useSelector } from "../utils/storeTypes";
 
-export const ProfilePage = () => {
-  const userName = useSelector((state) => state.userReducer.user.name);
-  const userEmail = useSelector((state) => state.userReducer.user.email);
+export const ProfilePage: FC = () => {
+  const userName = useSelector((state) => state.userReducer.user!.name);
+  const userEmail = useSelector((state) => state.userReducer.user!.email);
   const [controlsDisabled, setControlsDisabled] = useState(true);
   const dispatch = useDispatch();
 
@@ -33,7 +33,7 @@ export const ProfilePage = () => {
     setFormData({ name: userName, email: userEmail, password: "" });
   }, [userName, userEmail]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -49,7 +49,7 @@ export const ProfilePage = () => {
 
   return (
     <div className={profileStyles.container}>
-      <ProfileNavigation active={true} isActive={false} />
+      <ProfileNavigation />
       <form className={profileStyles.inputList} onSubmit={onSubmit}>
         <Input
           value={formData.name}
@@ -58,7 +58,6 @@ export const ProfilePage = () => {
           placeholder={"Имя"}
           name={"name"}
           extraClass="ml-1 mt-6"
-          icon={"EditIcon"}
           error={false}
         />
         <EmailInput
@@ -66,7 +65,6 @@ export const ProfilePage = () => {
           onChange={handleChange}
           placeholder={"Email"}
           name={"email"}
-          icon={"EditIcon"}
           extraClass="mt-6"
         />
         <PasswordInput

@@ -1,17 +1,23 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { FC, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getAuthOrders, getOrders } from "../../services/actions/sendGetOrder";
 import { WS_CONNECTION_STOP } from "../../utils/constants";
+import { useDispatch } from "../../utils/storeTypes";
+import { TOrder } from "../../utils/types";
 import { FeedOrderItem } from "../FeedOrderItem/FeedOrderItem";
 import LinkOrderInfoStyles from "./link-order-info-styles.module.css";
 
-export const LinkOrderInfo = ({ orders, isReversed }) => {
+export interface ILinkOrderInfo {
+  orders: TOrder[];
+  isReversed: boolean;
+}
+
+export const LinkOrderInfo: FC<ILinkOrderInfo> = ({ orders, isReversed }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const clickHandler = (order) => {
+  const clickHandler = (order: TOrder) => {
     navigate(
       location.pathname.startsWith("/profile")
         ? `/profile/orders/${order.number}`
@@ -46,7 +52,6 @@ export const LinkOrderInfo = ({ orders, isReversed }) => {
                       <li
                         key={order.number}
                         onClick={() => {
-                          console.log(order);
                           clickHandler(order);
                         }}
                       >

@@ -1,34 +1,27 @@
 import OrderInfoStyles from "./orders-info-page-styles.module.css";
 
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  useLocation,
-  useMatch,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
-import { getAuthOrders, getOrders } from "../services/actions/sendGetOrder";
-import { WS_CONNECTION_STOP, WS_CONNECTION_START } from "../utils/constants";
+import { FC, useEffect, useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { OrderIngredientsInfo } from "../components/OrderIngredientsInfo/OrderIngredientsInfo";
-import {
-  CloseIcon,
-  CurrencyIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { getOrderInfo } from "../services/actions/getOrderItemsInfo";
-import { reloginUser } from "../services/actions/server-actions-user";
+import { useDispatch, useSelector } from "../utils/storeTypes";
+import { TIngredient, TOrder } from "../utils/types";
 
-export const OrderInfoPage = ({ isModal }) => {
+export interface IOrderInfoPage {
+  isModal: boolean;
+}
+
+export const OrderInfoPage: FC<IOrderInfoPage> = ({ isModal }) => {
   const dispatch = useDispatch();
-  const { number } = useParams();
-  const location = useLocation();
+  const { number } = useParams<{ number: string }>();
   const ingredients = useSelector(
     (state) => state.constructorReducer.ingredients
   );
 
   const order = useSelector((state) => {
     let order = state.wsReducer.data.orders?.find(
-      (elem) => String(elem.number) === number
+      (elem: TOrder) => String(elem.number) === number
     );
     if (order) {
       return order;
@@ -43,7 +36,7 @@ export const OrderInfoPage = ({ isModal }) => {
   });
 
   const selectedOrderData = useMemo(() => {
-    return order?.ingredients.map((id) => {
+    return order?.ingredients.map((id: string) => {
       return ingredients?.find((item) => {
         return id === item._id;
       });
@@ -51,7 +44,7 @@ export const OrderInfoPage = ({ isModal }) => {
   }, [order?.ingredients, ingredients]);
 
   const orderTotalPrice = useMemo(() => {
-    return selectedOrderData?.reduce((sum, item) => {
+    return selectedOrderData?.reduce((sum: number, item: TIngredient) => {
       if (item?.type === "bun") {
         return (sum += item.price * 2);
       }
@@ -61,7 +54,7 @@ export const OrderInfoPage = ({ isModal }) => {
 
   useEffect(() => {
     if (!order) {
-      dispatch(getOrderInfo(number));
+      dispatch(getOrderInfo(number!));
     }
   }, [dispatch, order, number]);
 

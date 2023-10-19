@@ -1,15 +1,17 @@
+import { FC } from "react";
+import { useSelector } from "../../utils/storeTypes";
+import { TOrder } from "../../utils/types";
 import ordersInfoPanelStyles from "./orders-info-panel-styles.module.css";
-import { useSelector } from "react-redux";
 
-export const OrdersInfoPanel = () => {
+export const OrdersInfoPanel: FC = () => {
   const data = useSelector((state) => state.wsReducer.data);
 
   const completedOrders = data.orders
-    .filter((order) => order.status === "done")
-    .filter((order, index) => index <= 15);
+    .filter((order: TOrder) => order.status === "done")
+    .filter((order: TOrder, index: number) => index <= 15);
   const upcomingOrders = data.orders
-    .filter((order) => order.status !== "done")
-    .filter((order, index) => index <= 10);
+    .filter((order: TOrder) => order.status !== "done")
+    .filter((order: TOrder, index: number) => index <= 10);
 
   return (
     <div className={ordersInfoPanelStyles.container}>
@@ -17,7 +19,7 @@ export const OrdersInfoPanel = () => {
         <div className={ordersInfoPanelStyles.listContainer}>
           <h2 className={ordersInfoPanelStyles.title}>Готовы:</h2>
           <ul className={ordersInfoPanelStyles.list}>
-            {completedOrders.map((order, index) => {
+            {completedOrders.map((order: TOrder, index: number) => {
               return (
                 <li
                   className={`text text_type_digits-default ${ordersInfoPanelStyles.li}`}
@@ -32,7 +34,7 @@ export const OrdersInfoPanel = () => {
         <div className={ordersInfoPanelStyles.listContainer}>
           <h2 className={ordersInfoPanelStyles.title}>В работе:</h2>
           <ul className={ordersInfoPanelStyles.list}>
-            {upcomingOrders.map((order, index) => {
+            {upcomingOrders.map((order: TOrder, index: number) => {
               return (
                 <li
                   className={`text text_type_digits-default ${ordersInfoPanelStyles.li_upcoming}`}
