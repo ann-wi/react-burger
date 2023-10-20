@@ -1,0 +1,36 @@
+.imgContainer {
+  margin: 0 16px 0 0;
+  padding: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(90deg, #801ab2, #4c4cff);
+  transform: rotateY(-0.1deg);
+  overflow: hidden;
+}
+
+.imgIngredient {
+  border-radius: 100%;
+  width: 92%;
+  height: 92%;
+  object-fit: cover;
+  background-color: #000000;
+}
+
+.ingredienDetail {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.countAndPrice {
+  display: flex;
+  margin-left: auto;
+}
+
+.sum {
+  padding-right: 10px;
+}
