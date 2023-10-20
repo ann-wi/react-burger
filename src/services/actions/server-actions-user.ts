@@ -42,7 +42,7 @@ import {
   RESPOND_SUCCESS_RESET_PASSWORD,
   RESPOND_ERROR_RESET_PASSWORD,
 } from "../../utils/constants";
-import { TUser } from "../../utils/types";
+import { TGetUser, TUser } from "../../utils/types";
 import { AppDispatch } from "../../utils/storeTypes";
 
 export interface ISendRequestRegister {
@@ -380,7 +380,7 @@ export const authUser = (info: any) => (dispatch: AppDispatch) => {
 
 export const userLogout = () => (dispatch: AppDispatch) => {
   dispatch(sendRequestLogout(true));
-  fetchWithRefresh({ responce: apiLogoutUser, data: null })
+  fetchWithRefresh({ response: apiLogoutUser, data: null })
     .then((res) => {
       deleteCookie("accessToken");
       deleteFromLocalStorage("refreshToken");
@@ -395,7 +395,7 @@ export const userLogout = () => (dispatch: AppDispatch) => {
 
 export const getUser = () => (dispatch: AppDispatch) => {
   dispatch(sendRequestUser(true));
-  fetchWithRefresh({ responce: apiGetUser, data: null })
+  fetchWithRefresh({ response: apiGetUser, data: null })
     .then((res) => {
       dispatch(respondSuccessLogin(res.user));
     })
@@ -406,9 +406,9 @@ export const getUser = () => (dispatch: AppDispatch) => {
 
 // CHANGE USER INFO
 
-export const changeUserInfo = (info: any) => (dispatch: AppDispatch) => {
+export const changeUserInfo = (info: TGetUser) => (dispatch: AppDispatch) => {
   dispatch(sendRequestChangeUser(true));
-  fetchWithRefresh({ responce: apiUpdateUserInfo, data: info })
+  fetchWithRefresh({ response: apiUpdateUserInfo, data: info })
     .then((res) => {
       dispatch(respondSuccessChangeUser(res.user));
     })
@@ -453,7 +453,7 @@ export const reloginUser = () => (dispatch: AppDispatch) => {
   if (localStorageToken && !accessCookie) {
     refreshUserToken();
 
-    fetchWithRefresh({ responce: apiGetUser, data: null })
+    fetchWithRefresh({ response: apiGetUser, data: null })
       .then((res) => {
         dispatch(respondSuccessLogin(res.user));
       })
@@ -463,7 +463,7 @@ export const reloginUser = () => (dispatch: AppDispatch) => {
   }
 
   if (localStorageToken && accessCookie) {
-    fetchWithRefresh({ responce: apiGetUser, data: null })
+    fetchWithRefresh({ response: apiGetUser, data: null })
       .then((res) => {
         dispatch(respondSuccessLogin(res.user));
       })

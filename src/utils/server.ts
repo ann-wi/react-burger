@@ -6,11 +6,9 @@ import {
 } from "./cookies-storage";
 import {
   TGetUser,
-  TLogin,
   TLoginUser,
-  TOrder,
   TResetPassword,
-  TUpdateAccessToken,
+  TFetchWithRefresh,
 } from "./types";
 
 export const apiBurger = "https://norma.nomoreparties.space/api/";
@@ -20,7 +18,7 @@ export const formatToken = (accessToken: string) => {
   return authToken;
 };
 
-export const checkResponse = (res: any) => {
+export const checkResponse = (res: Response) => {
   if (res.ok) {
     return res.json();
   }
@@ -184,9 +182,12 @@ export async function apiResetPassword(data: TResetPassword) {
   return checkResponse(res);
 }
 
-export const fetchWithRefresh = async ({ responce, data }: any) => {
+export const fetchWithRefresh = async ({
+  response,
+  data,
+}: TFetchWithRefresh) => {
   try {
-    return await responce(data);
+    return await response(data!);
   } catch (err: any) {
     if (err.message === "jwt expired") {
       console.log(err);
@@ -202,7 +203,7 @@ export const fetchWithRefresh = async ({ responce, data }: any) => {
         saveToLocalStorage("refreshToken", res.refreshToken);
       });
 
-      return await responce(data);
+      return await response(data!);
     } catch (err) {
       return Promise.reject(err);
     }

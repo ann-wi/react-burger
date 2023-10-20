@@ -8,6 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "../../utils/storeTypes";
 import { TIngredient } from "../../utils/types";
+import { DnDRefElement } from "../DnDRefElement/DnDRefElement";
 
 export interface ISelectedConstructorElement {
   ingredient: TIngredient;
@@ -70,6 +71,8 @@ export const SelectedConstructorElement: FC<ISelectedConstructorElement> = ({
 
   const ref = useRef<HTMLDivElement>(null);
   const dragDropRef = dragRef(dropRef(ref));
+
+  console.log(ref);
 
   const returnElement = (elemType: string) => {
     if (elemType === "bun-top") {

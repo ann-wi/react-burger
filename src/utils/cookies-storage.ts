@@ -1,9 +1,12 @@
 // Cookies
+export type TSetCookieProps = {
+  [key: string]: any | {};
+};
 
 export function setCookie(
   name: string,
   value: string | number | boolean,
-  props?: any
+  props?: TSetCookieProps
 ) {
   props = {
     path: "/",

@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-export const useForm = (data: any, submitCh: () => void) => {
+export function useForm<T extends { [key: string]: string | number }>(
+  data: T,
+  submitCh: () => void
+) {
   const [formData, setFormData] = useState(data);
 
   const onChange = (e: React.BaseSyntheticEvent) => {
@@ -14,4 +17,4 @@ export const useForm = (data: any, submitCh: () => void) => {
   };
 
   return { formData, setFormData, onChange, onSubmit };
-};
+}
