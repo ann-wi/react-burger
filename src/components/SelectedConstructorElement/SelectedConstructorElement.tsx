@@ -1,15 +1,22 @@
 import { useDrag, useDrop } from "react-dnd";
-import { useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useRef } from "react";
 import SelectedConstructorElementStyles from "./selected-constructor-element-styles.module.css";
 import { setNewIngrs } from "../../services/actions/constructorActions";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "../../utils/storeTypes";
+import { TIngredient } from "../../utils/types";
 
-export const SelectedConstructorElement = ({
+export interface ISelectedConstructorElement {
+  ingredient: TIngredient;
+  elemType: string;
+  deleteItem?: (ingredient: TIngredient) => void;
+  index?: number | undefined;
+}
+
+export const SelectedConstructorElement: FC<ISelectedConstructorElement> = ({
   ingredient,
   elemType,
   deleteItem,
@@ -37,13 +44,13 @@ export const SelectedConstructorElement = ({
         handlerId: monitor.getHandlerId(),
       };
     },
-    drop: (item) => {
+    drop: (item: { index: number; type: string; id: string }) => {
       if (!ref.current) {
         return;
       }
 
-      const dragIndex = addedIngredients.indexOf(item);
-      const hoverIndex = index;
+      const dragIndex = item.index;
+      const hoverIndex = index!;
 
       if (dragIndex === hoverIndex) {
         return;
@@ -61,10 +68,10 @@ export const SelectedConstructorElement = ({
     },
   });
 
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const dragDropRef = dragRef(dropRef(ref));
 
-  const returnElement = (elemType) => {
+  const returnElement = (elemType: string) => {
     if (elemType === "bun-top") {
       return (
         <div
@@ -82,7 +89,7 @@ export const SelectedConstructorElement = ({
     } else if (elemType === "main-sauce") {
       return (
         <div
-          ref={dragDropRef}
+          ref={ref}
           data-handler-id={handlerId}
           className={`${SelectedConstructorElementStyles.element} mb-4`}
         >
@@ -91,8 +98,7 @@ export const SelectedConstructorElement = ({
             text={`${name}`}
             price={price}
             thumbnail={image}
-            handleClose={() => deleteItem(ingredient)}
-            index={index}
+            handleClose={() => deleteItem!(ingredient)}
           />
         </div>
       );
@@ -114,11 +120,4 @@ export const SelectedConstructorElement = ({
   };
 
   return <>{returnElement(elemType)}</>;
-};
-
-SelectedConstructorElement.propTypes = {
-  ingredient: PropTypes.object,
-  elemType: PropTypes.string,
-  deleteItem: PropTypes.func,
-  index: PropTypes.number,
 };
