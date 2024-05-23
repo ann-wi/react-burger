@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "../../utils/storeTypes";
 import { TIngredient } from "../../utils/types";
-import { DnDRefElement } from "../DnDRefElement/DnDRefElement";
+// import { DnDRefElement } from "../DnDRefElement/DnDRefElement";
 
 export interface ISelectedConstructorElement {
   ingredient: TIngredient;
@@ -34,6 +34,7 @@ export const SelectedConstructorElement: FC<ISelectedConstructorElement> = ({
   const [, dragRef] = useDrag({
     type: "selected",
     item: () => {
+      console.log(ingredient);
       return ingredient;
     },
   });
@@ -64,15 +65,13 @@ export const SelectedConstructorElement: FC<ISelectedConstructorElement> = ({
       const hoverItem = sortedIngredients.splice(hoverIndex, 1, dragItem);
 
       sortedIngredients.splice(dragIndex, 1, hoverItem[0]);
-
+      console.log(item);
       dispatch(setNewIngrs(sortedIngredients));
     },
   });
 
   const ref = useRef<HTMLDivElement>(null);
-  const dragDropRef = dragRef(dropRef(ref));
-
-  console.log(ref);
+  dragRef(dropRef(ref));
 
   const returnElement = (elemType: string) => {
     if (elemType === "bun-top") {

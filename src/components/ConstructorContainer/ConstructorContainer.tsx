@@ -78,14 +78,14 @@ export const ConstructorContainer: FC<IConstructorContainer> = ({
           ref={dropMainSauce}
         >
           {addedIngredients
-            .filter((ingredient) => ingredient.type !== "bun")
-            .map((ingredient) => (
+            .filter((ingredient: TIngredient) => ingredient.type !== "bun")
+            .map((ingredient: TIngredient, index: number) => (
               <SelectedConstructorElement
                 ingredient={ingredient}
                 key={ingredient.uuid}
                 elemType={"main-sauce"}
                 deleteItem={handleDeleteIngredient}
-                index={addedIngredients.indexOf(ingredient)}
+                index={index}
               />
             ))}
         </div>
