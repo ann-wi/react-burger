@@ -2,7 +2,7 @@
 
 Сайт космической бургерной, на которой можно собрать бургер из ингредиентов и сделать заказ.
 
-![2024-01-11_08-47-29]()
+![project-presentation](https://github.com/ann-wi/react-burger/blob/main/src/assets/project-presentation.png?raw=true)
 
 
 # Функциональность:
